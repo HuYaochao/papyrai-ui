@@ -1,113 +1,38 @@
 # papyrai-ui
 
 > Paper-style Web Components for AI applications
-> 第一个为 AI 应用场景设计的类纸风格 Web Components 组件库
 
-[![npm](https://img.shields.io/npm/v/papyrai-ui)](https://www.npmjs.com/package/papyrai-ui)
-[![License](https://img.shields.io/npm/l/papyrai-ui)](LICENSE)
+![首页](docs/screenshots/首页.png)
 
-## Features
+## 是什么
 
-- **Framework-agnostic**: Works with React, Vue, Angular, or plain HTML
-- **AI-exclusive components**: 9 unique components for AI applications
-- **Paper-style design**: Textures, shadows, handwritten fonts
-- **SVG-first**: Parametric logos and icons
-- **Theme support**: Light and dark themes
+一个类纸风格的 Web Components 组件库，专为 AI 应用场景设计。
 
-## Installation
+灵感来源：既然有免费 AI，能不能做个完全免费、通用、原始的 AI UI？
 
-```bash
-npm install papyrai-ui
-```
-npm run dev
-
-npm run preview
-
-## Usage
-
-### Full import
-
-```javascript
-import 'papyrai-ui';
-```
-
-```html
-<ai-thinking></ai-thinking>
-<p-button>Click me</p-button>
-```
-
-### Individual component
-
-```javascript
-import 'papyrai-ui/components/ai-thinking';
-```
-
-### CDN
-
-```html
-<script src="https://unpkg.com/papyrai-ui"></script>
-```
-
-## Components
-
-### AI Components
-
-| Component | Description |
-|-----------|-------------|
-| `<ai-thinking>` | AI thinking indicator with ink animation |
-| `<ai-stream>` | Streaming text with pen-writing effect |
-| `<ai-hallucination>` | Hallucination content marker |
-| `<ai-not-found>` | "AI thinks it exists but doesn't" |
-| `<ai-fake-error>` | Fake error reveal |
-| `<ai-confidence>` | Confidence visualization |
-| `<ai-diff>` | AI red-pen diff |
-| `<ai-cost>` | Token cost display |
-| `<ai-model-badge>` | Model badge with auto-coloring |
-
-### Basic Components
-
-- **Elements**: Button, Avatar, Badge, Alert, Accordion, etc. (22)
-- **Inputs**: Input, Select, Checkbox, Range, DatePicker, etc. (20)
-- **Navigation**: Tabs, Steps, Pagination, Breadcrumb, etc. (10)
-- **Overlays**: Modal, Popover, Tooltip, Toast, etc. (8)
-- **Layout**: Card, Container, Skeleton (3)
-- **Data**: Table, Calendar, Tree, etc. (6)
-
-## Theme
-
-Switch between light and dark themes:
-
-```javascript
-document.documentElement.setAttribute('data-theme', 'dark');
-```
-
-## License
-
-MIT
+**目前就是写着玩的阶段，Bug 多，勿喷。（且没太多时间和精力）**
 
 ---
 
-## 简体中文
+## 文档版本
 
-papyrai-ui 是一个类纸风格的 Web Components 组件库，专为 AI 应用场景设计。
+- [English README](docs/README-en.md)
+- [中文文档](docs/README-zh.md)
 
-### 特性
+## 预览
 
-- **框架无关**：支持 React、Vue、Angular 或原生 HTML
-- **AI 专属组件**：9 个独特的 AI 应用组件
-- **类纸视觉**：纹理、阴影、手写字体
-- **SVG 优先**：参数化 Logo 和图标
-- **主题支持**：亮色和暗色主题
+![AI组件](docs/screenshots/AI组件.png)
 
-本地优先
+![SVG图标](docs/screenshots/svg.png)
 
-### 安装
+## 快速开始
 
 ```bash
 npm install papyrai-ui
+npm run dev
 ```
 
-### 使用
+## 使用
 
 ```javascript
 import 'papyrai-ui';
@@ -118,18 +43,6 @@ import 'papyrai-ui';
 <p-button>点击我</p-button>
 ```
 
-### CDN
-
-```html
-<script src="https://unpkg.com/papyrai-ui"></script>
-```
-
-### 主题切换
-
-```javascript
-document.documentElement.setAttribute('data-theme', 'dark');
-```
-
-### 许可证
+## License
 
 MIT
