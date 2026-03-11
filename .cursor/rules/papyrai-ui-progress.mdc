@@ -5,81 +5,179 @@ alwaysApply: true
 
 # papyrai-ui 开发规范与进度
 
-> 本规则自动应用于整个项目。每完成一项任务，都应同步更新本文档。
+> 本规则自动应用于整个项目。AI 助手每完成一个任务后，必须在此更新进度。
 
 ## 项目概览
 
-- **定位**: 第一个面向 AI 应用场景的、框架无关、类纸风格 UI 组件库
-- **名称**: papyrai-ui（papyrus + ai + ui）
-- **协议**: MIT
-- **技术栈**: Web Components + Lit + Rollup + VitePress
-- **主题**: 亮色 + 暗色（CSS 变量驱动）
-- **总目标规模**: 136（9 AI + 8 Logo 模板 + 50 SVG 图标 + 69 基础组件）
+- **名称**: papyrai-ui（纸莎草纸 × AI）
+- **类型**: 框架无关的 Web Components UI 组件库
+- **技术栈**: Lit 3.0 + Rollup + VitePress
+- **风格**: 类纸视觉（纸张纹理、阴影、手写体）+ AI 专属组件
 
-## 里程碑进度（对齐 02 开发步骤条）
+## 开发进度追踪
 
-### Step 0：项目初始化
-- [x] 0.1 目录结构
+### Step 0: 项目初始化
+- [x] 0.1 创建目录结构
 - [x] 0.2 package.json
 - [x] 0.3 Rollup 配置
 - [x] 0.4 preview/index.html 骨架
-- [x] 0.5 LICENSE / FONT_LICENSE / README
+- [x] 0.5 LICENSE / FONT_LICENSE / README.md
 
-### Step 1：Core 样式系统
-- [x] 1.1 `src/core/tokens.js`（亮/暗主题变量）
-- [x] 1.2 `src/core/styles.css`（基础样式、字体）
-- [x] 1.3 `src/core/base.js`（`PapyraiElement` 基类）
+### Step 1系统
+- [: Core 样式x] 1.1 src/core/tokens.js（CSS 变量）
+- [x] 1.2 src/core/styles.css（全局样式、字体）
+- [x] 1.3 src/core/base.js（Lit 基类）
 
-### Step 2：AI 专属组件（9/9）
-- [x] 2.1 `ai-thinking`
-- [x] 2.2 `ai-stream`
-- [x] 2.3 `ai-hallucination`
-- [x] 2.4 `ai-not-found`
-- [x] 2.5 `ai-fake-error`
-- [x] 2.6 `ai-confidence`
-- [x] 2.7 `ai-diff`
-- [x] 2.8 `ai-cost`
-- [x] 2.9 `ai-model-badge`
+### Step 2: AI 专属组件（最高优先级）
+- [x] 2.1 ai-thinking.js - `<ai-thinking>`
+- [x] 2.2 ai-stream.js - `<ai-stream>`
+- [x] 2.3 ai-hallucination.js - `<ai-hallucination>`
+- [x] 2.4 ai-not-found.js - `<ai-not-found>`
+- [x] 2.5 ai-fake-error.js - `<ai-fake-error>`
+- [x] 2.6 ai-confidence.js - `<ai-confidence>`
+- [x] 2.7 ai-diff.js - `<ai-diff>`
+- [x] 2.8 ai-cost.js - `<ai-cost>`
+- [x] 2.9 ai-model-badge.js - `<ai-model-badge>`
 
-### Step 3：SVG 体系
-- [x] 3.1 `svg-logo`（8 种模板）
-- [x] 3.2 `svg-icon`（当前演示集已实现并可渲染）
-- [ ] 3.3 `src/icons/` 独立图标组件库（清单与导出仍需收敛到实际文件，避免无效 import）
+### Step 3: SVG 体系
+- [x] 3.1 svg-logo.js - 8 种 logo 模板
+- [x] 3.2 svg-icon.js - 50 个类纸图标
+- [x] 3.3 icons/ - 130+ 图标组件（通过 papyrai-icons.js 统一导出）
 
-### Step 4~9：基础组件（Elements / Inputs / Navigation / Overlays / Layout / Data）
-- [ ] 尚未开始（待按 02 文档分批落地）
+### Step 4: 基础组件 - Elements（22个）
+- [ ] 4.1 accordion.js - `<p-accordion>`
+- [ ] 4.2 alert.js - `<p-alert>`
+- [ ] 4.3 avatar.js - `<p-avatar>`
+- [ ] 4.4 badge.js - `<p-badge>`
+- [ ] 4.5 button.js - `<p-button>`
+- [ ] 4.6 select-button.js - `<p-select-button>`
+- [ ] 4.7 toggle-button.js - `<p-toggle-button>`
+- [ ] 4.8 breadcrumb.js - `<p-breadcrumb>`
+- [ ] 4.9 carousel.js - `<p-carousel>`
+- [ ] 4.10 chat-bubble.js - `<p-chat-bubble>`
+- [ ] 4.11 divider.js - `<p-divider>`
+- [ ] 4.12 dropdown.js - `<p-dropdown>`
+- [ ] 4.13 listbox.js - `<p-listbox>`
+- [ ] 4.14 indicator.js - `<p-indicator>`
+- [ ] 4.15 mockup.js - `<p-mockup>`
+- [ ] 4.16 panel-splitter.js - `<p-panel-splitter>`
+- [ ] 4.17 qr-code.js - `<p-qr-code>`
+- [ ] 4.18 keyboard-key.js - `<p-keyboard-key>`
+- [ ] 4.19 scroll-bar.js - `<p-scroll-bar>`
+- [ ] 4.20 speed-dial.js - `<p-speed-dial>`
+- [ ] 4.21 stack.js - `<p-stack>`
+- [ ] 4.22 timeline.js - `<p-timeline>`
 
-### Step 10：构建与发布
-- [ ] 10.1 Rollup 产物校验（UMD/ESM/min）
-- [ ] 10.2 按需引入产物
-- [ ] 10.3 npm 发布流程
+### Step 5: 基础组件 - Inputs（20个）
+- [ ] 5.1 auto-complete.js - `<p-auto-complete>`
+- [ ] 5.2 color-picker.js - `<p-color-picker>`
+- [ ] 5.3 input-chips.js - `<p-input-chips>`
+- [ ] 5.4 otp-input.js - `<p-otp-input>`
+- [ ] 5.5 date-picker.js - `<p-date-picker>`
+- [ ] 5.6 rich-text-editor.js - `<p-rich-text-editor>`
+- [ ] 5.7 input.js - `<p-input>`
+- [ ] 5.8 input-mask.js - `<p-input-mask>`
+- [ ] 5.9 knob.js - `<p-knob>`
+- [ ] 5.10 password-indicator.js - `<p-password-indicator>`
+- [ ] 5.11 textarea.js - `<p-textarea>`
+- [ ] 5.12 select.js - `<p-select>`
+- [ ] 5.13 swap.js - `<p-swap>`
+- [ ] 5.14 signature-pad.js - `<p-signature-pad>`
+- [ ] 5.15 checkbox.js - `<p-checkbox>`
+- [ ] 5.16 radio.js - `<p-radio>`
+- [ ] 5.17 toggle.js - `<p-toggle>`
+- [ ] 5.18 range.js - `<p-range>`
+- [ ] 5.19 rating.js - `<p-rating>`
+- [ ] 5.20 file-input.js - `<p-file-input>`
+
+### Step 6: 基础组件 - Navigation（10个）
+- [ ] 6.1 bottom-tabs.js - `<p-bottom-tabs>`
+- [ ] 6.2 command-palette.js - `<p-command-palette>`
+- [ ] 6.3 dock.js - `<p-dock>`
+- [ ] 6.4 pagination.js - `<p-pagination>`
+- [ ] 6.5 progress.js - `<p-progress>`
+- [ ] 6.6 scroll-spy.js - `<p-scroll-spy>`
+- [ ] 6.7 scroll-top.js - `<p-scroll-top>`
+- [ ] 6.8 steps.js - `<p-steps>`
+- [ ] 6.9 tabs.js - `<p-tabs>`
+- [ ] 6.10 vertical-navigation.js - `<p-vertical-nav>`
+
+### Step 7: 基础组件 - Overlays（8个）
+- [ ] 7.1 modal.js - `<p-modal>`
+- [ ] 7.2 slideover.js - `<p-slideover>`
+- [ ] 7.3 popover.js - `<p-popover>`
+- [ ] 7.4 tooltip.js - `<p-tooltip>`
+- [ ] 7.5 context-menu.js - `<p-context-menu>`
+- [ ] 7.6 toast.js - `<p-toast>`
+- [ ] 7.7 tour.js - `<p-tour>`
+- [ ] 7.8 watermark.js - `<p-watermark>`
+
+### Step 8: 基础组件 - Layout（3个）
+- [ ] 8.1 card.js - `<p-card>`
+- [ ] 8.2 container.js - `<p-container>`
+- [ ] 8.3 skeleton.js - `<p-skeleton>`
+
+### Step 9: 基础组件 - Data（6个）
+- [ ] 9.1 table.js - `<p-table>`
+- [ ] 9.2 calendar.js - `<p-calendar>`
+- [ ] 9.3 order-list.js - `<p-order-list>`
+- [ ] 9.4 tree.js - `<p-tree>`
+- [ ] 9.5 pick-list.js - `<p-pick-list>`
+- [ ] 9.6 virtual-scroller.js - `<p-virtual-scroller>`
+
+### Step 10: 构建与发布
+- [ ] 10.1 Rollup 构建
+- [ ] 10.2 按需引入构建
+- [ ] 10.3 npm 发布
 - [ ] 10.4 VitePress 文档站
 
-## 当前已知问题与处理记录
+---
 
-- [x] 修复 `svg-icon` 渲染异常（`<svg ${string}>` 造成属性未正确生效，出现小黑点/图标缺失）
-  - 处理：改为统一 `svgBase(...)` 包装器显式设置 `width/height/viewBox/stroke`。
+## 命名规范
 
-## 命名与实现规范
+| 类型 | 前缀 | 示例 |
+|------|------|------|
+| AI 组件 | `ai-` | `<ai-thinking>`, `<ai-stream>` |
+| SVG 组件 | `svg-` | `<svg-logo>`, `<svg-icon>` |
+| 基础组件 | `p-` | `<p-button>`, `<p-modal>` |
+| CSS 变量 | `--paper-`, `--ai-` | `--paper-white`, `--ai-thinking` |
 
-- 标签前缀：AI 用 `ai-`、SVG 用 `svg-`、基础组件用 `p-`
-- 文件名：kebab-case
-- 基础约束：
-  - 继承 `PapyraiElement`
-  - `static properties` 完整声明
-  - 支持亮/暗主题
-  - 颜色优先使用 CSS 变量
-  - 交互组件支持键盘操作与 slot（如适用）
+- 文件名用 kebab-case：`ai-thinking.js`, `date-picker.js`
 
-## SVG 规范
+## 组件规范
 
-- `viewBox="0 0 24 24"`
-- `stroke-width="1.5"`
-- `stroke="currentColor"`（允许通过属性覆写）
-- `stroke-linecap="round"` + `stroke-linejoin="round"`
+1. **继承基类**: 所有组件继承 `PapyraiElement`（LitElement）
+2. **主题支持**: 必须支持亮色/暗色主题，使用 CSS 变量
+3. **样式**: 写在 `static styles` 里，不用外部 CSS 文件
+4. **属性声明**: 必须声明 `static properties`，标注类型和默认值
+5. **无障碍**: 必须支持键盘操作
+6. **Slot**: 交互组件必须有 slot 支持自定义内容
 
-## 更新规则
+## 视觉规范
 
-1. 完成任务后更新对应步骤状态（`[ ]` → `[x]`）。
-2. 如存在偏差（例如规划数与现状不一致），必须在“已知问题”记录。
-3. 每次会话开始先读取本文件确认优先级与下一步。
+- 颜色只用 CSS 变量，禁止硬编码色值
+- 圆角：`--radius-sm/md/lg`
+- 间距：`--spacing-xs/sm/md/lg/xl`
+- 阴影：`--elevation-1/2/3`
+- 字体：`--font-handwrite/serif/mono`
+
+## SVG 图标规范
+
+- viewBox 统一 `0 0 24 24`
+- stroke-width 统一 `1.5`
+- 使用 `currentColor` 继承颜色
+- 线条末端 `stroke-linecap="round"` + `stroke-linejoin="round"`
+
+## 文件大小约束
+
+- 单个组件 JS < 10KB（gzipped）
+- 全量包 < 100KB（gzipped，不含字体）
+- 英文字体内嵌 < 200KB
+
+---
+
+## 进度更新规则
+
+1. 每完成一个组件，立即在此文件更新对应的 `[ ]` 为 `[x]`
+2. 如果需要补充说明或待办，写在对应步骤下方
+3. 每次会话开始时，读取此规则确认当前进度
