@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Debug Test</title>
+  <script type="importmap">
+  {
+    "imports": {
+      "lit": "https://cdn.jsdelivr.net/npm/lit@3.1.0/+esm",
+      "lit-html": "https://cdn.jsdelivr.net/npm/lit-html@3.1.0/+esm",
+      "@lit/reactive-element": "https://cdn.jsdelivr.net/npm/@lit/reactive-element@2.1.2/+esm"
+    }
+  }
+  </script>
+  <link rel="stylesheet" href="../src/core/styles.css">
+  <script type="module">
+    // Direct import to see errors
+    import { PapyraiElement, html, css } from '../src/core/base.js';
+    console.log('PapyraiElement:', PapyraiElement);
+    console.log('html:', typeof html);
+    console.log('css:', typeof css);
+    
+    class TestComp extends PapyraiElement {
+      static properties = {
+        message: { type: String }
+      };
+      render() {
+        console.log('render called', this.message);
+        return html`<div>Hello ${this.message}</div>`;
+      }
+    }
+    customElements.define('test-comp', TestComp);
+    console.log('test-comp defined');
+  </script>
+</head>
+<body>
+  <test-comp message="World"></test-comp>
+</body>
+</html>

@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SVG 体系 - papyrai-ui</title>
+  <script type="importmap">
+  {
+    "imports": {
+      "lit": "https://cdn.jsdelivr.net/npm/lit@3.1.0/+esm",
+      "lit-html": "https://cdn.jsdelivr.net/npm/lit-html@3.1.0/+esm",
+      "@lit/reactive-element": "https://cdn.jsdelivr.net/npm/@lit/reactive-element@2.1.2/+esm"
+    }
+  }
+  </script>
+  <link rel="stylesheet" href="../src/core/styles.css">
+  <style>
+    body {
+      font-family: var(--font-serif);
+      background: var(--paper-white);
+      color: var(--ink-black);
+      margin: 0;
+      padding: 20px;
+      line-height: 1.6;
+      position: relative;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+    body > * { position: relative; z-index: 1; }
+    [data-theme="dark"] body::before { opacity: 0.06; }
+    [data-theme="dark"] body {
+      background: var(--paper-black);
+      color: var(--ink-light);
+    }
+
+    h1 {
+      font-family: var(--font-handwrite);
+      font-weight: 700;
+      color: var(--accent-red);
+      font-size: 2rem;
+      text-shadow: 0 1px 2px var(--paper-shadow);
+    }
+
+    h2 {
+      font-family: var(--font-handwrite);
+      font-weight: 700;
+      margin-top: 2rem;
+      border-bottom: 2px dashed var(--ink-faint);
+      padding-bottom: 0.5rem;
+    }
+
+    .back { 
+      color: var(--accent-red); 
+      text-decoration: none;
+      font-size: 1.1rem;
+    }
+
+    .back:hover {
+      text-decoration: underline;
+    }
+
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 8px 16px;
+      background: var(--paper-cream);
+      border: 2px solid var(--ink-faint);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+    }
+
+    [data-theme="dark"] .theme-toggle {
+      background: var(--paper-aged);
+    }
+
+    /* Logo 样式 - 类纸卡片 */
+    .logo-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-lg);
+      margin: 20px 0;
+    }
+
+    .logo-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: var(--spacing-md);
+      background: var(--paper-cream);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--paper-border);
+      box-shadow: var(--elevation-1);
+      transition: box-shadow 0.2s ease;
+    }
+    .logo-item:hover {
+      box-shadow: var(--elevation-2);
+    }
+    [data-theme="dark"] .logo-item {
+      background: var(--paper-aged);
+    }
+
+    .logo-item span {
+      margin-top: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--ink-mid);
+    }
+
+    /* Icon 样式 - 类纸卡片 */
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: var(--spacing-md);
+      margin: 20px 0;
+    }
+
+    .icon-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 88px;
+      padding: var(--spacing-md);
+      background: var(--paper-cream);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--paper-border);
+      cursor: pointer;
+      transition: box-shadow 0.2s ease;
+      box-shadow: var(--elevation-1);
+      color: var(--ink-black);
+    }
+
+    .icon-item:hover {
+      box-shadow: var(--elevation-2);
+      border-color: var(--ink-faint);
+    }
+
+    [data-theme="dark"] .icon-item {
+      background: var(--paper-aged);
+      color: var(--ink-light);
+    }
+
+    .icon-item svg {
+      margin-bottom: var(--spacing-sm);
+      flex-shrink: 0;
+      pointer-events: none;
+    }
+
+    .icon-item span {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--ink-mid);
+      word-break: break-all;
+      text-align: center;
+    }
+
+    /* 不同大小的 logo 展示 */
+    .logo-sizes {
+      display: flex;
+      gap: 16px;
+      align-items: flex-end;
+      margin: 20px 0;
+      padding: 20px;
+      background: var(--paper-cream);
+      border-radius: var(--radius-md);
+    }
+
+    [data-theme="dark"] .logo-sizes {
+      background: var(--paper-aged);
+    }
+
+    .logo-sizes svg-logo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .logo-sizes span {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      margin-top: 4px;
+    }
+
+    /* 不同颜色的 logo 展示 */
+    .logo-colors {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin: 20px 0;
+    }
+
+    .color-demo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .color-demo span {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--ink-mid);
+    }
+  </style>
+</head>
+<body>
+  <a href="index.html" class="back">← 返回首页</a>
+  <button class="theme-toggle" onclick="toggleTheme()">切换主题</button>
+
+  <h1>SVG 体系</h1>
+
+  <section>
+    <h2>3.1 Logo 模板 (svg-logo)</h2>
+    <p>支持 8 种风格：stamp / seal / badge / minimal / scroll / ribbon / wax / corner</p>
+
+    <h3>基础示例</h3>
+    <div class="logo-grid">
+      <div class="logo-item">
+        <svg-logo template="stamp" text="AI" size="80" color="#c4453c"></svg-logo>
+        <span>stamp</span>
+      </div>
+      <div class="logo-item">
+        <svg-logo template="seal" text="AI" size="80" color="#c4453c"></svg-logo>
+        <span>seal</span>
+      </div>
+      <div class="logo-item">
+        <svg-logo template="badge" text="AI" size="80" color="#c4453c"></svg-logo>
+        <span>badge</span>
+      </div>
+      <div class="logo-item">
+        <svg-logo template="minimal" text="AI" size="80" color="#c4453c"></svg-logo>
+        <span>minimal</span>
+      </div>
+      <div class="logo-item">
+        <svg-logo template="scroll" text="AI" size="80" color="#c4453c"></svg-logo>
+        <span>scroll</span>
+      </div>
+      <div class="logo-item">
+        <svg-logo template="ribbon" text="AI" size="80" color="#c4453c"></svg-logo>
+        <span>ribbon</span>
+      </div>
+      <div class="logo-item">
+        <svg-logo template="wax" text="AI" size="80" color="#c4453c"></svg-logo>
+        <span>wax</span>
+      </div>
+      <div class="logo-item">
+        <svg-logo template="corner" text="AI" size="80" color="#c4453c"></svg-logo>
+        <span>corner</span>
+      </div>
+    </div>
+
+    <h3>不同尺寸</h3>
+    <div class="logo-sizes">
+      <svg-logo template="stamp" text="S" size="40" color="#c4453c"></svg-logo>
+      <svg-logo template="stamp" text="M" size="60" color="#c4453c"></svg-logo>
+      <svg-logo template="stamp" text="L" size="80" color="#c4453c"></svg-logo>
+      <svg-logo template="stamp" text="XL" size="120" color="#c4453c"></svg-logo>
+    </div>
+
+    <h3>不同颜色</h3>
+    <div class="logo-colors">
+      <div class="color-demo">
+        <svg-logo template="seal" text="AI" size="60" color="#c4453c"></svg-logo>
+        <span>#c4453c (red)</span>
+      </div>
+      <div class="color-demo">
+        <svg-logo template="seal" text="AI" size="60" color="#2d7d46"></svg-logo>
+        <span>#2d7d46 (green)</span>
+      </div>
+      <div class="color-demo">
+        <svg-logo template="seal" text="AI" size="60" color="#2563eb"></svg-logo>
+        <span>#2563eb (blue)</span>
+      </div>
+      <div class="color-demo">
+        <svg-logo template="seal" text="AI" size="60" color="#7c3aed"></svg-logo>
+        <span>#7c3aed (purple)</span>
+      </div>
+      <div class="color-demo">
+        <svg-logo template="seal" text="AI" size="60" color="#1a1a1a"></svg-logo>
+        <span>#1a1a1a (black)</span>
+      </div>
+    </div>
+
+    <h3>自定义文字</h3>
+    <div class="logo-grid">
+      <div class="logo-item">
+        <svg-logo template="stamp" text="NEW" size="80" color="#2d7d46"></svg-logo>
+        <span>NEW</span>
+      </div>
+      <div class="logo-item">
+        <svg-logo template="seal" text="Pro" size="80" color="#2563eb"></svg-logo>
+        <span>Pro</span>
+      </div>
+      <div class="logo-item">
+        <svg-logo template="badge" text="VIP" size="80" color="#7c3aed"></svg-logo>
+        <span>VIP</span>
+      </div>
+      <div class="logo-item">
+        <svg-logo template="minimal" text="AI" size="80" color="#c4453c"></svg-logo>
+        <span>AI</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>3.2 图标集 (svg-icon)</h2>
+    <p>50 个类纸风格图标，支持所有常用操作</p>
+
+    <h3>基础图标</h3>
+    <div class="icon-grid">
+      <div class="icon-item"><svg-icon name="pen" size="28"></svg-icon><span>pen</span></div>
+      <div class="icon-item"><svg-icon name="paper" size="28"></svg-icon><span>paper</span></div>
+      <div class="icon-item"><svg-icon name="scroll" size="28"></svg-icon><span>scroll</span></div>
+      <div class="icon-item"><svg-icon name="stamp" size="28"></svg-icon><span>stamp</span></div>
+      <div class="icon-item"><svg-icon name="ink" size="28"></svg-icon><span>ink</span></div>
+      <div class="icon-item"><svg-icon name="quill" size="28"></svg-icon><span>quill</span></div>
+      <div class="icon-item"><svg-icon name="bookmark" size="28"></svg-icon><span>bookmark</span></div>
+      <div class="icon-item"><svg-icon name="envelope" size="28"></svg-icon><span>envelope</span></div>
+      <div class="icon-item"><svg-icon name="wax-seal" size="28"></svg-icon><span>wax-seal</span></div>
+      <div class="icon-item"><svg-icon name="paperclip" size="28"></svg-icon><span>paperclip</span></div>
+    </div>
+
+    <h3>办公工具</h3>
+    <div class="icon-grid">
+      <div class="icon-item"><svg-icon name="pin" size="28"></svg-icon><span>pin</span></div>
+      <div class="icon-item"><svg-icon name="scissors" size="28"></svg-icon><span>scissors</span></div>
+      <div class="icon-item"><svg-icon name="ruler" size="28"></svg-icon><span>ruler</span></div>
+      <div class="icon-item"><svg-icon name="eraser" size="28"></svg-icon><span>eraser</span></div>
+      <div class="icon-item"><svg-icon name="magnifier" size="28"></svg-icon><span>magnifier</span></div>
+    </div>
+
+    <h3>基础操作</h3>
+    <div class="icon-grid">
+      <div class="icon-item"><svg-icon name="check" size="28"></svg-icon><span>check</span></div>
+      <div class="icon-item"><svg-icon name="cross" size="28"></svg-icon><span>cross</span></div>
+      <div class="icon-item"><svg-icon name="plus" size="28"></svg-icon><span>plus</span></div>
+      <div class="icon-item"><svg-icon name="minus" size="28"></svg-icon><span>minus</span></div>
+    </div>
+
+    <h3>箭头方向</h3>
+    <div class="icon-grid">
+      <div class="icon-item"><svg-icon name="arrow-left" size="28"></svg-icon><span>arrow-left</span></div>
+      <div class="icon-item"><svg-icon name="arrow-right" size="28"></svg-icon><span>arrow-right</span></div>
+      <div class="icon-item"><svg-icon name="arrow-up" size="28"></svg-icon><span>arrow-up</span></div>
+      <div class="icon-item"><svg-icon name="arrow-down" size="28"></svg-icon><span>arrow-down</span></div>
+      <div class="icon-item"><svg-icon name="chevron-left" size="28"></svg-icon><span>chevron-left</span></div>
+      <div class="icon-item"><svg-icon name="chevron-right" size="28"></svg-icon><span>chevron-right</span></div>
+      <div class="icon-item"><svg-icon name="chevron-up" size="28"></svg-icon><span>chevron-up</span></div>
+      <div class="icon-item"><svg-icon name="chevron-down" size="28"></svg-icon><span>chevron-down</span></div>
+    </div>
+
+    <h3>用户界面</h3>
+    <div class="icon-grid">
+      <div class="icon-item"><svg-icon name="search" size="28"></svg-icon><span>search</span></div>
+      <div class="icon-item"><svg-icon name="settings" size="28"></svg-icon><span>settings</span></div>
+      <div class="icon-item"><svg-icon name="user" size="28"></svg-icon><span>user</span></div>
+      <div class="icon-item"><svg-icon name="heart" size="28"></svg-icon><span>heart</span></div>
+      <div class="icon-item"><svg-icon name="star" size="28"></svg-icon><span>star</span></div>
+      <div class="icon-item"><svg-icon name="bell" size="28"></svg-icon><span>bell</span></div>
+    </div>
+
+    <h3>时间日期</h3>
+    <div class="icon-grid">
+      <div class="icon-item"><svg-icon name="calendar" size="28"></svg-icon><span>calendar</span></div>
+      <div class="icon-item"><svg-icon name="clock" size="28"></svg-icon><span>clock</span></div>
+    </div>
+
+    <h3>文件操作</h3>
+    <div class="icon-grid">
+      <div class="icon-item"><svg-icon name="upload" size="28"></svg-icon><span>upload</span></div>
+      <div class="icon-item"><svg-icon name="download" size="28"></svg-icon><span>download</span></div>
+      <div class="icon-item"><svg-icon name="copy" size="28"></svg-icon><span>copy</span></div>
+      <div class="icon-item"><svg-icon name="trash" size="28"></svg-icon><span>trash</span></div>
+      <div class="icon-item"><svg-icon name="edit" size="28"></svg-icon><span>edit</span></div>
+    </div>
+
+    <h3>可视性与安全</h3>
+    <div class="icon-grid">
+      <div class="icon-item"><svg-icon name="eye" size="28"></svg-icon><span>eye</span></div>
+      <div class="icon-item"><svg-icon name="eye-off" size="28"></svg-icon><span>eye-off</span></div>
+      <div class="icon-item"><svg-icon name="lock" size="28"></svg-icon><span>lock</span></div>
+      <div class="icon-item"><svg-icon name="unlock" size="28"></svg-icon><span>unlock</span></div>
+      <div class="icon-item"><svg-icon name="link" size="28"></svg-icon><span>link</span></div>
+      <div class="icon-item"><svg-icon name="external" size="28"></svg-icon><span>external</span></div>
+    </div>
+
+    <h3>状态提示</h3>
+    <div class="icon-grid">
+      <div class="icon-item"><svg-icon name="info" size="28"></svg-icon><span>info</span></div>
+      <div class="icon-item"><svg-icon name="warning" size="28"></svg-icon><span>warning</span></div>
+      <div class="icon-item"><svg-icon name="error" size="28"></svg-icon><span>error</span></div>
+      <div class="icon-item"><svg-icon name="success" size="28"></svg-icon><span>success</span></div>
+    </div>
+
+    <h3>不同尺寸</h3>
+    <div class="icon-grid">
+      <div class="icon-item"><svg-icon name="star" size="16"></svg-icon><span>16px</span></div>
+      <div class="icon-item"><svg-icon name="star" size="24"></svg-icon><span>24px</span></div>
+      <div class="icon-item"><svg-icon name="star" size="32"></svg-icon><span>32px</span></div>
+      <div class="icon-item"><svg-icon name="star" size="48"></svg-icon><span>48px</span></div>
+      <div class="icon-item"><svg-icon name="star" size="64"></svg-icon><span>64px</span></div>
+    </div>
+
+    <h3>不同颜色</h3>
+    <div class="icon-grid">
+      <div class="icon-item"><svg-icon name="check" size="28" color="#2d7d46"></svg-icon><span>green</span></div>
+      <div class="icon-item"><svg-icon name="cross" size="28" color="#c4453c"></svg-icon><span>red</span></div>
+      <div class="icon-item"><svg-icon name="warning" size="28" color="#f59e0b"></svg-icon><span>amber</span></div>
+      <div class="icon-item"><svg-icon name="info" size="28" color="#2563eb"></svg-icon><span>blue</span></div>
+      <div class="icon-item"><svg-icon name="success" size="28" color="#10b981"></svg-icon><span>emerald</span></div>
+    </div>
+  </section>
+
+  <script>
+    function toggleTheme() {
+      const html = document.documentElement;
+      if (html.getAttribute('data-theme') === 'dark') {
+        html.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+      } else {
+        html.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      }
+    }
+
+    // 初始化主题
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  </script>
+  <script type="module" src="../src/index.js"></script>
+</body>
+</html>

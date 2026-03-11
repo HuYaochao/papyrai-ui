@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>papyrai-ui - 类纸风格 Web Components</title>
+  <script type="importmap">
+  {
+    "imports": {
+      "lit": "https://cdn.jsdelivr.net/npm/lit@3.1.0/+esm",
+      "lit-html": "https://cdn.jsdelivr.net/npm/lit-html@3.1.0/+esm",
+      "@lit/reactive-element": "https://cdn.jsdelivr.net/npm/@lit/reactive-element@2.1.2/+esm"
+    }
+  }
+  </script>
+  <link rel="stylesheet" href="../src/core/styles.css">
+  <!-- 首页首屏必须内联 tokens，否则无组件挂载时变量未注入会白底+默认字体 -->
+  <style id="papyrai-tokens-critical">
+    @font-face {
+      font-family: 'Noto Serif SC';
+      src: url('../src/fonts/NotoSerifSC-VariableFont_wght.ttf') format('truetype-variations');
+      font-weight: 100 900;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Caveat';
+      src: url('../src/fonts/caveat.ttf') format('truetype');
+      font-weight: 400 700;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'JetBrains Mono';
+      src: url('../src/fonts/jetbrainsmono.ttf') format('truetype');
+      font-weight: 100 800;
+      font-display: swap;
+    }
+    :root {
+      --paper-white: #fdfbf7;
+      --paper-cream: #f7f3e8;
+      --paper-aged: #ede6d6;
+      --paper-shadow: rgba(0, 0, 0, 0.1);
+      --paper-border: #d9d0be;
+      --paper-black: #1a1814;
+      --ink-black: #1a1612;
+      --ink-dark: #3a3530;
+      --ink-mid: #6a6560;
+      --ink-light: #aaa5a0;
+      --ink-faint: #d9d5d0;
+      --accent-red: #c4453c;
+      --accent-blue: #4a7c9b;
+      --accent-green: #5a8a5a;
+      --accent-amber: #c49a3c;
+      --font-handwrite: 'Caveat', cursive;
+      --font-serif: 'Noto Serif SC', Georgia, serif;
+      --font-mono: 'JetBrains Mono', Consolas, monospace;
+      --elevation-1: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
+      --elevation-2: 0 4px 6px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.06);
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --spacing-sm: 8px;
+      --spacing-md: 16px;
+      --spacing-lg: 24px;
+      --spacing-xl: 32px;
+    }
+    [data-theme="dark"] {
+      --paper-white: #1a1814;
+      --paper-cream: #2a2520;
+      --paper-aged: #3a3530;
+      --paper-border: #4a4540;
+      --paper-black: #0a0908;
+      --ink-black: #e8e0d0;
+      --ink-dark: #c8c0b0;
+      --ink-mid: #a89e8c;
+      --ink-light: #786e64;
+      --ink-faint: #4a4540;
+      --accent-red: #e87068;
+      --elevation-1: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+      --elevation-2: 0 4px 6px rgba(0, 0, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: var(--font-serif);
+      background: var(--paper-cream);
+      color: var(--ink-black);
+      margin: 0;
+      min-height: 100vh;
+      transition: background 0.3s, color 0.3s;
+      position: relative;
+    }
+    /* 类纸背景：纸张底色 + 轻微纹理 */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+    [data-theme="dark"] body::before {
+      opacity: 0.06;
+    }
+    body > * {
+      position: relative;
+      z-index: 1;
+    }
+    [data-theme="dark"] body {
+      background: var(--paper-black);
+      color: var(--ink-light);
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+    .logo {
+      margin-bottom: 20px;
+    }
+    h1 {
+      font-family: var(--font-handwrite);
+      font-size: 3rem;
+      font-weight: 700;
+      margin: 0 0 10px;
+      color: var(--accent-red);
+      letter-spacing: 0.02em;
+      text-shadow: 0 1px 2px var(--paper-shadow);
+    }
+    .tagline {
+      font-family: var(--font-serif);
+      font-size: 1.15rem;
+      color: var(--ink-dark);
+      margin-bottom: 30px;
+      max-width: 32em;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.6;
+    }
+    [data-theme="dark"] .tagline {
+      color: var(--ink-mid);
+    }
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 10px 20px;
+      border: 2px solid var(--paper-border);
+      background: var(--paper-cream);
+      font-family: var(--font-mono);
+      cursor: pointer;
+      border-radius: var(--radius-md);
+      transition: all 0.2s;
+      box-shadow: var(--elevation-1);
+    }
+    .theme-toggle:hover {
+      background: var(--paper-aged);
+      box-shadow: var(--elevation-2);
+    }
+    nav {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: var(--spacing-lg);
+    }
+    .nav-card {
+      display: block;
+      padding: var(--spacing-xl) var(--spacing-lg);
+      background: var(--paper-cream);
+      border: 1px solid var(--paper-border);
+      border-radius: var(--radius-lg);
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+      box-shadow: var(--elevation-1);
+      position: relative;
+      overflow: hidden;
+    }
+    .nav-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 50%);
+      pointer-events: none;
+      border-radius: inherit;
+    }
+    [data-theme="dark"] .nav-card::before {
+      background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 50%);
+    }
+    .nav-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--elevation-2);
+      border-color: var(--ink-faint);
+    }
+    .nav-card h2 {
+      font-family: var(--font-handwrite);
+      font-weight: 700;
+      margin: 0 0 10px;
+      font-size: 1.6rem;
+      color: var(--accent-red);
+    }
+    [data-theme="dark"] .nav-card h2 {
+      color: var(--accent-red);
+    }
+    .nav-card p {
+      margin: 0;
+      color: var(--ink-dark);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+    .nav-card .count {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 4px 12px;
+      background: var(--accent-red);
+      color: white;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: 600;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+    }
+    footer {
+      text-align: center;
+      margin-top: 60px;
+      padding-top: 30px;
+      border-top: 1px dashed var(--paper-border);
+      color: var(--ink-mid);
+      font-size: 0.85rem;
+      font-family: var(--font-mono);
+    }
+  </style>
+</head>
+<body>
+  <button class="theme-toggle" onclick="toggleTheme()">切换主题</button>
+
+  <div class="container">
+    <header>
+      <div class="logo">
+        <svg width="80" height="80" viewBox="0 0 110 110" xmlns="http://www.w3.org/2000/svg">
+          <style>
+            .logo-stroke { stroke: #c4453c; }
+            .logo-fill { fill: #c4453c; }
+            @media (prefers-color-scheme: dark), [data-theme="dark"] {
+              .logo-stroke { stroke: #e87068; }
+              .logo-fill { fill: #e87068; }
+            }
+          </style>
+          <circle class="logo-stroke" cx="55" cy="55" r="48" fill="none" stroke-width="3" opacity="0.8"/>
+          <circle class="logo-stroke" cx="55" cy="55" r="42" fill="none" stroke-width="1.5" opacity="0.4"/>
+          <circle class="logo-fill" cx="55" cy="9" r="2.5" opacity="0.6"/>
+          <circle class="logo-fill" cx="55" cy="101" r="2.5" opacity="0.6"/>
+          <circle class="logo-fill" cx="9" cy="55" r="2.5" opacity="0.6"/>
+          <circle class="logo-fill" cx="101" cy="55" r="2.5" opacity="0.6"/>
+          <text class="logo-fill" x="55" y="50" text-anchor="middle" font-family="Caveat, cursive" font-size="22" font-weight="700">papyr</text>
+          <text class="logo-fill" x="55" y="70" text-anchor="middle" font-family="Caveat, cursive" font-size="22" font-weight="700">ai</text>
+          <text class="logo-fill" x="55" y="86" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="6.5" opacity="0.5">UI COMPONENTS</text>
+        </svg>
+      </div>
+      <h1>papyrai-ui</h1>
+      <p class="tagline">第一个为 AI 应用场景设计的类纸风格 Web Components 组件库</p>
+    </header>
+
+    <nav>
+      <a href="ai.html" class="nav-card">
+        <h2>AI 专属组件</h2>
+        <p>为 AI 应用场景设计的独特组件</p>
+        <span class="count">9 个</span>
+      </a>
+      <a href="svg.html" class="nav-card">
+        <h2>SVG 体系</h2>
+        <p>参数化 Logo 模板与类纸风格图标</p>
+        <span class="count">58 个</span>
+      </a>
+      <a href="elements.html" class="nav-card">
+        <h2>Elements</h2>
+        <p>基础 UI 元素组件</p>
+        <span class="count">22 个</span>
+      </a>
+      <a href="inputs.html" class="nav-card">
+        <h2>Inputs</h2>
+        <p>输入类组件</p>
+        <span class="count">20 个</span>
+      </a>
+      <a href="navigation.html" class="nav-card">
+        <h2>Navigation</h2>
+        <p>导航类组件</p>
+        <span class="count">10 个</span>
+      </a>
+      <a href="overlays.html" class="nav-card">
+        <h2>Overlays</h2>
+        <p>浮层类组件</p>
+        <span class="count">8 个</span>
+      </a>
+      <a href="layout.html" class="nav-card">
+        <h2>Layout</h2>
+        <p>布局类组件</p>
+        <span class="count">3 个</span>
+      </a>
+      <a href="data.html" class="nav-card">
+        <h2>Data</h2>
+        <p>数据展示类组件</p>
+        <span class="count">6 个</span>
+      </a>
+    </nav>
+
+    <footer>
+      <p>papyrai-ui v0.0.1 · MIT License · 框架无关的 Web Components</p>
+    </footer>
+  </div>
+
+  <script>
+    function toggleTheme() {
+      const html = document.documentElement;
+      if (html.getAttribute('data-theme') === 'dark') {
+        html.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+      } else {
+        html.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      }
+    }
+    // 恢复主题
+    if (localStorage.getItem('theme') === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  </script>
+
+  <script type="module" src="../src/index.js"></script>
+</body>
+</html>

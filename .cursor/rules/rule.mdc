@@ -1,0 +1,45 @@
+---
+alwaysApply: true
+---
+
+## 约束规范（给AI/Cursor的硬规则）
+
+### 命名规范
+
+- 所有基础组件标签名以 `p-` 为前缀（papyrai的缩写）
+- 所有AI组件标签名以 `ai-` 为前缀
+- 所有SVG组件标签名以 `svg-` 为前缀
+- 文件名用 kebab-case：`ai-thinking.js`、`date-picker.js`
+- CSS变量用 `--paper-` 或 `--ai-` 前缀
+
+### 组件规范
+
+- 所有组件继承 `PapyraiElement`（Lit基类）
+- 所有组件必须支持亮色/暗色主题（读CSS变量，不硬编码颜色）
+- 所有组件的样式写在 `static styles` 里，不用外部CSS文件
+- 所有组件必须声明 `static properties`，标注类型和默认值
+- 所有交互组件必须支持键盘操作
+- 所有组件必须有slot支持自定义内容（如适用）
+
+### 视觉规范
+
+- 颜色只用CSS变量，禁止硬编码色值
+- 圆角统一用 `--radius-sm/md/lg`
+- 间距统一用 `--spacing-xs/sm/md/lg/xl`
+- 阴影统一用 `--elevation-1/2/3`
+- 字体统一用 `--font-handwrite/serif/mono`
+- 所有纸张效果（纹理、折角、阴影）保持一致
+
+### SVG规范
+
+- 所有SVG图标 viewBox 统一 `0 0 24 24`
+- stroke-width 统一 `1.5`（手绘感但不过粗）
+- 使用 `currentColor` 继承颜色
+- 线条末端用 `stroke-linecap="round"` + `stroke-linejoin="round"`
+
+### 文件大小约束
+
+- 单个组件JS < 10KB（gzipped）
+- 全量包 < 100KB（gzipped，不含字体）
+- 英文字体内嵌 < 200KB
+- 中文字体单独包

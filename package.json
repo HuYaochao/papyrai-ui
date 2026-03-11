@@ -1,0 +1,45 @@
+{
+  "name": "papyrai-ui",
+  "version": "0.0.1",
+  "description": "Paper-style Web Components for AI applications",
+  "license": "MIT",
+  "type": "module",
+  "main": "dist/papyrai-ui.js",
+  "module": "dist/papyrai-ui.esm.js",
+  "unpkg": "dist/papyrai-ui.min.js",
+  "exports": {
+    ".": {
+      "import": "./dist/papyrai-ui.esm.js",
+      "require": "./dist/papyrai-ui.js"
+    },
+    "./components/*": "./dist/components/*.js",
+    "./ai/*": "./dist/components/ai-*.js"
+  },
+  "files": [
+    "dist/",
+    "README.md",
+    "LICENSE",
+    "FONT_LICENSE"
+  ],
+  "scripts": {
+    "dev": "rollup -c -w",
+    "build": "rollup -c",
+    "preview": "live-server preview/"
+  },
+  "keywords": [
+    "web-components",
+    "ui",
+    "paper",
+    "ai",
+    "svg",
+    "lit",
+    "design-system"
+  ],
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^15.0.0",
+    "@rollup/plugin-terser": "^0.4.0",
+    "lit": "^3.0.0",
+    "live-server": "^1.2.2",
+    "rollup": "^4.0.0"
+  }
+}

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test AI Components</title>
+  <script type="importmap">
+  {
+    "imports": {
+      "lit": "https://cdn.jsdelivr.net/npm/lit@3.1.0/+esm",
+      "lit-html": "https://cdn.jsdelivr.net/npm/lit-html@3.1.0/+esm",
+      "@lit/reactive-element": "https://cdn.jsdelivr.net/npm/@lit/reactive-element@2.1.2/+esm"
+    }
+  }
+  </script>
+  <link rel="stylesheet" href="../src/core/styles.css">
+  <style>
+    body {
+      font-family: var(--font-serif);
+      background: var(--paper-white);
+      color: var(--ink-black);
+      padding: 20px;
+    }
+    .demo {
+      margin-bottom: 20px;
+      padding: 16px;
+      background: var(--paper-cream);
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Test Page</h1>
+  <div class="demo">
+    <ai-thinking model="GPT-4"></ai-thinking>
+  </div>
+  <div class="demo">
+    <ai-model-badge model="claude-3"></ai-model-badge>
+  </div>
+  <div class="demo">
+    <ai-confidence value="0.75"></ai-confidence>
+  </div>
+  
+  <script type="module">
+    import '../src/index.js';
+    console.log('Components loaded');
+  </script>
+</body>
+</html>

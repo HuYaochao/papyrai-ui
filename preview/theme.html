@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>主题演示 - papyrai-ui</title>
+  <link rel="stylesheet" href="../src/core/styles.css">
+  <style>
+    body { font-family: var(--font-serif); background: var(--paper-white); color: var(--ink-black); margin: 0; padding: 20px; transition: background 0.3s, color 0.3s; }
+    [data-theme="dark"] body { background: var(--paper-black); color: var(--ink-light); }
+    h1 { font-family: var(--font-handwrite); }
+    .back { color: var(--accent-red); text-decoration: none; }
+    .theme-btn { padding: 10px 20px; font-family: var(--font-mono); cursor: pointer; border: 2px solid var(--paper-border); background: var(--paper-cream); border-radius: var(--radius-md); }
+    .demo-section { margin: 40px 0; padding: 30px; background: var(--paper-cream); border-radius: var(--radius-lg); border: 1px solid var(--paper-border); }
+    [data-theme="dark"] .demo-section { background: var(--paper-dark); }
+  </style>
+</head>
+<body>
+  <a href="index.html" class="back">← 返回首页</a>
+  <h1>主题演示</h1>
+  <button class="theme-btn" onclick="toggleTheme()">切换主题</button>
+
+  <div class="demo-section">
+    <h2>纸张颜色</h2>
+    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+      <div style="width: 80px; height: 80px; background: var(--paper-white); border: 1px solid var(--paper-border); border-radius: var(--radius-md);"></div>
+      <div style="width: 80px; height: 80px; background: var(--paper-cream); border: 1px solid var(--paper-border); border-radius: var(--radius-md);"></div>
+      <div style="width: 80px; height: 80px; background: var(--paper-aged); border: 1px solid var(--paper-border); border-radius: var(--radius-md);"></div>
+    </div>
+  </div>
+
+  <div class="demo-section">
+    <h2>墨水颜色</h2>
+    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+      <div style="width: 80px; height: 80px; background: var(--ink-black); border-radius: var(--radius-md);"></div>
+      <div style="width: 80px; height: 80px; background: var(--ink-dark); border-radius: var(--radius-md);"></div>
+      <div style="width: 80px; height: 80px; background: var(--ink-mid); border-radius: var(--radius-md);"></div>
+      <div style="width: 80px; height: 80px; background: var(--ink-light); border-radius: var(--radius-md);"></div>
+    </div>
+  </div>
+
+  <div class="demo-section">
+    <h2>强调色</h2>
+    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+      <div style="width: 80px; height: 80px; background: var(--accent-red); border-radius: var(--radius-md);"></div>
+      <div style="width: 80px; height: 80px; background: var(--accent-blue); border-radius: var(--radius-md);"></div>
+      <div style="width: 80px; height: 80px; background: var(--accent-green); border-radius: var(--radius-md);"></div>
+      <div style="width: 80px; height: 80px; background: var(--accent-amber); border-radius: var(--radius-md);"></div>
+    </div>
+  </div>
+
+  <script>
+    function toggleTheme() {
+      const html = document.documentElement;
+      if (html.getAttribute('data-theme') === 'dark') {
+        html.removeAttribute('data-theme');
+      } else {
+        html.setAttribute('data-theme', 'dark');
+      }
+    }
+  </script>
+  <script type="module" src="../src/index.js"></script>
+</body>
+</html>

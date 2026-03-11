@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI 专属组件 - papyrai-ui</title>
+  <script type="importmap">
+  {
+    "imports": {
+      "lit": "https://cdn.jsdelivr.net/npm/lit@3.1.0/+esm",
+      "lit-html": "https://cdn.jsdelivr.net/npm/lit-html@3.1.0/+esm",
+      "@lit/reactive-element": "https://cdn.jsdelivr.net/npm/@lit/reactive-element@2.1.2/+esm"
+    }
+  }
+  </script>
+  <link rel="stylesheet" href="../src/core/styles.css">
+  <style>
+    body {
+      font-family: var(--font-serif);
+      background: var(--paper-white);
+      color: var(--ink-black);
+      margin: 0;
+      padding: 20px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    [data-theme="dark"] body {
+      background: var(--paper-black);
+      color: var(--ink-light);
+    }
+    h1 { font-family: var(--font-handwrite); margin-bottom: 8px; }
+    h2 { 
+      font-family: var(--font-mono); 
+      font-size: 0.9rem; 
+      color: var(--ink-mid);
+      margin-top: 32px;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--ink-faint);
+    }
+    .back { color: var(--accent-red); text-decoration: none; font-size: 0.9rem; }
+    .demo {
+      margin-bottom: 24px;
+      padding: 16px;
+      background: var(--paper-cream);
+      border-radius: var(--radius-md);
+    }
+    [data-theme="dark"] .demo {
+      background: var(--paper-aged);
+    }
+    .label {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--ink-mid);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 8px 16px;
+      background: var(--paper-cream);
+      border: 1px solid var(--ink-faint);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+    }
+    .row {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .row ai-stream {
+      max-width: 400px;
+    }
+  </style>
+</head>
+<body>
+  <a href="index.html" class="back">← 返回首页</a>
+  <button class="theme-toggle" onclick="document.body.toggleAttribute('data-theme')">切换主题</button>
+
+  <h1>AI 专属组件</h1>
+  <p style="color: var(--ink-mid); margin-bottom: 32px;">共 9 个组件，带使用示例</p>
+
+  <!-- 2.1 ai-thinking -->
+  <h2>2.1 ai-thinking - AI 思考指示器</h2>
+  <div class="demo">
+    <div class="label">&lt;ai-thinking model="GPT-4" speed="normal"&gt;</div>
+    <ai-thinking model="GPT-4"></ai-thinking>
+  </div>
+  <div class="demo">
+    <div class="label">速度变体: slow / fast</div>
+    <div class="row">
+      <ai-thinking model="Claude" speed="slow"></ai-thinking>
+      <ai-thinking model="Gemini" speed="fast"></ai-thinking>
+    </div>
+  </div>
+
+  <!-- 2.2 ai-stream -->
+  <h2>2.2 ai-stream - 钢笔书写效果</h2>
+  <div class="demo">
+    <div class="label">&lt;ai-stream text="你好，我是 AI 助手..." speed="60"&gt;</div>
+    <ai-stream text="你好，我是 AI 助手。这是一个流式输出的示例，文字会逐字显示，模拟人类书写的效果。" speed="60"></ai-stream>
+  </div>
+  <div class="demo">
+    <div class="label">不显示光标: cursor="false"</div>
+    <ai-stream text="没有光标的版本" cursor="false"></ai-stream>
+  </div>
+
+  <!-- 2.3 ai-hallucination -->
+  <h2>2.3 ai-hallucination - 幻觉内容标记</h2>
+  <div class="demo">
+    <div class="label">&lt;ai-hallucination&gt;slot 内容&lt;/ai-hallucination&gt;</div>
+    <ai-hallucination>
+      根据我们的研究，2024年苹果公司发布了 iPhone 16 Pro Max Ultra...
+    </ai-hallucination>
+  </div>
+  <div class="demo">
+    <div class="label">自定义标签: label="未经核实"</div>
+    <ai-hallucination label="未经核实">
+      这篇论文声称解决了 P=NP 问题...
+    </ai-hallucination>
+  </div>
+
+  <!-- 2.4 ai-not-found -->
+  <h2>2.4 ai-not-found - AI 虚构内容</h2>
+  <div class="demo">
+    <div class="label">&lt;ai-not-found what="论文标题"&gt;</div>
+    <ai-not-found what="https://arxiv.org/abs/2301.00000">
+      <span>AI 引用了</span>
+    </ai-not-found>
+  </div>
+
+  <!-- 2.5 ai-fake-error -->
+  <h2>2.5 ai-fake-error - 假装错误效果</h2>
+  <div class="demo">
+    <div class="label">&lt;ai-fake-error message="Error..." delay="1500"&gt;揭示文案&lt;/ai-fake-error&gt;</div>
+    <ai-fake-error message="TypeError: Cannot read properties of undefined" delay="1500">
+      开玩笑的，这是 AI 生成的假错误
+    </ai-fake-error>
+  </div>
+
+  <!-- 2.6 ai-confidence -->
+  <h2>2.6 ai-confidence - 置信度可视化</h2>
+  <div class="demo">
+    <div class="label">&lt;ai-confidence value="0.85" label="准确率"&gt;</div>
+    <ai-confidence value="0.85" label="准确率"></ai-confidence>
+  </div>
+  <div class="demo">
+    <div class="label">不同置信度: 0.9 (高) / 0.5 (中) / 0.2 (低)</div>
+    <div class="row" style="align-items: center;">
+      <ai-confidence value="0.9"></ai-confidence>
+      <ai-confidence value="0.5"></ai-confidence>
+      <ai-confidence value="0.2"></ai-confidence>
+    </div>
+  </div>
+
+  <!-- 2.7 ai-diff -->
+  <h2>2.7 ai-diff - AI 红笔批改</h2>
+  <div class="demo">
+    <div class="label">&lt;ai-diff before="旧文本" after="新文本"&gt;</div>
+    <ai-diff 
+      before="The cat is sleeping on the bed."
+      after="The cat is sleeping on the sofa.">
+    </ai-diff>
+  </div>
+
+  <!-- 2.8 ai-cost -->
+  <h2>2.8 ai-cost - Token 消耗显示</h2>
+  <div class="demo">
+    <div class="label">&lt;ai-cost tokens="1234" rate="0.003"&gt;</div>
+    <ai-cost tokens="1234" rate="0.003"></ai-cost>
+  </div>
+  <div class="demo">
+    <div class="label">实时增长: animate="true"</div>
+    <ai-cost tokens="2500" rate="0.003" animate></ai-cost>
+  </div>
+
+  <!-- 2.9 ai-model-badge -->
+  <h2>2.9 ai-model-badge - 模型徽章</h2>
+  <div class="demo">
+    <div class="label">不同模型: claude / gpt / qwen / gemini / llama</div>
+    <div class="row" style="align-items: center;">
+      <ai-model-badge model="claude-3-opus"></ai-model-badge>
+      <ai-model-badge model="gpt-4-turbo"></ai-model-badge>
+      <ai-model-badge model="qwen-turbo"></ai-model-badge>
+      <ai-model-badge model="gemini-pro"></ai-model-badge>
+      <ai-model-badge model="llama-3-70b"></ai-model-badge>
+    </div>
+  </div>
+
+  <div style="margin-top: 48px; padding: 24px; background: var(--paper-cream); border-radius: var(--radius-md); text-align: center;">
+    <p style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink-mid);">
+      试试切换主题: <button onclick="document.body.toggleAttribute('data-theme')" style="cursor: pointer; padding: 4px 12px; background: var(--paper-white); border: 1px solid var(--ink-faint); border-radius: var(--radius-sm);">切换</button>
+    </p>
+  </div>
+
+  <script type="module" src="../src/index.js"></script>
+</body>
+</html>
