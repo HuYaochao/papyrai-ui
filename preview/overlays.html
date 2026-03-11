@@ -7,15 +7,25 @@
   <link rel="stylesheet" href="../src/core/styles.css">
   <style>
     body { font-family: var(--font-serif); background: var(--paper-white); color: var(--ink-black); margin: 0; padding: 20px; }
-    [data-theme="dark"] body { background: var(--paper-black); color: var(--ink-light); }
-    h1 { font-family: var(--font-handwrite); }
+    h1 { font-family: var(--font-handwrite); margin: 8px 0 16px; }
     .back { color: var(--accent-red); text-decoration: none; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(220px,1fr)); gap: 12px; margin-top: 16px; }
   </style>
 </head>
 <body>
   <a href="index.html" class="back">← 返回首页</a>
   <h1>Overlays</h1>
-  <p>组件开发中...</p>
+  <p>已接入 8 个组件示例（点击或回车可触发切换状态）。</p>
+  <div class="grid">
+    <p-modal label="modal"></p-modal>
+    <p-slideover label="slideover"></p-slideover>
+    <p-popover label="popover"></p-popover>
+    <p-tooltip label="tooltip"></p-tooltip>
+    <p-context-menu label="context-menu"></p-context-menu>
+    <p-toast label="toast"></p-toast>
+    <p-tour label="tour"></p-tour>
+    <p-watermark label="watermark"></p-watermark>
+  </div>
   <script type="module" src="../src/index.js"></script>
 </body>
 </html>
