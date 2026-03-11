@@ -7,15 +7,20 @@
   <link rel="stylesheet" href="../src/core/styles.css">
   <style>
     body { font-family: var(--font-serif); background: var(--paper-white); color: var(--ink-black); margin: 0; padding: 20px; }
-    [data-theme="dark"] body { background: var(--paper-black); color: var(--ink-light); }
-    h1 { font-family: var(--font-handwrite); }
+    h1 { font-family: var(--font-handwrite); margin: 8px 0 16px; }
     .back { color: var(--accent-red); text-decoration: none; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(220px,1fr)); gap: 12px; margin-top: 16px; }
   </style>
 </head>
 <body>
   <a href="index.html" class="back">← 返回首页</a>
   <h1>Layout</h1>
-  <p>组件开发中...</p>
+  <p>已接入 3 个组件示例（点击或回车可触发切换状态）。</p>
+  <div class="grid">
+    <p-card label="card"></p-card>
+    <p-container label="container"></p-container>
+    <p-skeleton label="skeleton"></p-skeleton>
+  </div>
   <script type="module" src="../src/index.js"></script>
 </body>
 </html>

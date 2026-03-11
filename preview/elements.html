@@ -7,15 +7,39 @@
   <link rel="stylesheet" href="../src/core/styles.css">
   <style>
     body { font-family: var(--font-serif); background: var(--paper-white); color: var(--ink-black); margin: 0; padding: 20px; }
-    [data-theme="dark"] body { background: var(--paper-black); color: var(--ink-light); }
-    h1 { font-family: var(--font-handwrite); }
+    h1 { font-family: var(--font-handwrite); margin: 8px 0 16px; }
     .back { color: var(--accent-red); text-decoration: none; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(220px,1fr)); gap: 12px; margin-top: 16px; }
   </style>
 </head>
 <body>
   <a href="index.html" class="back">← 返回首页</a>
   <h1>Elements</h1>
-  <p>组件开发中...</p>
+  <p>已接入 22 个组件示例（点击或回车可触发切换状态）。</p>
+  <div class="grid">
+    <p-accordion label="accordion"></p-accordion>
+    <p-alert label="alert"></p-alert>
+    <p-avatar label="avatar"></p-avatar>
+    <p-badge label="badge"></p-badge>
+    <p-button label="button"></p-button>
+    <p-select-button label="select-button"></p-select-button>
+    <p-toggle-button label="toggle-button"></p-toggle-button>
+    <p-breadcrumb label="breadcrumb"></p-breadcrumb>
+    <p-carousel label="carousel"></p-carousel>
+    <p-chat-bubble label="chat-bubble"></p-chat-bubble>
+    <p-divider label="divider"></p-divider>
+    <p-dropdown label="dropdown"></p-dropdown>
+    <p-listbox label="listbox"></p-listbox>
+    <p-indicator label="indicator"></p-indicator>
+    <p-mockup label="mockup"></p-mockup>
+    <p-panel-splitter label="panel-splitter"></p-panel-splitter>
+    <p-qr-code label="qr-code"></p-qr-code>
+    <p-keyboard-key label="keyboard-key"></p-keyboard-key>
+    <p-scroll-bar label="scroll-bar"></p-scroll-bar>
+    <p-speed-dial label="speed-dial"></p-speed-dial>
+    <p-stack label="stack"></p-stack>
+    <p-timeline label="timeline"></p-timeline>
+  </div>
   <script type="module" src="../src/index.js"></script>
 </body>
 </html>
