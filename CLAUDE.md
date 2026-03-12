@@ -158,17 +158,17 @@ npm run preview   # live-server preview/
 
 ### S-P0: Infrastructure (do first)
 
-**S-01** Fix Rollup build & generate dist/
+**S-01** ✅ Fix Rollup build & generate dist/
 - Run `npm run build`, diagnose and fix any errors
 - Verify `dist/papyrai-ui.js`, `dist/papyrai-ui.esm.js`, `dist/papyrai-ui.min.js` are generated
 - Ensure sourcemaps work
 
-**S-02** Add 11 missing icon wrapper files in `src/icons/`
+**S-02** ✅ Add 11 missing icon wrapper files in `src/icons/`
 - Missing: copy, download, edit, error, external, eye, eye-off, info, link, success, warning
 - Follow existing pattern in `src/icons/icon-pen.js` — extend PapyraiIcon, SVG paths from `src/svg/svg-icon.js`
 - Update `src/index.js` exports if needed
 
-**S-03** Configure per-component tree-shaking build
+**S-03** ✅ Configure per-component tree-shaking build
 - Add Rollup multi-entry config so each component outputs to `dist/components/<name>.js`
 - Users should be able to `import 'papyrai-ui/components/ai-thinking'`
 - Update package.json `exports` field accordingly
