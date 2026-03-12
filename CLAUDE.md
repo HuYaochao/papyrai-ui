@@ -388,7 +388,7 @@ npm run preview   # live-server preview/
 
 > Tasks assigned to Opus sessions. These involve complex algorithms, multi-component interactions, or intricate state management.
 
-**O-01** Rewrite `<ai-diff>` with Myers diff algorithm
+**O-01** ✅ Rewrite `<ai-diff>` with Myers diff algorithm
 - Current implementation is a naive line-by-line positional compare — breaks on insertions/deletions
 - Implement Myers diff algorithm (or equivalent LCS-based) for proper added/removed/moved detection
 - Add character-level diff within changed lines (highlight exact changed words/chars)
