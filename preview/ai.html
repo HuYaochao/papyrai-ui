@@ -159,13 +159,44 @@
   </div>
 
   <!-- 2.7 ai-diff -->
-  <h2>2.7 ai-diff - AI 红笔批改</h2>
+  <h2>2.7 ai-diff - AI 红笔批改 (Myers Diff)</h2>
   <div class="demo">
-    <div class="label">&lt;ai-diff before="旧文本" after="新文本"&gt;</div>
-    <ai-diff 
+    <div class="label">单行文本差异 (character-level diff)</div>
+    <ai-diff
       before="The cat is sleeping on the bed."
       after="The cat is sleeping on the sofa.">
     </ai-diff>
+  </div>
+  <div class="demo">
+    <div class="label">多行差异: 插入 / 删除 / 修改</div>
+    <ai-diff id="diff-multiline"></ai-diff>
+    <script type="module">
+      const d = document.getElementById('diff-multiline');
+      d.before = `function greet(name) {
+  console.log("Hello, " + name);
+  return true;
+}`;
+      d.after = `function greet(name, greeting) {
+  const msg = greeting + ", " + name + "!";
+  console.log(msg);
+  return msg;
+}`;
+    </script>
+  </div>
+  <div class="demo">
+    <div class="label">Side-by-side 模式: mode="side-by-side"</div>
+    <ai-diff id="diff-side" mode="side-by-side"></ai-diff>
+    <script type="module">
+      const s = document.getElementById('diff-side');
+      s.before = `第一行保持不变
+这行将被删除
+第三行有少量修改
+最后一行也不变`;
+      s.after = `第一行保持不变
+第三行有大量修改
+新增加的一行
+最后一行也不变`;
+    </script>
   </div>
 
   <!-- 2.8 ai-cost -->
