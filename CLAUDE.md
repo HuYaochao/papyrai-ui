@@ -158,17 +158,17 @@ npm run preview   # live-server preview/
 
 ### S-P0: Infrastructure (do first)
 
-**S-01** Fix Rollup build & generate dist/
+**S-01** ✅ Fix Rollup build & generate dist/
 - Run `npm run build`, diagnose and fix any errors
 - Verify `dist/papyrai-ui.js`, `dist/papyrai-ui.esm.js`, `dist/papyrai-ui.min.js` are generated
 - Ensure sourcemaps work
 
-**S-02** Add 11 missing icon wrapper files in `src/icons/`
+**S-02** ✅ Add 11 missing icon wrapper files in `src/icons/`
 - Missing: copy, download, edit, error, external, eye, eye-off, info, link, success, warning
 - Follow existing pattern in `src/icons/icon-pen.js` — extend PapyraiIcon, SVG paths from `src/svg/svg-icon.js`
 - Update `src/index.js` exports if needed
 
-**S-03** Configure per-component tree-shaking build
+**S-03** ✅ Configure per-component tree-shaking build
 - Add Rollup multi-entry config so each component outputs to `dist/components/<name>.js`
 - Users should be able to `import 'papyrai-ui/components/ai-thinking'`
 - Update package.json `exports` field accordingly
@@ -177,7 +177,7 @@ npm run preview   # live-server preview/
 
 > All new AI components must: extend PapyraiElement, use CSS variables only, support light/dark theme, emit relevant custom events, include ARIA attributes, be registered as custom elements with `ai-` prefix.
 
-**S-04** `<ai-citation>` — Knowledge base citation / source reference
+**S-04** ✅ `<ai-citation>` — Knowledge base citation / source reference
 - Props: `source` (string), `page` (string), `confidence` (number 0-1), `url` (string), `title` (string)
 - Display: inline or block citation mark with paper-style footnote appearance
 - Confidence shown as color indicator (high=green, mid=yellow, low=red)
@@ -185,7 +185,7 @@ npm run preview   # live-server preview/
 - Slot for cited content
 - Events: `citation-click`
 
-**S-05** `<ai-message>` — Chat message bubble
+**S-05** ✅ `<ai-message>` — Chat message bubble
 - Props: `role` ('user'|'assistant'|'system'), `model` (string), `timestamp` (string), `avatar` (string), `loading` (boolean)
 - User messages: right-aligned, paper-note style
 - Assistant messages: left-aligned, typewriter paper style, show model badge via `<ai-model-badge>`
@@ -194,7 +194,7 @@ npm run preview   # live-server preview/
 - Slot for message content (users handle their own markdown rendering)
 - Events: `message-action` (for copy/retry/etc)
 
-**S-06** `<ai-prompt>` — AI prompt input box
+**S-06** ✅ `<ai-prompt>` — AI prompt input box
 - Props: `placeholder`, `maxTokens` (number), `value` (string), `disabled`, `showTokenCount` (boolean)
 - Paper-style textarea with quill pen decoration
 - Live token count display (estimate: chars / 4)
@@ -202,7 +202,7 @@ npm run preview   # live-server preview/
 - Slot `actions` for custom action buttons (e.g., template selector)
 - Events: `prompt-submit`, `prompt-change`
 
-**S-07** `<ai-tool-call>` — Function/tool call display
+**S-07** ✅ `<ai-tool-call>` — Function/tool call display
 - Props: `name` (string), `status` ('pending'|'running'|'success'|'error'), `input` (string/JSON), `output` (string/JSON)
 - Collapsed by default, click to expand
 - Status indicator dot (animated spinning for running)
@@ -210,21 +210,21 @@ npm run preview   # live-server preview/
 - Paper clip decoration on the side
 - Events: `tool-expand`, `tool-collapse`
 
-**S-08** `<ai-reasoning>` — Chain-of-thought / thinking process
+**S-08** ✅ `<ai-reasoning>` — Chain-of-thought / thinking process
 - Props: `steps` (JSON array of {title, content}), `collapsed` (boolean, default true), `label` (string, default "Thinking...")
 - Collapsed: show "Thinking..." with animated dots, click to expand
 - Expanded: numbered steps with connecting line (timeline style), each step has title + content
 - Ink-and-paper style connecting line between steps
 - Events: `reasoning-toggle`
 
-**S-09** `<ai-feedback>` — Response feedback (thumbs up/down)
+**S-09** ✅ `<ai-feedback>` — Response feedback (thumbs up/down)
 - Props: `value` ('up'|'down'|null), `showCopy` (boolean), `showRetry` (boolean)
 - Horizontal button group: 👍 👎 📋Copy 🔄Retry (use svg-icon, not emoji)
 - Selected state: filled icon with accent color
 - Paper button style with hover elevation
 - Events: `feedback-change`, `feedback-copy`, `feedback-retry`
 
-**S-10** `<ai-guardrail>` — Content safety/filter notice
+**S-10** ✅ `<ai-guardrail>` — Content safety/filter notice
 - Props: `level` ('info'|'warning'|'blocked'), `reason` (string), `policy` (string)
 - Info: blue border, subtle notice
 - Warning: amber border, caution stamp
@@ -232,7 +232,7 @@ npm run preview   # live-server preview/
 - Slot for the filtered content
 - Events: `guardrail-action` (if user requests to see blocked content)
 
-**S-11** `<ai-source-card>` — RAG retrieval result card
+**S-11** ✅ `<ai-source-card>` — RAG retrieval result card
 - Props: `title` (string), `source` (string), `score` (number 0-1), `snippet` (string), `url` (string), `type` ('document'|'webpage'|'code'|'database')
 - Paper card with dog-ear fold, source type icon top-right
 - Relevance score bar (reuse confidence color logic)
@@ -240,7 +240,7 @@ npm run preview   # live-server preview/
 - Click to navigate to url
 - Events: `source-click`
 
-**S-12** `<ai-token-usage>` — Detailed token usage dashboard
+**S-12** ✅ `<ai-token-usage>` — Detailed token usage dashboard
 - Props: `inputTokens` (number), `outputTokens` (number), `inputRate` (number), `outputRate` (number), `model` (string)
 - Horizontal bar showing input vs output token ratio
 - Cost breakdown: input cost + output cost = total

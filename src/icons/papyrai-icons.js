@@ -133,6 +133,10 @@ import './icon-info.js';
 import './icon-alert-triangle.js';
 import './icon-alert-circle.js';
 import './icon-help-circle.js';
+import './icon-error.js';
+import './icon-success.js';
+import './icon-warning.js';
+import './icon-external.js';
 
 // 编辑/变换 Edit/Transform
 import './icon-undo.js';

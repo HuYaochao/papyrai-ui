@@ -15,6 +15,15 @@ export * from './ai/ai-confidence.js';
 export * from './ai/ai-diff.js';
 export * from './ai/ai-cost.js';
 export * from './ai/ai-model-badge.js';
+export * from './ai/ai-citation.js';
+export * from './ai/ai-message.js';
+export * from './ai/ai-prompt.js';
+export * from './ai/ai-tool-call.js';
+export * from './ai/ai-reasoning.js';
+export * from './ai/ai-feedback.js';
+export * from './ai/ai-guardrail.js';
+export * from './ai/ai-source-card.js';
+export * from './ai/ai-token-usage.js';
 
 // SVG Components
 export * from './svg/svg-logo.js';
