@@ -398,11 +398,11 @@ npm run preview   # live-server preview/
 - Events: `diff-computed` (with stats: added/removed/changed line counts)
 - Performance: handle diffs up to 5000 lines without jank
 
-**O-02** Rewrite `modal`, `toast`
+**O-02** Rewrite `modal`, `toast` ✅
 - **Modal**: open/close with transition, backdrop overlay with click-to-close (configurable), focus trap (tab cycles within modal), escape to close, scroll lock on body, header/body/footer slots, sizes (sm/md/lg/full), stacking multiple modals with z-index management, ARIA dialog role
 - **Toast**: notification system — static method `Toast.show({message, type, duration})`, position (top-right/top-left/bottom-right/bottom-left/top-center/bottom-center), auto-dismiss with progress bar, stack multiple toasts, swipe to dismiss, variants (info/success/warning/error), max visible count with queue
 
-**O-03** Rewrite `table`
+**O-03** Rewrite `table` ✅
 - Column definition via JSON or slot-based
 - Sortable columns (click header, asc/desc/none cycle)
 - Column filtering (text/select/date range)
@@ -416,11 +416,11 @@ npm run preview   # live-server preview/
 - Keyboard navigation: arrow keys for cells, enter to edit, escape to cancel
 - Events: `sort-change`, `filter-change`, `selection-change`, `cell-edit`
 
-**O-04** Rewrite `date-picker`, `color-picker`
+**O-04** Rewrite `date-picker`, `color-picker` ✅
 - **Date-picker**: calendar grid, month/year navigation, range selection, min/max date, disabled dates, today button, keyboard navigation (arrow keys for days, page up/down for months), locale formatting, time picker integration option, ARIA grid role
 - **Color-picker**: hue/saturation/brightness canvas, hue slider, alpha slider, hex/rgb/hsl input, preset color swatches, eyedropper tool (if browser supports), recent colors, output format selection, keyboard accessible
 
-**O-05** Rewrite `carousel`, `tree`, `calendar`
+**O-05** Rewrite `carousel`, `tree`, `calendar` ✅
 - **Carousel**: slide/fade transitions, auto-play with pause on hover, prev/next buttons, dot indicators, swipe gesture on touch, infinite loop option, slides-per-view, responsive breakpoints, keyboard left/right, ARIA live region
 - **Tree**: hierarchical data rendering, expand/collapse nodes, lazy loading children, checkbox selection (parent-child cascade), drag-and-drop reorder, search/filter, keyboard navigation (arrow up/down/left/right for expand/collapse/navigate), virtual rendering for large trees, ARIA tree/treeitem roles
 - **Calendar**: month/week/day views, event rendering with time slots, drag to create events, drag to resize events, event overlap layout, navigation between months, today indicator, locale support, ARIA grid, events: `date-select`, `event-create`, `event-change`

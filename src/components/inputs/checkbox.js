@@ -1,79 +1,184 @@
+// Checkbox - 纸张风格复选框
+// 属性: checked(Boolean), indeterminate(Boolean), disabled(Boolean), value(String),
+//       label(String), size(String: 'sm'|'md'|'lg')
+// 事件: change({checked, value})
+
 import { PapyraiElement, html, css } from '../../core/base.js';
 
 export class PCheckbox extends PapyraiElement {
   static properties = {
-    label: { type: String },
+    checked: { type: Boolean, reflect: true },
+    indeterminate: { type: Boolean, reflect: true },
+    disabled: { type: Boolean, reflect: true },
     value: { type: String },
-    active: { type: Boolean, reflect: true },
-    disabled: { type: Boolean, reflect: true }
+    label: { type: String },
+    size: { type: String, reflect: true }
   };
 
   static styles = css`
     :host {
+      display: inline-block;
+      box-sizing: border-box;
+    }
+
+    .checkbox-wrapper {
       display: inline-flex;
       align-items: center;
       gap: var(--spacing-sm, 8px);
-      padding: var(--spacing-sm, 8px) var(--spacing-md, 12px);
-      border-radius: var(--radius-md, 10px);
-      border: 1px solid var(--paper-border, #d9ccb8);
-      background: var(--paper-cream, #f8f1e5);
-      color: var(--ink-black, #1f1a15);
-      box-shadow: var(--elevation-1, 0 2px 8px rgba(0,0,0,.08));
-      font-family: var(--font-serif, serif);
       cursor: pointer;
+    }
+
+    :host([disabled]) .checkbox-wrapper {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .checkbox {
+      position: relative;
+      width: 20px;
+      height: 20px;
+      border: 1.5px solid var(--paper-border, #d9ccb8);
+      border-radius: var(--radius-sm, 4px);
+      background: var(--paper-white, #fffef8);
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .checkbox-wrapper:hover:not([disabled]) .checkbox {
+      border-color: var(--accent-red, #c4453c);
+    }
+
+    :host([checked]) .checkbox {
+      background: var(--accent-red, #c4453c);
+      border-color: var(--accent-red, #c4453c);
+    }
+
+    :host([indeterminate]) .checkbox {
+      background: var(--accent-red, #c4453c);
+      border-color: var(--accent-red, #c4453c);
+    }
+
+    /* Sizes */
+    :host([size="sm"]) .checkbox {
+      width: 16px;
+      height: 16px;
+    }
+
+    :host([size="lg"]) .checkbox {
+      width: 24px;
+      height: 24px;
+    }
+
+    .checkmark {
+      stroke: #fff;
+      stroke-width: 2.5;
+      fill: none;
+      opacity: 0;
+      transform: scale(0.5);
+      transition: all 0.2s ease;
+    }
+
+    :host([checked]) .checkmark {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .indeterminate-mark {
+      width: 10px;
+      height: 2px;
+      background: #fff;
+      border-radius: 1px;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    :host([indeterminate]) .indeterminate-mark {
+      opacity: 1;
+    }
+
+    .label {
+      font-family: var(--font-serif, serif);
+      font-size: 0.95rem;
+      color: var(--ink-black, #1f1a15);
       user-select: none;
     }
 
-    :host([active]) {
-      border-color: var(--accent-red, #c4453c);
-      box-shadow: var(--elevation-2, 0 6px 14px rgba(0,0,0,.14));
+    :host([disabled]) .label {
+      color: var(--ink-faint, #999);
     }
 
-    :host([disabled]) {
-      opacity: .55;
-      pointer-events: none;
+    /* Focus */
+    .checkbox-wrapper:focus-visible {
+      outline: 2px solid var(--accent-red, #c4453c);
+      outline-offset: 2px;
     }
-
-    .label { font-size: 0.92rem; }
   `;
 
   constructor() {
     super();
-    this.label = 'p-checkbox';
-    this.value = '';
-    this.active = false;
+    this.checked = false;
+    this.indeterminate = false;
     this.disabled = false;
-    this.setAttribute('tabindex', '0');
-    this.setAttribute('role', 'button');
+    this.value = '';
+    this.label = '';
+    this.size = 'md';
   }
 
   connectedCallback() {
     super.connectedCallback();
-    this.addEventListener('click', this._toggleActive);
+    this.setAttribute('role', 'checkbox');
+    this.setAttribute('aria-checked', this.checked);
+    this.addEventListener('click', this._toggle);
     this.addEventListener('keydown', this._handleKeydown);
   }
 
   disconnectedCallback() {
-    this.removeEventListener('click', this._toggleActive);
+    this.removeEventListener('click', this._toggle);
     this.removeEventListener('keydown', this._handleKeydown);
     super.disconnectedCallback();
   }
 
-  _toggleActive = () => {
+  updated(changedProperties) {
+    if (changedProperties.has('checked')) {
+      this.setAttribute('aria-checked', this.checked);
+    }
+    if (changedProperties.has('indeterminate')) {
+      this.setAttribute('aria-checked', this.indeterminate ? 'mixed' : this.checked);
+    }
+  }
+
+  _toggle = () => {
     if (this.disabled) return;
-    this.active = !this.active;
-    this.emit('change', { active: this.active, value: this.value || this.label });
+    if (this.indeterminate) {
+      this.checked = false;
+      this.indeterminate = false;
+    } else {
+      this.checked = !this.checked;
+    }
+    this.emit('change', { checked: this.checked, value: this.value });
   };
 
-  _handleKeydown = (event) => {
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      this._toggleActive();
+  _handleKeydown = (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      this._toggle();
     }
   };
 
   render() {
-    return html`<span class="label">${this.label}</span><slot></slot>`;
+    return html`
+      <span class="checkbox-wrapper" tabindex="0">
+        <span class="checkbox">
+          <svg class="checkmark" viewBox="0 0 24 24">
+            <path d="M20 6L9 17l-5-5"/>
+          </svg>
+          <span class="indeterminate-mark"></span>
+        </span>
+        ${this.label ? html`<span class="label">${this.label}</span>` : ''}
+      </span>
+    `;
   }
 }
 

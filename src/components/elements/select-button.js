@@ -1,79 +1,120 @@
+// Select Button - 纸张风格按钮组（单选组）
+// 属性: value(String), disabled(Boolean), size(String: 'sm'|'md'|'lg')
+// 插槽: default(按钮项，需要多个p-select-button元素)
+// 事件: change({value})
+
 import { PapyraiElement, html, css } from '../../core/base.js';
 
 export class PSelectButton extends PapyraiElement {
   static properties = {
-    label: { type: String },
-    value: { type: String },
-    active: { type: Boolean, reflect: true },
-    disabled: { type: Boolean, reflect: true }
+    value: { type: String, reflect: true },
+    disabled: { type: Boolean, reflect: true },
+    size: { type: String, reflect: true }
   };
 
   static styles = css`
     :host {
+      display: inline-block;
+      box-sizing: border-box;
+    }
+
+    :host([size="sm"]) {
+      --btn-padding: var(--spacing-xs, 4px) var(--spacing-sm, 10px);
+      --btn-font-size: 0.85rem;
+    }
+
+    :host([size="md"]) {
+      --btn-padding: var(--spacing-sm, 8px) var(--spacing-md, 16px);
+      --btn-font-size: 0.95rem;
+    }
+
+    :host([size="lg"]) {
+      --btn-padding: var(--spacing-md, 12px) var(--spacing-lg, 24px);
+      --btn-font-size: 1.05rem;
+    }
+
+    .button-group {
       display: inline-flex;
-      align-items: center;
-      gap: var(--spacing-sm, 8px);
-      padding: var(--spacing-sm, 8px) var(--spacing-md, 12px);
+      border: 1.5px solid var(--paper-border, #d9ccb8);
       border-radius: var(--radius-md, 10px);
-      border: 1px solid var(--paper-border, #d9ccb8);
-      background: var(--paper-cream, #f8f1e5);
-      color: var(--ink-black, #1f1a15);
+      overflow: hidden;
       box-shadow: var(--elevation-1, 0 2px 8px rgba(0,0,0,.08));
-      font-family: var(--font-serif, serif);
-      cursor: pointer;
-      user-select: none;
+      background: var(--paper-cream, #f8f1e5);
     }
 
-    :host([active]) {
-      border-color: var(--accent-red, #c4453c);
-      box-shadow: var(--elevation-2, 0 6px 14px rgba(0,0,0,.14));
-    }
-
-    :host([disabled]) {
-      opacity: .55;
+    :host([disabled]) .button-group {
+      opacity: 0.55;
       pointer-events: none;
     }
 
-    .label { font-size: 0.92rem; }
+    /* Individual buttons */
+    ::slotted(p-select-button) {
+      border: none !important;
+      border-radius: 0 !important;
+      box-shadow: none !important;
+      margin: 0 !important;
+    }
+
+    ::slotted(p-select-button:not(:first-child)) {
+      border-left: 1.5px solid var(--paper-border, #d9ccb8) !important;
+    }
+
+    ::slotted(p-select-button:hover:not([disabled])) {
+      background: var(--paper-highlight, rgba(196,69,60,0.08)) !important;
+    }
   `;
 
   constructor() {
     super();
-    this.label = 'p-select-button';
     this.value = '';
-    this.active = false;
     this.disabled = false;
-    this.setAttribute('tabindex', '0');
-    this.setAttribute('role', 'button');
+    this.size = 'md';
   }
 
   connectedCallback() {
     super.connectedCallback();
-    this.addEventListener('click', this._toggleActive);
-    this.addEventListener('keydown', this._handleKeydown);
+    this.setAttribute('role', 'group');
+    this.addEventListener('change', this._handleChildChange);
   }
 
   disconnectedCallback() {
-    this.removeEventListener('click', this._toggleActive);
-    this.removeEventListener('keydown', this._handleKeydown);
+    this.removeEventListener('change', this._handleChildChange);
     super.disconnectedCallback();
   }
 
-  _toggleActive = () => {
-    if (this.disabled) return;
-    this.active = !this.active;
-    this.emit('change', { active: this.active, value: this.value || this.label });
-  };
+  firstUpdated() {
+    this._syncSelected();
+  }
 
-  _handleKeydown = (event) => {
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      this._toggleActive();
+  updated(changedProperties) {
+    if (changedProperties.has('value')) {
+      this._syncSelected();
+    }
+  }
+
+  _syncSelected() {
+    const buttons = this._getButtons();
+    buttons.forEach(btn => {
+      btn.active = btn.value === this.value;
+    });
+  }
+
+  _getButtons() {
+    return Array.from(this.querySelectorAll('p-select-button'));
+  }
+
+  _handleChildChange = (e) => {
+    if (this.disabled) return;
+    const target = e.composedPath()[0];
+    if (target && target.value !== undefined) {
+      this.value = target.value;
+      this._syncSelected();
+      this.emit('change', { value: this.value });
     }
   };
 
   render() {
-    return html`<span class="label">${this.label}</span><slot></slot>`;
+    return html`<div class="button-group"><slot></slot></div>`;
   }
 }
 
