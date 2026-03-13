@@ -2,12 +2,12 @@
 
 ## 文档版本
 
-- [English README](docs/README-en.md)
-- [中文文档](docs/README-zh.md)
+- [English README](docs/md/README-en.md)
+- [中文文档](docs/md/README-zh.md)
 
 > Paper-style Web Components for AI applications
 
-![首页](docs/screenshots/首页.png)
+![首页](docs/md/screenshots/首页.png)
 
 ## 是什么
 
@@ -23,9 +23,9 @@
 
 ## 预览
 
-![AI组件](docs/screenshots/AI组件.png)
+![AI组件](docs/md/screenshots/AI组件.png)
 
-![SVG图标](docs/screenshots/svg.png)
+![SVG图标](docs/md/screenshots/svg.png)
 
 ## 快速开始
 

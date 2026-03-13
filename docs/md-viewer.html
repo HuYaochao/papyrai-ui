@@ -336,7 +336,7 @@
         // 渲染 AI 组件导航
         const aiContainer = document.getElementById('nav-ai');
         aiContainer.innerHTML = docsConfig.ai.map(item => {
-          const filePath = `../docs/components/ai/${item.name}.md`;
+          const filePath = `md/components/ai/${item.name}.md`;
           const isActive = currentFile.includes(`/ai/${item.name}.md`);
           return `<li><a href="md-viewer.html?file=${filePath}" class="${isActive ? 'active' : ''}">${item.label}</a></li>`;
         }).join('');
@@ -344,7 +344,7 @@
         // 渲染 Base 分类导航
         const baseContainer = document.getElementById('nav-base');
         baseContainer.innerHTML = docsConfig.base.map(item => {
-          const filePath = `../docs/components/base/${item.name}.md`;
+          const filePath = `md/components/base/${item.name}.md`;
           const isActive = currentFile.includes(`/base/${item.name}.md`);
           return `<li><a href="md-viewer.html?file=${filePath}" class="${isActive ? 'active' : ''}">${item.label}</a></li>`;
         }).join('');

@@ -19,7 +19,7 @@
 | Component tech | Web Components    | Framework-agnostic (React/Vue/vanilla HTML) |
 | Base class     | Lit (~6KB)        | Less boilerplate, output is standard WC     |
 | Build tool     | Rollup            | Designed for libraries, clean output        |
-| Docs site      | VitePress         | GitHub Pages deployment                     |
+| Docs site      | Live Preview     | GitHub Pages deployment                     |
 | i18n           | Chinese + English | Docs and component text bilingual           |
 | Themes         | Light + Dark      | CSS variable driven                         |
 
@@ -44,8 +44,7 @@ papyrai-ui/
 │   │   └── data/       # 6 components (table, calendar, etc.)
 │   ├── fonts/          # Embedded font files
 │   └── index.js        # Full export
-├── preview/            # Dev-time live preview (not published to npm)
-├── docs/               # VitePress docs site (GitHub Pages)
+├── docs/               # Live preview & docs (GitHub Pages)
 ├── dist/               # Build output
 └── examples/           # User usage examples
 ```
