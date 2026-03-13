@@ -5,6 +5,7 @@
 **papyrai-ui** (papyrus + ai + ui) — the first framework-agnostic, paper-style open-source UI component library designed for AI application scenarios.
 
 **Three differentiators (by priority):**
+
 1. **AI-specific components** — no other UI library has these
 2. **SVG-first** — parameterized logos, icons, decorative elements
 3. **Paper visual style** — paper textures, shadows, handwritten fonts
@@ -13,14 +14,14 @@
 
 ## Tech Stack
 
-| Item | Choice | Why |
-|------|--------|-----|
-| Component tech | Web Components | Framework-agnostic (React/Vue/vanilla HTML) |
-| Base class | Lit (~6KB) | Less boilerplate, output is standard WC |
-| Build tool | Rollup | Designed for libraries, clean output |
-| Docs site | VitePress | GitHub Pages deployment |
-| i18n | Chinese + English | Docs and component text bilingual |
-| Themes | Light + Dark | CSS variable driven |
+| Item           | Choice            | Why                                         |
+| -------------- | ----------------- | ------------------------------------------- |
+| Component tech | Web Components    | Framework-agnostic (React/Vue/vanilla HTML) |
+| Base class     | Lit (~6KB)        | Less boilerplate, output is standard WC     |
+| Build tool     | Rollup            | Designed for libraries, clean output        |
+| Docs site      | VitePress         | GitHub Pages deployment                     |
+| i18n           | Chinese + English | Docs and component text bilingual           |
+| Themes         | Light + Dark      | CSS variable driven                         |
 
 ## Project Structure
 
@@ -51,12 +52,12 @@ papyrai-ui/
 
 ## Naming Conventions
 
-| Type | Prefix | Example |
-|------|--------|---------|
-| AI component | `ai-` | `<ai-thinking>`, `<ai-stream>` |
-| SVG component | `svg-` | `<svg-logo>`, `<svg-icon>` |
-| Base component | `p-` | `<p-button>`, `<p-modal>` |
-| CSS variable | `--paper-`, `--ai-` | `--paper-white`, `--ai-thinking` |
+| Type           | Prefix              | Example                          |
+| -------------- | ------------------- | -------------------------------- |
+| AI component   | `ai-`               | `<ai-thinking>`, `<ai-stream>`   |
+| SVG component  | `svg-`              | `<svg-logo>`, `<svg-icon>`       |
+| Base component | `p-`                | `<p-button>`, `<p-modal>`        |
+| CSS variable   | `--paper-`, `--ai-` | `--paper-white`, `--ai-thinking` |
 
 - File names use kebab-case: `ai-thinking.js`, `date-picker.js`
 
@@ -100,12 +101,12 @@ papyrai-ui/
 
 ## Fonts
 
-| Usage | Font | License |
-|-------|------|---------|
-| English handwriting/titles | Caveat | OFL |
-| English monospace/code | JetBrains Mono | OFL |
-| Chinese body (default) | Noto Serif SC | OFL |
-| Chinese body (optional) | TsangerYuYangT W01-W05 | Free commercial use (zku declaration) |
+| Usage                      | Font                   | License                               |
+| -------------------------- | ---------------------- | ------------------------------------- |
+| English handwriting/titles | Caveat                 | OFL                                   |
+| English monospace/code     | JetBrains Mono         | OFL                                   |
+| Chinese body (default)     | Noto Serif SC          | OFL                                   |
+| Chinese body (optional)    | TsangerYuYangT W01-W05 | Free commercial use (zku declaration) |
 
 ## Commands
 
@@ -117,14 +118,17 @@ npm run preview   # live-server preview/
 
 ## Component List (136 total)
 
-### AI Components (9)
+### AI Components (18)
+
 `<ai-thinking>` `<ai-stream>` `<ai-hallucination>` `<ai-not-found>` `<ai-fake-error>` `<ai-confidence>` `<ai-diff>` `<ai-cost>` `<ai-model-badge>`
 
 ### SVG (8 logo templates + 50 icons)
+
 `<svg-logo>` (templates: stamp, seal, badge, minimal, scroll, ribbon, wax, corner)
 `<svg-icon>` (50 hand-drawn style icons)
 
 ### Base Components (69)
+
 - **Elements (22):** accordion, alert, avatar, badge, button, select-button, toggle-button, breadcrumb, carousel, chat-bubble, divider, dropdown, listbox, indicator, mockup, panel-splitter, qr-code, keyboard-key, scroll-bar, speed-dial, stack, timeline
 - **Inputs (20):** auto-complete, color-picker, input-chips, otp-input, date-picker, rich-text-editor, input, input-mask, knob, password-indicator, textarea, select, swap, signature-pad, checkbox, radio, toggle, range, rating, file-input
 - **Navigation (10):** bottom-tabs, command-palette, dock, pagination, progress, scroll-spy, scroll-top, steps, tabs, vertical-navigation
@@ -135,6 +139,7 @@ npm run preview   # live-server preview/
 ## Current Status
 
 ### Done
+
 - [x] Project initialization (directory structure, package.json, rollup config, preview skeleton, LICENSE)
 - [x] Core style system (tokens.js, styles.css, base.js) — fully functional
 - [x] 9 AI components — real implementations with animations, state, dark theme (100-160 lines each)
@@ -143,6 +148,7 @@ npm run preview   # live-server preview/
 - [x] Rollup build configuration (3 output formats configured)
 
 ### Reality Check
+
 - **AI components (9)**: genuinely functional, production-quality
 - **SVG components (2)**: functional
 - **69 base components**: ALL are copy-paste placeholders — same code, only class name differs. Need full rewrite per component
@@ -159,16 +165,19 @@ npm run preview   # live-server preview/
 ### S-P0: Infrastructure (do first)
 
 **S-01** ✅ Fix Rollup build & generate dist/
+
 - Run `npm run build`, diagnose and fix any errors
 - Verify `dist/papyrai-ui.js`, `dist/papyrai-ui.esm.js`, `dist/papyrai-ui.min.js` are generated
 - Ensure sourcemaps work
 
 **S-02** ✅ Add 11 missing icon wrapper files in `src/icons/`
+
 - Missing: copy, download, edit, error, external, eye, eye-off, info, link, success, warning
 - Follow existing pattern in `src/icons/icon-pen.js` — extend PapyraiIcon, SVG paths from `src/svg/svg-icon.js`
 - Update `src/index.js` exports if needed
 
 **S-03** ✅ Configure per-component tree-shaking build
+
 - Add Rollup multi-entry config so each component outputs to `dist/components/<name>.js`
 - Users should be able to `import 'papyrai-ui/components/ai-thinking'`
 - Update package.json `exports` field accordingly
@@ -178,6 +187,7 @@ npm run preview   # live-server preview/
 > All new AI components must: extend PapyraiElement, use CSS variables only, support light/dark theme, emit relevant custom events, include ARIA attributes, be registered as custom elements with `ai-` prefix.
 
 **S-04** ✅ `<ai-citation>` — Knowledge base citation / source reference
+
 - Props: `source` (string), `page` (string), `confidence` (number 0-1), `url` (string), `title` (string)
 - Display: inline or block citation mark with paper-style footnote appearance
 - Confidence shown as color indicator (high=green, mid=yellow, low=red)
@@ -186,6 +196,7 @@ npm run preview   # live-server preview/
 - Events: `citation-click`
 
 **S-05** ✅ `<ai-message>` — Chat message bubble
+
 - Props: `role` ('user'|'assistant'|'system'), `model` (string), `timestamp` (string), `avatar` (string), `loading` (boolean)
 - User messages: right-aligned, paper-note style
 - Assistant messages: left-aligned, typewriter paper style, show model badge via `<ai-model-badge>`
@@ -195,6 +206,7 @@ npm run preview   # live-server preview/
 - Events: `message-action` (for copy/retry/etc)
 
 **S-06** ✅ `<ai-prompt>` — AI prompt input box
+
 - Props: `placeholder`, `maxTokens` (number), `value` (string), `disabled`, `showTokenCount` (boolean)
 - Paper-style textarea with quill pen decoration
 - Live token count display (estimate: chars / 4)
@@ -203,6 +215,7 @@ npm run preview   # live-server preview/
 - Events: `prompt-submit`, `prompt-change`
 
 **S-07** ✅ `<ai-tool-call>` — Function/tool call display
+
 - Props: `name` (string), `status` ('pending'|'running'|'success'|'error'), `input` (string/JSON), `output` (string/JSON)
 - Collapsed by default, click to expand
 - Status indicator dot (animated spinning for running)
@@ -211,6 +224,7 @@ npm run preview   # live-server preview/
 - Events: `tool-expand`, `tool-collapse`
 
 **S-08** ✅ `<ai-reasoning>` — Chain-of-thought / thinking process
+
 - Props: `steps` (JSON array of {title, content}), `collapsed` (boolean, default true), `label` (string, default "Thinking...")
 - Collapsed: show "Thinking..." with animated dots, click to expand
 - Expanded: numbered steps with connecting line (timeline style), each step has title + content
@@ -218,6 +232,7 @@ npm run preview   # live-server preview/
 - Events: `reasoning-toggle`
 
 **S-09** ✅ `<ai-feedback>` — Response feedback (thumbs up/down)
+
 - Props: `value` ('up'|'down'|null), `showCopy` (boolean), `showRetry` (boolean)
 - Horizontal button group: 👍 👎 📋Copy 🔄Retry (use svg-icon, not emoji)
 - Selected state: filled icon with accent color
@@ -225,6 +240,7 @@ npm run preview   # live-server preview/
 - Events: `feedback-change`, `feedback-copy`, `feedback-retry`
 
 **S-10** ✅ `<ai-guardrail>` — Content safety/filter notice
+
 - Props: `level` ('info'|'warning'|'blocked'), `reason` (string), `policy` (string)
 - Info: blue border, subtle notice
 - Warning: amber border, caution stamp
@@ -233,6 +249,7 @@ npm run preview   # live-server preview/
 - Events: `guardrail-action` (if user requests to see blocked content)
 
 **S-11** ✅ `<ai-source-card>` — RAG retrieval result card
+
 - Props: `title` (string), `source` (string), `score` (number 0-1), `snippet` (string), `url` (string), `type` ('document'|'webpage'|'code'|'database')
 - Paper card with dog-ear fold, source type icon top-right
 - Relevance score bar (reuse confidence color logic)
@@ -241,6 +258,7 @@ npm run preview   # live-server preview/
 - Events: `source-click`
 
 **S-12** ✅ `<ai-token-usage>` — Detailed token usage dashboard
+
 - Props: `inputTokens` (number), `outputTokens` (number), `inputRate` (number), `outputRate` (number), `model` (string)
 - Horizontal bar showing input vs output token ratio
 - Cost breakdown: input cost + output cost = total
@@ -255,16 +273,19 @@ npm run preview   # live-server preview/
 > Reference existing UI libraries (Shoelace, Spectrum, Radix) for behavior specs — but keep the paper visual style unique.
 
 **S-13** Rewrite `button`, `toggle-button`, `select-button`
+
 - Button: variants (default/primary/danger/ghost), sizes (sm/md/lg), loading spinner, icon slot, disabled
 - Toggle-button: pressed/not-pressed toggle with ARIA, icon swap
 - Select-button: button group where one is selected, `value` property, keyboard left/right
 
 **S-14** Rewrite `input`, `textarea`, `select`
+
 - Input: type (text/email/number/password), label, placeholder, error message, prefix/suffix slots, clearable
 - Textarea: auto-resize, character count, min/max rows
 - Select: dropdown option list, keyboard navigation (arrow/enter/escape), searchable, multi-select, option groups
 
 **S-15** Rewrite `checkbox`, `radio`, `toggle`, `range`, `rating`
+
 - Checkbox: indeterminate state, label slot, group support
 - Radio: radio group with name binding, keyboard arrow navigation
 - Toggle: on/off with label, size variants
@@ -272,17 +293,20 @@ npm run preview   # live-server preview/
 - Rating: star count, half-star support, readonly mode, custom icon
 
 **S-16** Rewrite `tabs`, `pagination`, `steps`, `progress`
+
 - Tabs: horizontal/vertical, closable, scrollable overflow, keyboard arrow navigation, ARIA tablist/tab/tabpanel
 - Pagination: page count, prev/next, jump to page, page size selector
 - Steps: horizontal/vertical, current step, clickable completed steps, error state
 - Progress: linear/circular, determinate/indeterminate, label, color variants
 
 **S-17** ✅ Rewrite `card`, `container`, `skeleton`
+
 - Card: header/body/footer slots, paper texture background, elevation variants, clickable option
 - Container: max-width breakpoints, centered, fluid option, paper edge decoration
 - Skeleton: text/circle/rect shapes, animation (pulse/wave), custom width/height
 
 **S-18** ✅ Rewrite `accordion`, `alert`, `avatar`, `badge`, `divider`
+
 - Accordion: single/multi expand, animated open/close, icon rotation, keyboard enter/space
 - Alert: variants (info/success/warning/error), closable, icon, title + description
 - Avatar: image/initials/icon fallback, sizes, group stacking, status indicator
@@ -290,11 +314,13 @@ npm run preview   # live-server preview/
 - Divider: horizontal/vertical, label slot, dashed/solid styles
 
 **S-19** ✅ Rewrite `dropdown`, `listbox`, `auto-complete`
+
 - Dropdown: trigger slot, menu with items/dividers/headers, keyboard navigation, nested submenus, placement (top/bottom/left/right)
 - Listbox: single/multi select, keyboard navigation, virtualized for long lists, option groups
 - Auto-complete: input + dropdown suggestions, async data source support, highlight matching text, debounced input
 
 **S-20** ✅ Rewrite `breadcrumb`, `chat-bubble`, `indicator`, `timeline`, `stack`
+
 - Breadcrumb: separator customization, overflow collapse, current page indicator
 - Chat-bubble: left/right alignment, tail direction, timestamp, avatar slot (different from ai-message — this is a generic bubble)
 - Indicator: dot/badge on any slotted element, position (top-right/top-left/bottom-right/bottom-left), pulse animation
@@ -302,6 +328,7 @@ npm run preview   # live-server preview/
 - Stack: z-stack of overlapping elements, configurable offset, hover-to-fan
 
 **S-21** ✅ Rewrite `otp-input`, `input-chips`, `input-mask`, `knob`, `password-indicator`
+
 - OTP input: N digit boxes, auto-focus next, paste support, backspace to previous
 - Input chips: tag/chip list with add/remove, input for new chips, max count
 - Input mask: phone/date/credit-card format masks, custom mask patterns
@@ -309,12 +336,14 @@ npm run preview   # live-server preview/
 - Password indicator: strength meter (weak/fair/strong/very-strong), color bar, rules checklist
 
 **S-22** ✅ Rewrite `swap`, `signature-pad`, `file-input`, `rich-text-editor`
+
 - Swap: animate between two states (icon swap, text swap), transition effects (rotate/flip/fade)
 - Signature pad: canvas-based drawing, pen pressure simulation, clear button, export as PNG/SVG
 - File input: drag-and-drop zone, file type filter, preview thumbnails, multiple files, size limit
 - Rich text editor: basic toolbar (bold/italic/underline/list/link), contenteditable-based, output HTML
 
 **S-23** ✅ Rewrite `bottom-tabs`, `command-palette`, `dock`, `scroll-spy`, `scroll-top`, `vertical-navigation`
+
 - Bottom tabs: mobile-style fixed bottom bar, icon + label, badge support, active indicator
 - Command palette: Cmd+K overlay, fuzzy search, keyboard navigation, grouped results, recent items
 - Dock: macOS-style magnifying dock, icon slots, tooltip on hover
@@ -323,6 +352,7 @@ npm run preview   # live-server preview/
 - Vertical navigation: sidebar nav with sections, collapsible groups, active item indicator, icon support
 
 **S-24** ✅ Rewrite `popover`, `tooltip`, `context-menu`, `slideover`, `tour`, `watermark`
+
 - Popover: trigger click/hover, placement auto-flip, arrow, close on outside click, focus trap
 - Tooltip: trigger hover/focus, placement, delay, rich content support
 - Context menu: right-click trigger, nested submenus, keyboard navigation, dividers
@@ -331,6 +361,7 @@ npm run preview   # live-server preview/
 - Watermark: repeating diagonal text overlay, configurable opacity/rotation/gap, canvas-rendered for performance
 
 **S-25** ✅ Rewrite `order-list`, `pick-list`, `virtual-scroller`
+
 - Order list: drag-and-drop reorder, handle grip icon, keyboard reorder (alt+arrow), numbered
 - Pick list: dual-list transfer (available → selected), search filter, move all/selected buttons
 - Virtual scroller: render only visible items, dynamic item height support, scroll-to-index API
@@ -338,6 +369,7 @@ npm run preview   # live-server preview/
 ### S-P3: Documentation & Examples
 
 **S-26** ✅ Set up VitePress docs site
+
 - Install vitepress, create `docs/.vitepress/config.js` with sidebar/nav for all component categories
 - Chinese + English i18n configuration
 - Custom theme with papyrai CSS variables
@@ -345,14 +377,17 @@ npm run preview   # live-server preview/
 - Deploy config for GitHub Pages
 
 **S-27** ✅ Write AI component documentation pages
+
 - One page per AI component with: description, props table, events table, live demo code, usage examples
 - Both Chinese and English versions
 
 **S-28** ✅ Write base component documentation pages
+
 - Same format as AI docs, one page per component
 - Group by category (elements, inputs, navigation, overlays, layout, data)
 
 **S-29** ✅ Create usage examples
+
 - `examples/vanilla/` — plain HTML usage
 - `examples/react/` — React wrapper usage with @lit/react
 - `examples/vue/` — Vue usage (Web Components work natively)
@@ -361,21 +396,25 @@ npm run preview   # live-server preview/
 ### S-P4: Quality & Publish
 
 **S-30** Set up test framework
+
 - Install @open-wc/testing + @web/test-runner
 - Configure test runner for Lit components
 - Write test helpers for theme switching, event assertions
 
 **S-31** Write AI component tests
+
 - Test each AI component: rendering, props, events, theme switching, accessibility
 - Async tests for animated components (ai-stream, ai-thinking, ai-fake-error)
 
 **S-32** Accessibility audit & fix
+
 - Run axe-core on all components
 - Fix ARIA roles (current base components wrongly use role="button" for everything)
 - Add proper focus management to overlays
 - Keyboard navigation for all interactive components
 
 **S-33** npm publish preparation
+
 - Update package.json version, description, keywords, repository
 - Verify exports map and file references
 - Create .npmignore (exclude src/, preview/, docs/, examples/)
@@ -389,6 +428,7 @@ npm run preview   # live-server preview/
 > Tasks assigned to Opus sessions. These involve complex algorithms, multi-component interactions, or intricate state management.
 
 **O-01** ✅ Rewrite `<ai-diff>` with Myers diff algorithm
+
 - Current implementation is a naive line-by-line positional compare — breaks on insertions/deletions
 - Implement Myers diff algorithm (or equivalent LCS-based) for proper added/removed/moved detection
 - Add character-level diff within changed lines (highlight exact changed words/chars)
@@ -399,10 +439,12 @@ npm run preview   # live-server preview/
 - Performance: handle diffs up to 5000 lines without jank
 
 **O-02** Rewrite `modal`, `toast` ✅
+
 - **Modal**: open/close with transition, backdrop overlay with click-to-close (configurable), focus trap (tab cycles within modal), escape to close, scroll lock on body, header/body/footer slots, sizes (sm/md/lg/full), stacking multiple modals with z-index management, ARIA dialog role
 - **Toast**: notification system — static method `Toast.show({message, type, duration})`, position (top-right/top-left/bottom-right/bottom-left/top-center/bottom-center), auto-dismiss with progress bar, stack multiple toasts, swipe to dismiss, variants (info/success/warning/error), max visible count with queue
 
 **O-03** Rewrite `table` ✅
+
 - Column definition via JSON or slot-based
 - Sortable columns (click header, asc/desc/none cycle)
 - Column filtering (text/select/date range)
@@ -417,10 +459,12 @@ npm run preview   # live-server preview/
 - Events: `sort-change`, `filter-change`, `selection-change`, `cell-edit`
 
 **O-04** Rewrite `date-picker`, `color-picker` ✅
+
 - **Date-picker**: calendar grid, month/year navigation, range selection, min/max date, disabled dates, today button, keyboard navigation (arrow keys for days, page up/down for months), locale formatting, time picker integration option, ARIA grid role
 - **Color-picker**: hue/saturation/brightness canvas, hue slider, alpha slider, hex/rgb/hsl input, preset color swatches, eyedropper tool (if browser supports), recent colors, output format selection, keyboard accessible
 
 **O-05** Rewrite `carousel`, `tree`, `calendar` ✅
+
 - **Carousel**: slide/fade transitions, auto-play with pause on hover, prev/next buttons, dot indicators, swipe gesture on touch, infinite loop option, slides-per-view, responsive breakpoints, keyboard left/right, ARIA live region
 - **Tree**: hierarchical data rendering, expand/collapse nodes, lazy loading children, checkbox selection (parent-child cascade), drag-and-drop reorder, search/filter, keyboard navigation (arrow up/down/left/right for expand/collapse/navigate), virtual rendering for large trees, ARIA tree/treeitem roles
 - **Calendar**: month/week/day views, event rendering with time slots, drag to create events, drag to resize events, event overlap layout, navigation between months, today indicator, locale support, ARIA grid, events: `date-select`, `event-create`, `event-change`
