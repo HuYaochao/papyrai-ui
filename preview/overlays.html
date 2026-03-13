@@ -4,28 +4,244 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Overlays - papyrai-ui</title>
+  <script type="importmap">
+  {
+    "imports": {
+      "lit": "https://cdn.jsdelivr.net/npm/lit@3.1.0/+esm",
+      "lit-html": "https://cdn.jsdelivr.net/npm/lit-html@3.1.0/+esm",
+      "@lit/reactive-element": "https://cdn.jsdelivr.net/npm/@lit/reactive-element@2.1.2/+esm"
+    }
+  }
+  </script>
   <link rel="stylesheet" href="../src/core/styles.css">
   <style>
-    body { font-family: var(--font-serif); background: var(--paper-white); color: var(--ink-black); margin: 0; padding: 20px; }
-    h1 { font-family: var(--font-handwrite); margin: 8px 0 16px; }
-    .back { color: var(--accent-red); text-decoration: none; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(220px,1fr)); gap: 12px; margin-top: 16px; }
+    body { font-family: var(--font-serif); background: var(--paper-white); color: var(--ink-black); margin: 0; padding: 20px 28px 80px; }
+    h1 { font-family: var(--font-handwrite); margin: 8px 0 4px; font-size: 2rem; }
+    h2 { font-family: var(--font-handwrite); margin: 28px 0 8px; font-size: 1.3rem; color: var(--ink-dark); border-bottom: 1px solid var(--paper-border); padding-bottom: 4px; }
+    .back { color: var(--accent-red); text-decoration: none; font-size: 0.9rem; }
+    .demo { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; margin-bottom: 8px; }
+    .theme-btn { position: fixed; top: 12px; right: 16px; background: var(--paper-cream); border: 1px solid var(--paper-border); border-radius: 8px; padding: 6px 14px; cursor: pointer; font-family: var(--font-handwrite); font-size: 1rem; }
+    [data-theme="dark"] body { background: #1a1814; color: #e8e0d0; }
+    .demo-btn { padding: 8px 18px; border: 1px solid var(--paper-border); background: var(--paper-cream); border-radius: 8px; cursor: pointer; font-family: var(--font-serif); font-size: .9rem; transition: box-shadow .15s; }
+    .demo-btn:hover { box-shadow: 0 2px 6px rgba(0,0,0,.1); }
+    .demo-btn.primary { background: var(--accent-red); color: white; border-color: var(--accent-red); }
   </style>
 </head>
 <body>
   <a href="index.html" class="back">← 返回首页</a>
   <h1>Overlays</h1>
-  <p>已接入 8 个组件示例（点击或回车可触发切换状态）。</p>
-  <div class="grid">
-    <p-modal label="modal"></p-modal>
-    <p-slideover label="slideover"></p-slideover>
-    <p-popover label="popover"></p-popover>
-    <p-tooltip label="tooltip"></p-tooltip>
-    <p-context-menu label="context-menu"></p-context-menu>
-    <p-toast label="toast"></p-toast>
-    <p-tour label="tour"></p-tour>
-    <p-watermark label="watermark"></p-watermark>
+  <button class="theme-btn" onclick="const h=document.documentElement;const d=h.getAttribute('data-theme')==='dark';h.setAttribute('data-theme',d?'light':'dark');localStorage.setItem('theme',d?'light':'dark')">🌓 Theme</button>
+
+  <!-- ======================== p-modal ======================== -->
+  <h2>p-modal — Dialog modal</h2>
+  <div class="demo">
+    <button class="demo-btn primary" onclick="document.getElementById('modal-basic').open=true">Open Modal</button>
+    <button class="demo-btn" onclick="document.getElementById('modal-sm').open=true">Small Modal</button>
+    <button class="demo-btn" onclick="document.getElementById('modal-lg').open=true">Large Modal</button>
+
+    <p-modal id="modal-basic" label="Confirm Action" size="md">
+      <p style="margin:0 0 16px">Are you sure you want to delete this document? This action cannot be undone.</p>
+      <div style="display:flex;gap:8px;justify-content:flex-end" slot="footer">
+        <button class="demo-btn" onclick="document.getElementById('modal-basic').open=false">Cancel</button>
+        <button class="demo-btn primary" onclick="document.getElementById('modal-basic').open=false">Delete</button>
+      </div>
+    </p-modal>
+
+    <p-modal id="modal-sm" label="Quick Note" size="sm">
+      <p style="margin:0">A small modal for quick confirmations or notices.</p>
+    </p-modal>
+
+    <p-modal id="modal-lg" label="Document Preview" size="lg">
+      <p style="margin:0 0 12px">A larger modal suitable for forms, previews, or detailed content.</p>
+      <p-skeleton variant="rect" width="100%" height="120px" animation="wave"></p-skeleton>
+      <p style="margin:12px 0 0;font-size:.85rem;color:var(--ink-mid)">Press Escape or click backdrop to close.</p>
+    </p-modal>
   </div>
+
+  <!-- ======================== p-slideover ======================== -->
+  <h2>p-slideover — Side panel</h2>
+  <div class="demo">
+    <button class="demo-btn" onclick="document.getElementById('slide-right').open=true">Right Panel</button>
+    <button class="demo-btn" onclick="document.getElementById('slide-left').open=true">Left Panel</button>
+
+    <p-slideover id="slide-right" label="Settings" placement="right" width="320px">
+      <div style="padding:8px 0">
+        <p style="font-size:.9rem;color:var(--ink-mid);margin:0 0 16px">Adjust your preferences below.</p>
+        <p-toggle label="Notifications" checked style="display:block;margin-bottom:12px"></p-toggle>
+        <p-toggle label="Dark mode" style="display:block;margin-bottom:12px"></p-toggle>
+        <p-toggle label="Auto-save" checked style="display:block"></p-toggle>
+      </div>
+    </p-slideover>
+
+    <p-slideover id="slide-left" label="Navigation" placement="left" width="260px">
+      <div style="padding:8px 0;font-size:.9rem">
+        <div style="padding:10px 0;border-bottom:1px solid var(--paper-border)">Overview</div>
+        <div style="padding:10px 0;border-bottom:1px solid var(--paper-border);color:var(--accent-red)">Components</div>
+        <div style="padding:10px 0;border-bottom:1px solid var(--paper-border)">Documentation</div>
+        <div style="padding:10px 0">Settings</div>
+      </div>
+    </p-slideover>
+  </div>
+
+  <!-- ======================== p-popover ======================== -->
+  <h2>p-popover — Rich floating content</h2>
+  <div class="demo" style="padding:60px 20px;gap:40px">
+    <p-popover placement="bottom">
+      <button class="demo-btn" slot="trigger">Click to open ▾</button>
+      <div style="padding:12px 16px;min-width:200px">
+        <strong style="font-family:var(--font-handwrite);font-size:1.1rem">Paper Popover</strong>
+        <p style="margin:8px 0 0;font-size:.85rem;color:var(--ink-mid)">Rich content with any HTML. Click outside to close.</p>
+      </div>
+    </p-popover>
+
+    <p-popover placement="top" trigger="hover">
+      <button class="demo-btn" slot="trigger">Hover me ↑</button>
+      <div style="padding:12px 16px;min-width:160px">
+        <p style="margin:0;font-size:.85rem">Hover trigger — opens on mouse over.</p>
+      </div>
+    </p-popover>
+
+    <p-popover placement="right">
+      <button class="demo-btn" slot="trigger">Open right →</button>
+      <div style="padding:12px 16px;min-width:160px">
+        <p style="margin:0;font-size:.85rem">Placed on the right side.</p>
+      </div>
+    </p-popover>
+  </div>
+
+  <!-- ======================== p-tooltip ======================== -->
+  <h2>p-tooltip — Hover tooltip</h2>
+  <div class="demo" style="padding:40px 20px;gap:32px;align-items:center">
+    <p-tooltip text="This is a tooltip" placement="top">
+      <button class="demo-btn">Hover (top)</button>
+    </p-tooltip>
+
+    <p-tooltip text="Tooltip on the right" placement="right">
+      <button class="demo-btn">Hover (right)</button>
+    </p-tooltip>
+
+    <p-tooltip text="Tooltip below" placement="bottom">
+      <button class="demo-btn">Hover (bottom)</button>
+    </p-tooltip>
+
+    <p-tooltip text="500ms delay" placement="top" delay="500">
+      <button class="demo-btn">Delayed</button>
+    </p-tooltip>
+
+    <p-tooltip text="Works on any element, not just buttons" placement="top">
+      <span style="border-bottom:1px dashed var(--ink-mid);cursor:help">Underlined text</span>
+    </p-tooltip>
+  </div>
+
+  <!-- ======================== p-context-menu ======================== -->
+  <h2>p-context-menu — Right-click menu</h2>
+  <div class="demo">
+    <div id="ctx-target" style="padding:24px 32px;border:2px dashed var(--paper-border);border-radius:8px;text-align:center;font-size:.9rem;color:var(--ink-mid);cursor:context-menu;user-select:none;min-width:280px">
+      Right-click here to open context menu
+    </div>
+    <p-context-menu id="ctx1"></p-context-menu>
+  </div>
+
+  <!-- ======================== p-toast ======================== -->
+  <h2>p-toast — Toast notifications</h2>
+  <div class="demo" style="gap:12px;flex-wrap:wrap">
+    <button class="demo-btn" onclick="showToast('info','Info message — a neutral notification.')">Info Toast</button>
+    <button class="demo-btn" onclick="showToast('success','Operation completed successfully!')">Success Toast</button>
+    <button class="demo-btn" onclick="showToast('warning','Warning: This action may have side effects.')">Warning Toast</button>
+    <button class="demo-btn" onclick="showToast('error','Error: Something went wrong. Please try again.')">Error Toast</button>
+    <button class="demo-btn" onclick="showToast('info','No auto-dismiss.',0)">Persistent Toast</button>
+    <p-toast id="toast1" position="top-right" max-count="5"></p-toast>
+  </div>
+
+  <!-- ======================== p-tour ======================== -->
+  <h2>p-tour — Product tour</h2>
+  <div class="demo" style="flex-direction:column;gap:12px">
+    <div style="display:flex;gap:16px;align-items:center">
+      <button id="tour-btn-1" class="demo-btn">Step 1: Start</button>
+      <button id="tour-btn-2" class="demo-btn primary">Step 2: Action</button>
+      <span id="tour-btn-3" style="font-family:var(--font-handwrite);font-size:1.2rem;color:var(--accent-red)">Step 3: Target</span>
+    </div>
+    <button class="demo-btn" onclick="document.getElementById('tour1').open=true;document.getElementById('tour1').currentStep=0">Start Tour ▶</button>
+    <p-tour id="tour1" show-progress show-skip></p-tour>
+  </div>
+
+  <!-- ======================== p-watermark ======================== -->
+  <h2>p-watermark — Diagonal watermark</h2>
+  <div class="demo" style="flex-direction:column;gap:16px">
+    <p-watermark text="papyrai-ui" opacity="0.08" rotate="-25" style="display:block">
+      <div style="padding:32px;background:var(--paper-cream);border:1px solid var(--paper-border);border-radius:8px;min-height:120px">
+        <strong>Default watermark</strong>
+        <p style="font-size:.9rem;color:var(--ink-mid);margin:8px 0 0">Content with subtle diagonal watermark in the background.</p>
+      </div>
+    </p-watermark>
+
+    <p-watermark text="CONFIDENTIAL" opacity="0.12" rotate="-30" font-size="18" style="display:block">
+      <div style="padding:32px;background:var(--paper-cream);border:1px solid var(--paper-border);border-radius:8px;min-height:100px">
+        <strong>CONFIDENTIAL document</strong>
+        <p style="font-size:.9rem;color:var(--ink-mid);margin:8px 0 0">Larger text watermark at higher opacity.</p>
+      </div>
+    </p-watermark>
+  </div>
+
   <script type="module" src="../src/index.js"></script>
+  <script>
+    // Restore theme
+    if (localStorage.getItem('theme') === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // p-context-menu
+      const ctx1 = document.getElementById('ctx1');
+      if (ctx1) {
+        ctx1.items = [
+          { id: 'open', label: 'Open', icon: 'external' },
+          { id: 'copy', label: 'Copy link', icon: 'copy' },
+          { divider: true },
+          { id: 'rename', label: 'Rename', icon: 'edit' },
+          { id: 'move', label: 'Move to...', icon: 'file' },
+          { divider: true },
+          { id: 'delete', label: 'Delete', icon: 'error', danger: true },
+        ];
+        // Bind to target element
+        const target = document.getElementById('ctx-target');
+        if (target) {
+          target.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            ctx1.show(e.clientX, e.clientY);
+          });
+        }
+      }
+
+      // p-tour
+      const tour1 = document.getElementById('tour1');
+      if (tour1) {
+        tour1.steps = [
+          {
+            target: '#tour-btn-1',
+            title: 'Welcome!',
+            content: 'This is the starting point of the tour. Click "Next" to continue.',
+          },
+          {
+            target: '#tour-btn-2',
+            title: 'Main Action',
+            content: 'This is the primary action button. It triggers the most important workflow.',
+          },
+          {
+            target: '#tour-btn-3',
+            title: 'Tour Complete',
+            content: 'You have completed the tour! You can restart it anytime.',
+          },
+        ];
+      }
+    });
+
+    // Toast helper
+    function showToast(type, message, duration) {
+      const toast = document.getElementById('toast1');
+      if (!toast) return;
+      toast.show({ type, message, duration: duration !== undefined ? duration : 3000 });
+    }
+  </script>
 </body>
 </html>

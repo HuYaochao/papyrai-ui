@@ -4,40 +4,254 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Inputs - papyrai-ui</title>
+  <script type="importmap">
+  {
+    "imports": {
+      "lit": "https://cdn.jsdelivr.net/npm/lit@3.1.0/+esm",
+      "lit-html": "https://cdn.jsdelivr.net/npm/lit-html@3.1.0/+esm",
+      "@lit/reactive-element": "https://cdn.jsdelivr.net/npm/@lit/reactive-element@2.1.2/+esm"
+    }
+  }
+  </script>
   <link rel="stylesheet" href="../src/core/styles.css">
   <style>
-    body { font-family: var(--font-serif); background: var(--paper-white); color: var(--ink-black); margin: 0; padding: 20px; }
-    h1 { font-family: var(--font-handwrite); margin: 8px 0 16px; }
-    .back { color: var(--accent-red); text-decoration: none; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(220px,1fr)); gap: 12px; margin-top: 16px; }
+    body { font-family: var(--font-serif); background: var(--paper-white); color: var(--ink-black); margin: 0; padding: 20px 28px 60px; }
+    h1 { font-family: var(--font-handwrite); margin: 8px 0 4px; font-size: 2rem; }
+    h2 { font-family: var(--font-handwrite); margin: 28px 0 8px; font-size: 1.3rem; color: var(--ink-dark); border-bottom: 1px solid var(--paper-border); padding-bottom: 4px; }
+    .back { color: var(--accent-red); text-decoration: none; font-size: 0.9rem; }
+    .demo { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; margin-bottom: 8px; }
+    .theme-btn { position: fixed; top: 12px; right: 16px; background: var(--paper-cream); border: 1px solid var(--paper-border); border-radius: 8px; padding: 6px 14px; cursor: pointer; font-family: var(--font-handwrite); font-size: 1rem; }
+    [data-theme="dark"] body { background: #1a1814; color: #e8e0d0; }
   </style>
 </head>
 <body>
   <a href="index.html" class="back">← 返回首页</a>
   <h1>Inputs</h1>
-  <p>已接入 20 个组件示例（点击或回车可触发切换状态）。</p>
-  <div class="grid">
-    <p-auto-complete label="auto-complete"></p-auto-complete>
-    <p-color-picker label="color-picker"></p-color-picker>
-    <p-input-chips label="input-chips"></p-input-chips>
-    <p-otp-input label="otp-input"></p-otp-input>
-    <p-date-picker label="date-picker"></p-date-picker>
-    <p-rich-text-editor label="rich-text-editor"></p-rich-text-editor>
-    <p-input label="input"></p-input>
-    <p-input-mask label="input-mask"></p-input-mask>
-    <p-knob label="knob"></p-knob>
-    <p-password-indicator label="password-indicator"></p-password-indicator>
-    <p-textarea label="textarea"></p-textarea>
-    <p-select label="select"></p-select>
-    <p-swap label="swap"></p-swap>
-    <p-signature-pad label="signature-pad"></p-signature-pad>
-    <p-checkbox label="checkbox"></p-checkbox>
-    <p-radio label="radio"></p-radio>
-    <p-toggle label="toggle"></p-toggle>
-    <p-range label="range"></p-range>
-    <p-rating label="rating"></p-rating>
-    <p-file-input label="file-input"></p-file-input>
+  <button class="theme-btn" onclick="const h=document.documentElement;const d=h.getAttribute('data-theme')==='dark';h.setAttribute('data-theme',d?'light':'dark');localStorage.setItem('theme',d?'light':'dark')">🌓 Theme</button>
+
+  <!-- ======================== p-input ======================== -->
+  <h2>p-input — Text input</h2>
+  <div class="demo">
+    <p-input label="Username" placeholder="Enter username" style="width:200px"></p-input>
+    <p-input label="Email" type="email" placeholder="user@example.com" style="width:220px"></p-input>
+    <p-input label="Password" type="password" placeholder="••••••••" style="width:200px"></p-input>
+    <p-input label="With prefix" prefix="@" placeholder="handle" style="width:180px"></p-input>
+    <p-input label="Clearable" value="Clear me" clearable style="width:180px"></p-input>
+    <p-input label="Error state" value="bad@" error="Invalid email address" style="width:200px"></p-input>
+    <p-input label="Disabled" value="Can't edit" disabled style="width:180px"></p-input>
   </div>
+
+  <!-- ======================== p-textarea ======================== -->
+  <h2>p-textarea — Multiline text</h2>
+  <div class="demo">
+    <p-textarea label="Message" placeholder="Write your message here..." style="width:260px" rows="3"></p-textarea>
+    <p-textarea label="Auto resize" placeholder="Grows as you type..." style="width:260px" auto-resize show-count max-length="200"></p-textarea>
+    <p-textarea label="Readonly" value="This content cannot be changed." readonly style="width:220px"></p-textarea>
+  </div>
+
+  <!-- ======================== p-select ======================== -->
+  <h2>p-select — Dropdown select</h2>
+  <div class="demo">
+    <p-select id="sel1" label="Framework" placeholder="Choose a framework" style="width:200px"></p-select>
+    <p-select id="sel2" label="Multi-select" placeholder="Choose multiple" multiple searchable style="width:220px"></p-select>
+    <p-select label="Disabled" placeholder="Not available" disabled style="width:180px"></p-select>
+  </div>
+
+  <!-- ======================== p-checkbox ======================== -->
+  <h2>p-checkbox — Checkbox</h2>
+  <div class="demo" style="align-items:center;gap:24px">
+    <p-checkbox label="Accept terms" checked></p-checkbox>
+    <p-checkbox label="Subscribe newsletter"></p-checkbox>
+    <p-checkbox label="Indeterminate" indeterminate></p-checkbox>
+    <p-checkbox label="Disabled checked" checked disabled></p-checkbox>
+    <p-checkbox label="Large" size="lg"></p-checkbox>
+  </div>
+
+  <!-- ======================== p-radio ======================== -->
+  <h2>p-radio — Radio button</h2>
+  <div class="demo" style="align-items:center;gap:24px">
+    <p-radio name="plan" value="free" label="Free" checked></p-radio>
+    <p-radio name="plan" value="pro" label="Pro"></p-radio>
+    <p-radio name="plan" value="enterprise" label="Enterprise"></p-radio>
+    <p-radio name="plan" value="disabled" label="Disabled" disabled></p-radio>
+  </div>
+
+  <!-- ======================== p-toggle ======================== -->
+  <h2>p-toggle — Toggle switch</h2>
+  <div class="demo" style="align-items:center;gap:32px">
+    <p-toggle label="Dark mode" checked></p-toggle>
+    <p-toggle label="Notifications" label-off="Off"></p-toggle>
+    <p-toggle label="Large" size="lg" checked></p-toggle>
+    <p-toggle label="Disabled" disabled checked></p-toggle>
+  </div>
+
+  <!-- ======================== p-range ======================== -->
+  <h2>p-range — Range slider</h2>
+  <div class="demo" style="flex-direction:column;max-width:320px;gap:20px">
+    <p-range label="Volume" value="60" min="0" max="100" show-value></p-range>
+    <p-range label="Opacity" value="0.5" min="0" max="1" step="0.05" show-value></p-range>
+    <p-range label="Disabled" value="40" disabled show-value></p-range>
+  </div>
+
+  <!-- ======================== p-rating ======================== -->
+  <h2>p-rating — Star rating</h2>
+  <div class="demo" style="align-items:center;gap:32px">
+    <p-rating label="Rate this" value="3" max="5"></p-rating>
+    <p-rating label="Half stars" value="3.5" half max="5"></p-rating>
+    <p-rating label="Read only" value="4" readonly max="5"></p-rating>
+    <p-rating label="Out of 10" value="7" max="10"></p-rating>
+  </div>
+
+  <!-- ======================== p-otp-input ======================== -->
+  <h2>p-otp-input — One-time password</h2>
+  <div class="demo" style="flex-direction:column;gap:20px">
+    <div>
+      <div style="font-size:.85rem;color:var(--ink-mid);margin-bottom:6px">6-digit OTP (default)</div>
+      <p-otp-input length="6"></p-otp-input>
+    </div>
+    <div>
+      <div style="font-size:.85rem;color:var(--ink-mid);margin-bottom:6px">4-digit with separator</div>
+      <p-otp-input length="4" separator="-"></p-otp-input>
+    </div>
+  </div>
+
+  <!-- ======================== p-input-chips ======================== -->
+  <h2>p-input-chips — Tag/chip input</h2>
+  <div class="demo">
+    <p-input-chips id="chips1" placeholder="Add tag..." style="width:300px"></p-input-chips>
+    <p-input-chips id="chips2" placeholder="Add skill (max 3)..." max="3" style="width:300px"></p-input-chips>
+  </div>
+
+  <!-- ======================== p-input-mask ======================== -->
+  <h2>p-input-mask — Masked input</h2>
+  <div class="demo">
+    <p-input-mask label="Phone" mask="(999) 999-9999" placeholder="(___) ___-____" style="width:200px"></p-input-mask>
+    <p-input-mask label="Date" mask="99/99/9999" placeholder="MM/DD/YYYY" style="width:180px"></p-input-mask>
+    <p-input-mask label="Credit card" mask="9999 9999 9999 9999" placeholder="____ ____ ____ ____" style="width:220px"></p-input-mask>
+  </div>
+
+  <!-- ======================== p-knob ======================== -->
+  <h2>p-knob — Rotary dial</h2>
+  <div class="demo" style="align-items:center;gap:32px">
+    <p-knob label="Volume" value="65" min="0" max="100" show-value></p-knob>
+    <p-knob label="Treble" value="30" min="0" max="100" show-value size="md"></p-knob>
+    <p-knob label="Bass" value="80" min="0" max="100" show-value size="lg"></p-knob>
+    <p-knob label="Disabled" value="50" disabled show-value></p-knob>
+  </div>
+
+  <!-- ======================== p-password-indicator ======================== -->
+  <h2>p-password-indicator — Password strength</h2>
+  <div class="demo">
+    <p-password-indicator id="pwd1" show-rules style="width:280px"></p-password-indicator>
+    <p-password-indicator id="pwd2" style="width:240px"></p-password-indicator>
+  </div>
+
+  <!-- ======================== p-swap ======================== -->
+  <h2>p-swap — Animated state swap</h2>
+  <div class="demo" style="align-items:center;gap:32px">
+    <p-swap label-on="ON" label-off="OFF"></p-swap>
+    <p-swap label-on="▶ Play" label-off="⏸ Pause" type="rotate" checked></p-swap>
+    <p-swap label-on="🔆 Light" label-off="🌙 Dark" type="flip"></p-swap>
+    <p-swap label-on="★ Saved" label-off="☆ Save" checked></p-swap>
+  </div>
+
+  <!-- ======================== p-signature-pad ======================== -->
+  <h2>p-signature-pad — Canvas drawing</h2>
+  <div class="demo" style="flex-direction:column">
+    <p-signature-pad id="sig1" width="400" height="150" pen-color="#1a1612"></p-signature-pad>
+    <div style="display:flex;gap:8px;margin-top:8px">
+      <button onclick="document.getElementById('sig1').clear()" style="padding:6px 14px;border:1px solid var(--paper-border);background:var(--paper-cream);border-radius:6px;cursor:pointer;font-size:.85rem">Clear</button>
+      <button onclick="navigator.clipboard?.writeText(document.getElementById('sig1').exportPNG())" style="padding:6px 14px;border:1px solid var(--paper-border);background:var(--paper-cream);border-radius:6px;cursor:pointer;font-size:.85rem">Export PNG</button>
+    </div>
+  </div>
+
+  <!-- ======================== p-file-input ======================== -->
+  <h2>p-file-input — File upload</h2>
+  <div class="demo">
+    <p-file-input label="Upload document" accept=".pdf,.doc,.docx" style="width:320px"></p-file-input>
+    <p-file-input label="Upload images" accept="image/*" multiple max-size="5242880" style="width:320px"></p-file-input>
+  </div>
+
+  <!-- ======================== p-color-picker ======================== -->
+  <h2>p-color-picker — Color selection</h2>
+  <div class="demo" style="align-items:flex-start;gap:32px">
+    <div>
+      <div style="font-size:.85rem;color:var(--ink-mid);margin-bottom:6px">HEX format</div>
+      <p-color-picker id="cp1" value="#4a7c9b" format="hex"></p-color-picker>
+    </div>
+    <div>
+      <div style="font-size:.85rem;color:var(--ink-mid);margin-bottom:6px">RGB with alpha</div>
+      <p-color-picker id="cp2" value="#c4453c" format="rgba" show-alpha></p-color-picker>
+    </div>
+  </div>
+
+  <!-- ======================== p-date-picker ======================== -->
+  <h2>p-date-picker — Date selection</h2>
+  <div class="demo" style="align-items:flex-start;gap:32px">
+    <div>
+      <div style="font-size:.85rem;color:var(--ink-mid);margin-bottom:6px">Single date</div>
+      <p-date-picker placeholder="Select date" style="width:200px"></p-date-picker>
+    </div>
+    <div>
+      <div style="font-size:.85rem;color:var(--ink-mid);margin-bottom:6px">Date range</div>
+      <p-date-picker mode="range" placeholder="Select range" style="width:220px"></p-date-picker>
+    </div>
+    <div>
+      <div style="font-size:.85rem;color:var(--ink-mid);margin-bottom:6px">With min/max</div>
+      <p-date-picker min="2024-01-01" max="2026-12-31" placeholder="Restricted range" style="width:200px"></p-date-picker>
+    </div>
+  </div>
+
+  <!-- ======================== p-rich-text-editor ======================== -->
+  <h2>p-rich-text-editor — WYSIWYG editor</h2>
+  <div class="demo" style="flex-direction:column">
+    <p-rich-text-editor id="rte1" placeholder="Start writing your document..." style="width:100%;max-width:640px;min-height:160px"></p-rich-text-editor>
+    <p-rich-text-editor placeholder="Readonly preview" value="&lt;p&gt;This content is &lt;strong&gt;read-only&lt;/strong&gt; and cannot be edited.&lt;/p&gt;" readonly style="width:100%;max-width:640px"></p-rich-text-editor>
+  </div>
+
   <script type="module" src="../src/index.js"></script>
+  <script>
+    // Restore theme
+    if (localStorage.getItem('theme') === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // p-select options
+      const sel1 = document.getElementById('sel1');
+      if (sel1) sel1.options = ['React', 'Vue', 'Svelte', 'Angular', 'Lit', 'Solid'];
+
+      const sel2 = document.getElementById('sel2');
+      if (sel2) sel2.options = [
+        { label: 'React', value: 'react' },
+        { label: 'Vue', value: 'vue' },
+        { label: 'Svelte', value: 'svelte' },
+        { label: 'Angular', value: 'angular' },
+        { label: 'Lit', value: 'lit' },
+        { label: 'Solid', value: 'solid' },
+      ];
+
+      // p-input-chips initial values
+      const chips1 = document.getElementById('chips1');
+      if (chips1) chips1.value = ['design', 'paper', 'ui'];
+
+      const chips2 = document.getElementById('chips2');
+      if (chips2) chips2.value = ['JavaScript', 'TypeScript'];
+
+      // p-password-indicator pre-fill
+      const pwd1 = document.getElementById('pwd1');
+      if (pwd1) pwd1.value = 'Str0ng!Pass';
+
+      const pwd2 = document.getElementById('pwd2');
+      if (pwd2) pwd2.value = 'weak';
+
+      // p-color-picker presets
+      const cp1 = document.getElementById('cp1');
+      if (cp1) cp1.presets = ['#c4453c','#4a7c9b','#5a8a5a','#c49a3c','#7c4a7c','#1a1814'];
+
+      const cp2 = document.getElementById('cp2');
+      if (cp2) cp2.presets = ['#c4453c','#e87068','#ff9999','#4a7c9b','#5a8a5a'];
+    });
+  </script>
 </body>
 </html>
