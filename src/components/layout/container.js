@@ -1,79 +1,75 @@
+// Container — responsive layout container with max-width breakpoints
+// Props: maxWidth('sm'|'md'|'lg'|'xl'|'full'), centered, fluid, padded
+
 import { PapyraiElement, html, css } from '../../core/base.js';
 
 export class PContainer extends PapyraiElement {
   static properties = {
-    label: { type: String },
-    value: { type: String },
-    active: { type: Boolean, reflect: true },
-    disabled: { type: Boolean, reflect: true }
+    maxWidth: { type: String, attribute: 'max-width', reflect: true },
+    centered: { type: Boolean, reflect: true },
+    fluid:    { type: Boolean, reflect: true },
+    padded:   { type: Boolean, reflect: true }
   };
 
   static styles = css`
     :host {
-      display: inline-flex;
-      align-items: center;
-      gap: var(--spacing-sm, 8px);
-      padding: var(--spacing-sm, 8px) var(--spacing-md, 12px);
-      border-radius: var(--radius-md, 10px);
-      border: 1px solid var(--paper-border, #d9ccb8);
-      background: var(--paper-cream, #f8f1e5);
-      color: var(--ink-black, #1f1a15);
-      box-shadow: var(--elevation-1, 0 2px 8px rgba(0,0,0,.08));
-      font-family: var(--font-serif, serif);
-      cursor: pointer;
-      user-select: none;
+      display: block;
+      width: 100%;
     }
 
-    :host([active]) {
-      border-color: var(--accent-red, #c4453c);
-      box-shadow: var(--elevation-2, 0 6px 14px rgba(0,0,0,.14));
+    .container {
+      width: 100%;
+      box-sizing: border-box;
     }
 
-    :host([disabled]) {
-      opacity: .55;
-      pointer-events: none;
+    :host([padded]) .container {
+      padding-left: var(--spacing-lg, 24px);
+      padding-right: var(--spacing-lg, 24px);
     }
 
-    .label { font-size: 0.92rem; }
+    :host([centered]) .container {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Max-width breakpoints */
+    :host([max-width="sm"]) .container  { max-width: 640px; }
+    :host([max-width="md"]) .container  { max-width: 768px; }
+    :host([max-width="lg"]) .container  { max-width: 1024px; }
+    :host([max-width="xl"]) .container  { max-width: 1280px; }
+    :host([max-width="2xl"]) .container { max-width: 1536px; }
+    :host([max-width="full"]) .container { max-width: 100%; }
+
+    /* Paper edge decoration */
+    :host([padded]) .container::before {
+      content: '';
+      display: block;
+      height: 3px;
+      background: linear-gradient(
+        90deg,
+        var(--accent-red, #c4453c) 0%,
+        var(--paper-border, #d9d0be) 100%
+      );
+      margin-bottom: var(--spacing-md, 16px);
+      border-radius: var(--radius-sm, 4px);
+      opacity: 0.4;
+    }
   `;
 
   constructor() {
     super();
-    this.label = 'p-container';
-    this.value = '';
-    this.active = false;
-    this.disabled = false;
-    this.setAttribute('tabindex', '0');
-    this.setAttribute('role', 'button');
+    this.maxWidth = 'lg';
+    this.centered = true;
+    this.fluid = false;
+    this.padded = false;
   }
-
-  connectedCallback() {
-    super.connectedCallback();
-    this.addEventListener('click', this._toggleActive);
-    this.addEventListener('keydown', this._handleKeydown);
-  }
-
-  disconnectedCallback() {
-    this.removeEventListener('click', this._toggleActive);
-    this.removeEventListener('keydown', this._handleKeydown);
-    super.disconnectedCallback();
-  }
-
-  _toggleActive = () => {
-    if (this.disabled) return;
-    this.active = !this.active;
-    this.emit('change', { active: this.active, value: this.value || this.label });
-  };
-
-  _handleKeydown = (event) => {
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      this._toggleActive();
-    }
-  };
 
   render() {
-    return html`<span class="label">${this.label}</span><slot></slot>`;
+    return html`
+      <div class="container" part="container">
+        <slot></slot>
+      </div>
+    `;
   }
 }
 

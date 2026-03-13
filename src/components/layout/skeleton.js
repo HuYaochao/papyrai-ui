@@ -1,79 +1,131 @@
+// Skeleton — loading placeholder with pulse/wave animation
+// Props: variant('text'|'circle'|'rect'), width, height, animation('pulse'|'wave'|'none'), lines
+
 import { PapyraiElement, html, css } from '../../core/base.js';
 
 export class PSkeleton extends PapyraiElement {
   static properties = {
-    label: { type: String },
-    value: { type: String },
-    active: { type: Boolean, reflect: true },
-    disabled: { type: Boolean, reflect: true }
+    variant:   { type: String, reflect: true },
+    width:     { type: String },
+    height:    { type: String },
+    animation: { type: String, reflect: true },
+    lines:     { type: Number }
   };
 
   static styles = css`
     :host {
-      display: inline-flex;
-      align-items: center;
+      display: block;
+    }
+
+    .skeleton {
+      background: var(--paper-aged, #ede6d6);
+      border-radius: var(--radius-sm, 4px);
+      overflow: hidden;
+      position: relative;
+    }
+
+    :host([variant="circle"]) .skeleton {
+      border-radius: 50%;
+    }
+
+    :host([animation="pulse"]) .skeleton {
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    :host([animation="wave"]) .skeleton::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255,255,255,0.4) 50%,
+        transparent 100%
+      );
+      animation: wave 1.5s ease-in-out infinite;
+    }
+
+    .lines-wrap {
+      display: flex;
+      flex-direction: column;
       gap: var(--spacing-sm, 8px);
-      padding: var(--spacing-sm, 8px) var(--spacing-md, 12px);
-      border-radius: var(--radius-md, 10px);
-      border: 1px solid var(--paper-border, #d9ccb8);
-      background: var(--paper-cream, #f8f1e5);
-      color: var(--ink-black, #1f1a15);
-      box-shadow: var(--elevation-1, 0 2px 8px rgba(0,0,0,.08));
-      font-family: var(--font-serif, serif);
-      cursor: pointer;
-      user-select: none;
     }
 
-    :host([active]) {
-      border-color: var(--accent-red, #c4453c);
-      box-shadow: var(--elevation-2, 0 6px 14px rgba(0,0,0,.14));
+    .line {
+      height: 14px;
+      border-radius: var(--radius-sm, 4px);
+      background: var(--paper-aged, #ede6d6);
+      position: relative;
+      overflow: hidden;
     }
 
-    :host([disabled]) {
-      opacity: .55;
-      pointer-events: none;
+    .line:last-child:not(:first-child) {
+      width: 70%;
     }
 
-    .label { font-size: 0.92rem; }
+    :host([animation="pulse"]) .line {
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    :host([animation="wave"]) .line::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255,255,255,0.4) 50%,
+        transparent 100%
+      );
+      animation: wave 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.4; }
+    }
+
+    @keyframes wave {
+      0%   { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
   `;
 
   constructor() {
     super();
-    this.label = 'p-skeleton';
-    this.value = '';
-    this.active = false;
-    this.disabled = false;
-    this.setAttribute('tabindex', '0');
-    this.setAttribute('role', 'button');
+    this.variant = 'rect';
+    this.width = '';
+    this.height = '';
+    this.animation = 'pulse';
+    this.lines = 1;
   }
 
-  connectedCallback() {
-    super.connectedCallback();
-    this.addEventListener('click', this._toggleActive);
-    this.addEventListener('keydown', this._handleKeydown);
-  }
-
-  disconnectedCallback() {
-    this.removeEventListener('click', this._toggleActive);
-    this.removeEventListener('keydown', this._handleKeydown);
-    super.disconnectedCallback();
-  }
-
-  _toggleActive = () => {
-    if (this.disabled) return;
-    this.active = !this.active;
-    this.emit('change', { active: this.active, value: this.value || this.label });
-  };
-
-  _handleKeydown = (event) => {
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      this._toggleActive();
+  _skeletonStyle() {
+    const styles = [];
+    if (this.variant === 'circle') {
+      const size = this.width || this.height || '40px';
+      styles.push(`width: ${size}`, `height: ${size}`);
+    } else {
+      if (this.width)  styles.push(`width: ${this.width}`);
+      if (this.height) styles.push(`height: ${this.height}`);
+      if (!this.height) styles.push('height: 16px');
     }
-  };
+    return styles.join(';');
+  }
 
   render() {
-    return html`<span class="label">${this.label}</span><slot></slot>`;
+    if (this.variant === 'text' || this.lines > 1) {
+      const count = Math.max(1, this.lines);
+      return html`
+        <div class="lines-wrap" part="lines">
+          ${Array.from({ length: count }, () => html`<div class="line"></div>`)}
+        </div>
+      `;
+    }
+
+    return html`
+      <div class="skeleton" style=${this._skeletonStyle()} part="skeleton"></div>
+    `;
   }
 }
 

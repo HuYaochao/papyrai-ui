@@ -1,79 +1,125 @@
+// Breadcrumb — navigation path with separator and current-page indicator
+// Props: items(Array of {label,href}), separator(string), maxItems(number)
+// Events: breadcrumb-click
+
 import { PapyraiElement, html, css } from '../../core/base.js';
 
 export class PBreadcrumb extends PapyraiElement {
   static properties = {
-    label: { type: String },
-    value: { type: String },
-    active: { type: Boolean, reflect: true },
-    disabled: { type: Boolean, reflect: true }
+    items:     { type: Array },
+    separator: { type: String },
+    maxItems:  { type: Number, attribute: 'max-items' }
   };
 
   static styles = css`
     :host {
-      display: inline-flex;
-      align-items: center;
-      gap: var(--spacing-sm, 8px);
-      padding: var(--spacing-sm, 8px) var(--spacing-md, 12px);
-      border-radius: var(--radius-md, 10px);
-      border: 1px solid var(--paper-border, #d9ccb8);
-      background: var(--paper-cream, #f8f1e5);
-      color: var(--ink-black, #1f1a15);
-      box-shadow: var(--elevation-1, 0 2px 8px rgba(0,0,0,.08));
+      display: block;
       font-family: var(--font-serif, serif);
-      cursor: pointer;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0;
+    }
+
+    .crumb {
+      display: flex;
+      align-items: center;
+    }
+
+    .crumb a,
+    .crumb span {
+      font-size: 0.875rem;
+      padding: var(--spacing-xs, 4px) var(--spacing-sm, 8px);
+      border-radius: var(--radius-sm, 4px);
+      text-decoration: none;
+      color: var(--accent-blue, #4a7c9b);
+      transition: background var(--transition-fast, 150ms) ease;
+      white-space: nowrap;
+    }
+
+    .crumb a:hover {
+      background: var(--paper-aged, #ede6d6);
+      color: var(--ink-black, #1a1612);
+    }
+
+    .crumb a:focus-visible {
+      outline: 2px solid var(--accent-red, #c4453c);
+      outline-offset: 1px;
+    }
+
+    .crumb.current span {
+      color: var(--ink-dark, #3a3530);
+      font-weight: 600;
+      cursor: default;
+    }
+
+    .sep {
+      color: var(--ink-light, #aaa5a0);
+      font-size: 0.8rem;
       user-select: none;
+      font-family: var(--font-handwrite, cursive);
     }
 
-    :host([active]) {
-      border-color: var(--accent-red, #c4453c);
-      box-shadow: var(--elevation-2, 0 6px 14px rgba(0,0,0,.14));
+    .ellipsis {
+      color: var(--ink-mid, #6a6560);
+      font-size: 0.875rem;
+      padding: var(--spacing-xs, 4px) var(--spacing-sm, 8px);
+      cursor: default;
     }
-
-    :host([disabled]) {
-      opacity: .55;
-      pointer-events: none;
-    }
-
-    .label { font-size: 0.92rem; }
   `;
 
   constructor() {
     super();
-    this.label = 'p-breadcrumb';
-    this.value = '';
-    this.active = false;
-    this.disabled = false;
-    this.setAttribute('tabindex', '0');
-    this.setAttribute('role', 'button');
+    this.items = [];
+    this.separator = '/';
+    this.maxItems = 0;
   }
 
-  connectedCallback() {
-    super.connectedCallback();
-    this.addEventListener('click', this._toggleActive);
-    this.addEventListener('keydown', this._handleKeydown);
+  _visibleItems() {
+    if (!this.maxItems || this.items.length <= this.maxItems) return this.items;
+    // Keep first + last (maxItems-1)
+    const keep = Math.max(1, this.maxItems - 1);
+    return [
+      ...this.items.slice(0, 1),
+      { label: '...', href: null, ellipsis: true },
+      ...this.items.slice(-(keep))
+    ];
   }
-
-  disconnectedCallback() {
-    this.removeEventListener('click', this._toggleActive);
-    this.removeEventListener('keydown', this._handleKeydown);
-    super.disconnectedCallback();
-  }
-
-  _toggleActive = () => {
-    if (this.disabled) return;
-    this.active = !this.active;
-    this.emit('change', { active: this.active, value: this.value || this.label });
-  };
-
-  _handleKeydown = (event) => {
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      this._toggleActive();
-    }
-  };
 
   render() {
-    return html`<span class="label">${this.label}</span><slot></slot>`;
+    const visible = this._visibleItems();
+    return html`
+      <nav aria-label="Breadcrumb">
+        <ol style="display:flex;align-items:center;gap:0;list-style:none;margin:0;padding:0;flex-wrap:wrap;">
+          ${visible.map((item, i) => {
+            const isLast = i === visible.length - 1;
+            if (item.ellipsis) {
+              return html`
+                <li class="crumb">
+                  <span class="ellipsis">…</span>
+                </li>
+                <li class="sep" aria-hidden="true">${this.separator}</li>
+              `;
+            }
+            return html`
+              <li class="crumb ${isLast ? 'current' : ''}">
+                ${isLast || !item.href
+                  ? html`<span aria-current=${isLast ? 'page' : 'false'}>${item.label}</span>`
+                  : html`<a href=${item.href}
+                             @click=${(e) => { e.preventDefault(); this.emit('breadcrumb-click', { item, index: i }); }}>
+                       ${item.label}
+                     </a>`
+                }
+              </li>
+              ${!isLast ? html`<li class="sep" aria-hidden="true">${this.separator}</li>` : ''}
+            `;
+          })}
+        </ol>
+      </nav>
+    `;
   }
 }
 

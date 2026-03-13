@@ -277,24 +277,24 @@ npm run preview   # live-server preview/
 - Steps: horizontal/vertical, current step, clickable completed steps, error state
 - Progress: linear/circular, determinate/indeterminate, label, color variants
 
-**S-17** Rewrite `card`, `container`, `skeleton`
+**S-17** ✅ Rewrite `card`, `container`, `skeleton`
 - Card: header/body/footer slots, paper texture background, elevation variants, clickable option
 - Container: max-width breakpoints, centered, fluid option, paper edge decoration
 - Skeleton: text/circle/rect shapes, animation (pulse/wave), custom width/height
 
-**S-18** Rewrite `accordion`, `alert`, `avatar`, `badge`, `divider`
+**S-18** ✅ Rewrite `accordion`, `alert`, `avatar`, `badge`, `divider`
 - Accordion: single/multi expand, animated open/close, icon rotation, keyboard enter/space
 - Alert: variants (info/success/warning/error), closable, icon, title + description
 - Avatar: image/initials/icon fallback, sizes, group stacking, status indicator
 - Badge: count, dot mode, color variants, max count with "99+"
 - Divider: horizontal/vertical, label slot, dashed/solid styles
 
-**S-19** Rewrite `dropdown`, `listbox`, `auto-complete`
+**S-19** ✅ Rewrite `dropdown`, `listbox`, `auto-complete`
 - Dropdown: trigger slot, menu with items/dividers/headers, keyboard navigation, nested submenus, placement (top/bottom/left/right)
 - Listbox: single/multi select, keyboard navigation, virtualized for long lists, option groups
 - Auto-complete: input + dropdown suggestions, async data source support, highlight matching text, debounced input
 
-**S-20** Rewrite `breadcrumb`, `chat-bubble`, `indicator`, `timeline`, `stack`
+**S-20** ✅ Rewrite `breadcrumb`, `chat-bubble`, `indicator`, `timeline`, `stack`
 - Breadcrumb: separator customization, overflow collapse, current page indicator
 - Chat-bubble: left/right alignment, tail direction, timestamp, avatar slot (different from ai-message — this is a generic bubble)
 - Indicator: dot/badge on any slotted element, position (top-right/top-left/bottom-right/bottom-left), pulse animation

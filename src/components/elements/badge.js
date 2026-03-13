@@ -1,79 +1,96 @@
+// Badge — count or status badge overlay
+// Props: count(number), dot(boolean), max(number,default 99), variant('default'|'primary'|'danger'|'success'|'warning')
+// Slot: default (element to badge)
+
 import { PapyraiElement, html, css } from '../../core/base.js';
 
 export class PBadge extends PapyraiElement {
   static properties = {
-    label: { type: String },
-    value: { type: String },
-    active: { type: Boolean, reflect: true },
-    disabled: { type: Boolean, reflect: true }
+    count:   { type: Number },
+    dot:     { type: Boolean, reflect: true },
+    max:     { type: Number },
+    variant: { type: String, reflect: true },
+    standalone: { type: Boolean, reflect: true }
   };
 
   static styles = css`
     :host {
       display: inline-flex;
-      align-items: center;
-      gap: var(--spacing-sm, 8px);
-      padding: var(--spacing-sm, 8px) var(--spacing-md, 12px);
-      border-radius: var(--radius-md, 10px);
-      border: 1px solid var(--paper-border, #d9ccb8);
-      background: var(--paper-cream, #f8f1e5);
-      color: var(--ink-black, #1f1a15);
-      box-shadow: var(--elevation-1, 0 2px 8px rgba(0,0,0,.08));
-      font-family: var(--font-serif, serif);
-      cursor: pointer;
-      user-select: none;
+      position: relative;
+      vertical-align: middle;
     }
 
-    :host([active]) {
-      border-color: var(--accent-red, #c4453c);
-      box-shadow: var(--elevation-2, 0 6px 14px rgba(0,0,0,.14));
-    }
-
-    :host([disabled]) {
-      opacity: .55;
+    .badge {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      min-width: 18px;
+      height: 18px;
+      padding: 0 5px;
+      border-radius: 9px;
+      font-family: var(--font-mono, monospace);
+      font-size: 0.65rem;
+      font-weight: 700;
+      line-height: 18px;
+      text-align: center;
+      white-space: nowrap;
+      border: 2px solid var(--paper-white, #fdfbf7);
+      background: var(--ink-mid, #6a6560);
+      color: var(--paper-white, #fdfbf7);
       pointer-events: none;
     }
 
-    .label { font-size: 0.92rem; }
+    :host([variant="primary"]) .badge { background: var(--accent-blue, #4a7c9b); }
+    :host([variant="danger"])  .badge { background: var(--accent-red, #c4453c); }
+    :host([variant="success"]) .badge { background: var(--accent-green, #5a8a5a); }
+    :host([variant="warning"]) .badge { background: var(--accent-amber, #c49a3c); color: var(--ink-black, #1a1612); }
+
+    :host([dot]) .badge {
+      min-width: 10px;
+      width: 10px;
+      height: 10px;
+      padding: 0;
+      border-radius: 50%;
+      font-size: 0;
+    }
+
+    :host([standalone]) .badge {
+      position: static;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
   `;
 
   constructor() {
     super();
-    this.label = 'p-badge';
-    this.value = '';
-    this.active = false;
-    this.disabled = false;
-    this.setAttribute('tabindex', '0');
-    this.setAttribute('role', 'button');
+    this.count = 0;
+    this.dot = false;
+    this.max = 99;
+    this.variant = 'danger';
+    this.standalone = false;
   }
 
-  connectedCallback() {
-    super.connectedCallback();
-    this.addEventListener('click', this._toggleActive);
-    this.addEventListener('keydown', this._handleKeydown);
+  _displayCount() {
+    if (this.dot) return '';
+    if (this.count > this.max) return `${this.max}+`;
+    return String(this.count);
   }
 
-  disconnectedCallback() {
-    this.removeEventListener('click', this._toggleActive);
-    this.removeEventListener('keydown', this._handleKeydown);
-    super.disconnectedCallback();
+  _shouldShow() {
+    if (this.dot) return true;
+    return this.count > 0;
   }
-
-  _toggleActive = () => {
-    if (this.disabled) return;
-    this.active = !this.active;
-    this.emit('change', { active: this.active, value: this.value || this.label });
-  };
-
-  _handleKeydown = (event) => {
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      this._toggleActive();
-    }
-  };
 
   render() {
-    return html`<span class="label">${this.label}</span><slot></slot>`;
+    return html`
+      <slot></slot>
+      ${this._shouldShow() ? html`
+        <span class="badge" part="badge" aria-label=${this.count > this.max ? `${this.max}+ items` : `${this.count} items`}>
+          ${this._displayCount()}
+        </span>
+      ` : ''}
+    `;
   }
 }
 

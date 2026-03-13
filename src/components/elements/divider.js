@@ -1,79 +1,83 @@
+// Divider — horizontal or vertical separator line with optional label
+// Props: orientation('horizontal'|'vertical'), dashed, label(string)
+// Slot: default (label content)
+
 import { PapyraiElement, html, css } from '../../core/base.js';
 
 export class PDivider extends PapyraiElement {
   static properties = {
-    label: { type: String },
-    value: { type: String },
-    active: { type: Boolean, reflect: true },
-    disabled: { type: Boolean, reflect: true }
+    orientation: { type: String, reflect: true },
+    dashed:      { type: Boolean, reflect: true },
+    label:       { type: String }
   };
 
   static styles = css`
     :host {
-      display: inline-flex;
+      display: flex;
       align-items: center;
-      gap: var(--spacing-sm, 8px);
-      padding: var(--spacing-sm, 8px) var(--spacing-md, 12px);
-      border-radius: var(--radius-md, 10px);
-      border: 1px solid var(--paper-border, #d9ccb8);
-      background: var(--paper-cream, #f8f1e5);
-      color: var(--ink-black, #1f1a15);
-      box-shadow: var(--elevation-1, 0 2px 8px rgba(0,0,0,.08));
       font-family: var(--font-serif, serif);
-      cursor: pointer;
-      user-select: none;
     }
 
-    :host([active]) {
-      border-color: var(--accent-red, #c4453c);
-      box-shadow: var(--elevation-2, 0 6px 14px rgba(0,0,0,.14));
+    :host([orientation="vertical"]) {
+      flex-direction: column;
+      align-self: stretch;
+      width: auto;
     }
 
-    :host([disabled]) {
-      opacity: .55;
-      pointer-events: none;
+    .line {
+      flex: 1;
+      border: none;
+      border-top: 1px solid var(--paper-border, #d9d0be);
     }
 
-    .label { font-size: 0.92rem; }
+    :host([dashed]) .line {
+      border-top-style: dashed;
+    }
+
+    :host([orientation="vertical"]) .line {
+      border-top: none;
+      border-left: 1px solid var(--paper-border, #d9d0be);
+      width: 0;
+    }
+
+    :host([orientation="vertical"][dashed]) .line {
+      border-left-style: dashed;
+    }
+
+    .label-slot {
+      padding: 0 var(--spacing-md, 16px);
+      font-size: 0.8rem;
+      color: var(--ink-light, #aaa5a0);
+      font-family: var(--font-handwrite, cursive);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    :host([orientation="vertical"]) .label-slot {
+      padding: var(--spacing-sm, 8px) 0;
+      writing-mode: vertical-rl;
+    }
   `;
 
   constructor() {
     super();
-    this.label = 'p-divider';
-    this.value = '';
-    this.active = false;
-    this.disabled = false;
-    this.setAttribute('tabindex', '0');
-    this.setAttribute('role', 'button');
+    this.orientation = 'horizontal';
+    this.dashed = false;
+    this.label = '';
   }
-
-  connectedCallback() {
-    super.connectedCallback();
-    this.addEventListener('click', this._toggleActive);
-    this.addEventListener('keydown', this._handleKeydown);
-  }
-
-  disconnectedCallback() {
-    this.removeEventListener('click', this._toggleActive);
-    this.removeEventListener('keydown', this._handleKeydown);
-    super.disconnectedCallback();
-  }
-
-  _toggleActive = () => {
-    if (this.disabled) return;
-    this.active = !this.active;
-    this.emit('change', { active: this.active, value: this.value || this.label });
-  };
-
-  _handleKeydown = (event) => {
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      this._toggleActive();
-    }
-  };
 
   render() {
-    return html`<span class="label">${this.label}</span><slot></slot>`;
+    const hasLabel = this.label || this.querySelector(':not([slot])');
+    return html`
+      <div class="line" part="line-start" role="separator"
+           aria-orientation=${this.orientation}></div>
+      ${hasLabel || this.label ? html`
+        <span class="label-slot" part="label">
+          ${this.label}<slot></slot>
+        </span>
+        <div class="line" part="line-end"></div>
+      ` : ''}
+    `;
   }
 }
 
