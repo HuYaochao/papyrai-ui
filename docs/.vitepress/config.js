@@ -7,6 +7,7 @@ export default defineConfig({
   appearance: true,
   lastUpdated: true,
   cleanUrls: true,
+  base: '/papyrai-ui/',  // 改为你的仓库名
 
   head: [
     ['link', { rel: 'icon', href: '/favicon.ico' }],
@@ -79,16 +80,16 @@ export default defineConfig({
     },
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/your-repo/papyrai-ui' }
+      { icon: 'github', link: 'https://github.com/HuYaochao/papyrai-ui' }
     ],
 
     footer: {
       message: 'Released under the MIT License.',
-      copyright: 'Copyright © 2024 papyrai-ui'
+      copyright: 'Copyright © 2026 papyrai-ui'
     },
 
     editLink: {
-      repo: 'your-repo/papyrai-ui',
+      repo: 'HuYaochao/papyrai-ui',
       docsDir: 'docs'
     },
 
