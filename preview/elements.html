@@ -4,42 +4,280 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Elements - papyrai-ui</title>
+  <script type="importmap">
+  {
+    "imports": {
+      "lit": "https://cdn.jsdelivr.net/npm/lit@3.1.0/+esm",
+      "lit-html": "https://cdn.jsdelivr.net/npm/lit-html@3.1.0/+esm",
+      "@lit/reactive-element": "https://cdn.jsdelivr.net/npm/@lit/reactive-element@2.1.2/+esm"
+    }
+  }
+  </script>
   <link rel="stylesheet" href="../src/core/styles.css">
   <style>
     body { font-family: var(--font-serif); background: var(--paper-white); color: var(--ink-black); margin: 0; padding: 20px; }
-    h1 { font-family: var(--font-handwrite); margin: 8px 0 16px; }
-    .back { color: var(--accent-red); text-decoration: none; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(220px,1fr)); gap: 12px; margin-top: 16px; }
+    h1 { font-family: var(--font-handwrite); margin: 8px 0 4px; font-size: 2rem; }
+    h2 { font-family: var(--font-handwrite); margin: 24px 0 8px; font-size: 1.3rem; color: var(--ink-dark); border-bottom: 1px solid var(--paper-border); padding-bottom: 4px; }
+    .back { color: var(--accent-red); text-decoration: none; font-size: 0.9rem; }
+    .demo { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; margin-bottom: 8px; }
+    .theme-btn { position: fixed; top: 12px; right: 16px; background: var(--paper-cream); border: 1px solid var(--paper-border); border-radius: 8px; padding: 6px 14px; cursor: pointer; font-family: var(--font-handwrite); font-size: 1rem; }
   </style>
 </head>
 <body>
   <a href="index.html" class="back">← 返回首页</a>
   <h1>Elements</h1>
-  <p>已接入 22 个组件示例（点击或回车可触发切换状态）。</p>
-  <div class="grid">
-    <p-accordion label="accordion"></p-accordion>
-    <p-alert label="alert"></p-alert>
-    <p-avatar label="avatar"></p-avatar>
-    <p-badge label="badge"></p-badge>
+  <button class="theme-btn" onclick="const h=document.documentElement;const d=h.getAttribute('data-theme')==='dark';h.setAttribute('data-theme',d?'light':'dark');localStorage.setItem('theme',d?'light':'dark')">🌓 Theme</button>
+
+  <!-- ======================== S-18 ======================== -->
+  <h2>p-accordion — Collapsible sections</h2>
+  <div class="demo" style="flex-direction:column;max-width:480px">
+    <p-accordion label="What is papyrai-ui?">
+      A framework-agnostic paper-style Web Components library designed for AI applications.
+    </p-accordion>
+    <p-accordion label="How to install?" open>
+      Run <code>npm install papyrai-ui</code> then import any component you need.
+    </p-accordion>
+    <p-accordion label="Disabled section" disabled>
+      This content is not accessible.
+    </p-accordion>
+  </div>
+
+  <h2>p-alert — Informational messages</h2>
+  <div class="demo" style="flex-direction:column;max-width:480px">
+    <p-alert variant="info" title="Info">This is an informational alert message.</p-alert>
+    <p-alert variant="success" title="Success" closable>Operation completed successfully!</p-alert>
+    <p-alert variant="warning" title="Warning" closable>Please review before proceeding.</p-alert>
+    <p-alert variant="error" title="Error">Something went wrong. Please try again.</p-alert>
+  </div>
+
+  <h2>p-avatar — User avatars</h2>
+  <div class="demo" style="align-items:center">
+    <p-avatar name="Alice Wang" size="xl" status="online"></p-avatar>
+    <p-avatar name="Bob Smith" size="lg" status="busy"></p-avatar>
+    <p-avatar name="Carol" size="md" status="away"></p-avatar>
+    <p-avatar size="sm" status="offline"></p-avatar>
+    <p-avatar size="xs"></p-avatar>
+    <p-avatar name="Square" size="md" shape="square" status="online"></p-avatar>
+    <p-avatar src="https://i.pravatar.cc/100" name="Remote" size="lg" status="online"></p-avatar>
+  </div>
+
+  <h2>p-badge — Count / dot badges</h2>
+  <div class="demo" style="align-items:center;gap:32px">
+    <p-badge count="5" variant="danger">
+      <p-button>Messages</p-button>
+    </p-badge>
+    <p-badge count="128" max="99" variant="primary">
+      <p-button>Notifications</p-button>
+    </p-badge>
+    <p-badge dot pulse variant="success">
+      <p-button>Online</p-button>
+    </p-badge>
+    <p-badge count="3" variant="warning">
+      <p-avatar name="User" size="md"></p-avatar>
+    </p-badge>
+  </div>
+
+  <h2>p-divider — Separator lines</h2>
+  <div class="demo" style="flex-direction:column;max-width:480px">
+    <p-divider></p-divider>
+    <p-divider label="OR"></p-divider>
+    <p-divider dashed label="Section End"></p-divider>
+    <div style="display:flex;height:60px;align-items:center;gap:16px">
+      <span>Left</span>
+      <p-divider orientation="vertical" style="height:40px"></p-divider>
+      <span>Right</span>
+      <p-divider orientation="vertical" dashed style="height:40px"></p-divider>
+      <span>Far</span>
+    </div>
+  </div>
+
+  <!-- ======================== S-19 ======================== -->
+  <h2>p-dropdown — Floating menu</h2>
+  <div class="demo">
+    <p-dropdown>
+      <p-button slot="trigger">Open Menu ▾</p-button>
+      <div style="padding:8px 0">
+        <div style="padding:8px 16px;cursor:pointer;font-size:.9rem" role="menuitem">Edit</div>
+        <div style="padding:8px 16px;cursor:pointer;font-size:.9rem" role="menuitem">Duplicate</div>
+        <hr style="margin:4px 0;border:none;border-top:1px solid var(--paper-border)">
+        <div style="padding:8px 16px;cursor:pointer;font-size:.9rem;color:var(--accent-red)" role="menuitem">Delete</div>
+      </div>
+    </p-dropdown>
+
+    <p-dropdown placement="top">
+      <p-button slot="trigger" variant="ghost">Top Placement ▴</p-button>
+      <div style="padding:8px 16px;font-size:.9rem">Opens upward</div>
+    </p-dropdown>
+
+    <p-dropdown trigger="hover">
+      <p-button slot="trigger" variant="primary">Hover me ↓</p-button>
+      <div style="padding:8px 16px;font-size:.9rem">Hover to open</div>
+    </p-dropdown>
+  </div>
+
+  <h2>p-listbox — Option list with keyboard navigation</h2>
+  <div class="demo">
+    <p-listbox
+      id="lb1"
+      style="width:200px"
+      .options=${JSON.stringify(['Fountain Pen','Quill Pen','Ballpoint','Marker','Pencil'])}
+    ></p-listbox>
+
+    <p-listbox
+      id="lb2"
+      style="width:220px"
+      multiple
+      searchable
+      .options=${JSON.stringify([
+        {label:'React',value:'react'},{label:'Vue',value:'vue'},
+        {label:'Svelte',value:'svelte'},{label:'Angular',value:'angular'},
+        {label:'Lit',value:'lit'},{label:'Solid',value:'solid'}
+      ])}
+    ></p-listbox>
+  </div>
+
+  <h2>p-auto-complete — Search with suggestions</h2>
+  <div class="demo">
+    <p-auto-complete
+      id="ac1"
+      label="Search countries"
+      placeholder="Type a country..."
+      style="width:240px"
+    ></p-auto-complete>
+    <p-auto-complete
+      id="ac2"
+      label="Choose framework"
+      placeholder="Type to filter..."
+      style="width:220px"
+      min-chars="0"
+    ></p-auto-complete>
+  </div>
+
+  <!-- ======================== S-20 ======================== -->
+  <h2>p-breadcrumb — Navigation path</h2>
+  <div class="demo" style="flex-direction:column">
+    <p-breadcrumb
+      .items=${JSON.stringify([
+        {label:'Home',href:'/'},
+        {label:'Components',href:'/components'},
+        {label:'Elements',href:'/components/elements'},
+        {label:'Breadcrumb'}
+      ])}
+    ></p-breadcrumb>
+    <p-breadcrumb
+      separator=">"
+      .items=${JSON.stringify([
+        {label:'papyrai-ui',href:'/'},
+        {label:'Docs',href:'/docs'},
+        {label:'Getting Started'}
+      ])}
+    ></p-breadcrumb>
+  </div>
+
+  <h2>p-chat-bubble — Generic chat bubble</h2>
+  <div class="demo" style="flex-direction:column;max-width:500px">
+    <p-chat-bubble name="Alice" timestamp="10:32 AM">
+      <p-avatar slot="avatar" name="Alice" size="sm"></p-avatar>
+      Hello! How are you doing today?
+    </p-chat-bubble>
+    <p-chat-bubble align="right" name="Bob" timestamp="10:33 AM">
+      <p-avatar slot="avatar" name="Bob" size="sm"></p-avatar>
+      I'm doing great, thanks! Working on papyrai-ui.
+    </p-chat-bubble>
+    <p-chat-bubble name="Alice" timestamp="10:34 AM" variant="paper">
+      <p-avatar slot="avatar" name="Alice" size="sm"></p-avatar>
+      Paper variant looks so elegant!
+    </p-chat-bubble>
+  </div>
+
+  <h2>p-indicator — Badge overlay on any element</h2>
+  <div class="demo" style="align-items:center;gap:40px">
+    <p-indicator count="3" variant="danger">
+      <p-avatar name="User" size="md"></p-avatar>
+    </p-indicator>
+    <p-indicator count="99" max="99" variant="primary" position="top-left">
+      <p-button>Messages</p-button>
+    </p-indicator>
+    <p-indicator dot pulse variant="success" position="bottom-right">
+      <p-avatar name="Online" size="md" status="online"></p-avatar>
+    </p-indicator>
+    <p-indicator count="7" variant="warning">
+      <p-button variant="ghost">Tasks</p-button>
+    </p-indicator>
+  </div>
+
+  <h2>p-timeline — Event timeline</h2>
+  <div class="demo">
+    <p-timeline id="tl1" style="max-width:360px"></p-timeline>
+  </div>
+
+  <h2>p-stack — Z-stacked overlapping elements</h2>
+  <div class="demo" style="gap:60px;padding:20px">
+    <p-stack offset="10" direction="bottom">
+      <p-card style="width:120px;height:80px"><span slot="header">Card 1</span></p-card>
+      <p-card style="width:120px;height:80px"><span slot="header">Card 2</span></p-card>
+      <p-card style="width:120px;height:80px"><span slot="header">Card 3</span></p-card>
+    </p-stack>
+
+    <p-stack offset="14" direction="bottom" fan-on-hover>
+      <p-card variant="elevated" style="width:100px;height:70px"><span slot="header">Fan 1</span></p-card>
+      <p-card variant="elevated" style="width:100px;height:70px"><span slot="header">Fan 2</span></p-card>
+      <p-card variant="elevated" style="width:100px;height:70px"><span slot="header">Fan 3</span></p-card>
+    </p-stack>
+
+    <div style="display:flex;align-items:center;gap:8px">
+      <p-stack offset="8" direction="right">
+        <p-avatar name="Alice" size="md"></p-avatar>
+        <p-avatar name="Bob" size="md"></p-avatar>
+        <p-avatar name="Carol" size="md"></p-avatar>
+        <p-avatar name="Dave" size="md"></p-avatar>
+      </p-stack>
+      <small style="color:var(--ink-mid)">Avatar group</small>
+    </div>
+  </div>
+
+  <!-- Also show remaining placeholder components -->
+  <h2>Other elements (placeholders)</h2>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-top:8px">
     <p-button label="button"></p-button>
     <p-select-button label="select-button"></p-select-button>
     <p-toggle-button label="toggle-button"></p-toggle-button>
-    <p-breadcrumb label="breadcrumb"></p-breadcrumb>
     <p-carousel label="carousel"></p-carousel>
-    <p-chat-bubble label="chat-bubble"></p-chat-bubble>
-    <p-divider label="divider"></p-divider>
-    <p-dropdown label="dropdown"></p-dropdown>
-    <p-listbox label="listbox"></p-listbox>
-    <p-indicator label="indicator"></p-indicator>
     <p-mockup label="mockup"></p-mockup>
     <p-panel-splitter label="panel-splitter"></p-panel-splitter>
     <p-qr-code label="qr-code"></p-qr-code>
     <p-keyboard-key label="keyboard-key"></p-keyboard-key>
     <p-scroll-bar label="scroll-bar"></p-scroll-bar>
     <p-speed-dial label="speed-dial"></p-speed-dial>
-    <p-stack label="stack"></p-stack>
-    <p-timeline label="timeline"></p-timeline>
   </div>
+
   <script type="module" src="../src/index.js"></script>
+  <script>
+    // Wire up listbox options via property (can't use JSON in attribute for complex data)
+    document.addEventListener('DOMContentLoaded', () => {
+      const lb1 = document.getElementById('lb1');
+      if (lb1) lb1.options = ['Fountain Pen','Quill Pen','Ballpoint','Marker','Pencil'];
+
+      const lb2 = document.getElementById('lb2');
+      if (lb2) lb2.options = [
+        {label:'React',value:'react'},{label:'Vue',value:'vue'},
+        {label:'Svelte',value:'svelte'},{label:'Angular',value:'angular'},
+        {label:'Lit',value:'lit'},{label:'Solid',value:'solid'}
+      ];
+
+      const ac1 = document.getElementById('ac1');
+      if (ac1) ac1.options = ['Argentina','Australia','Brazil','Canada','China','Denmark','Egypt','France','Germany','India','Japan','Mexico','Netherlands','Norway','South Korea','Spain','Sweden','United Kingdom','United States'];
+
+      const ac2 = document.getElementById('ac2');
+      if (ac2) ac2.options = ['React','Vue','Svelte','Angular','Lit','Solid','Preact','Qwik','Astro','Remix'];
+
+      const tl1 = document.getElementById('tl1');
+      if (tl1) tl1.items = [
+        { title: 'Project Created', content: 'papyrai-ui scaffolded with Rollup + Lit.', date: 'Jan 2024' },
+        { title: 'AI Components', content: '9 production-quality AI-specific components implemented.', date: 'Feb 2024' },
+        { title: 'Base Components', content: 'Second batch of 13 real component rewrites.', date: 'Mar 2024', icon: '★' },
+      ];
+    });
+  </script>
 </body>
 </html>

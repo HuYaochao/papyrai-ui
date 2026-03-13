@@ -4,23 +4,70 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Layout - papyrai-ui</title>
+  <script type="importmap">
+  {
+    "imports": {
+      "lit": "https://cdn.jsdelivr.net/npm/lit@3.1.0/+esm",
+      "lit-html": "https://cdn.jsdelivr.net/npm/lit-html@3.1.0/+esm",
+      "@lit/reactive-element": "https://cdn.jsdelivr.net/npm/@lit/reactive-element@2.1.2/+esm"
+    }
+  }
+  </script>
   <link rel="stylesheet" href="../src/core/styles.css">
   <style>
     body { font-family: var(--font-serif); background: var(--paper-white); color: var(--ink-black); margin: 0; padding: 20px; }
-    h1 { font-family: var(--font-handwrite); margin: 8px 0 16px; }
-    .back { color: var(--accent-red); text-decoration: none; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(220px,1fr)); gap: 12px; margin-top: 16px; }
+    h1 { font-family: var(--font-handwrite); margin: 8px 0 4px; font-size: 2rem; }
+    h2 { font-family: var(--font-handwrite); margin: 24px 0 8px; font-size: 1.3rem; color: var(--ink-dark); }
+    .back { color: var(--accent-red); text-decoration: none; font-size: 0.9rem; }
+    .demo { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; margin-bottom: 8px; }
+    .theme-btn { position: fixed; top: 12px; right: 16px; background: var(--paper-cream); border: 1px solid var(--paper-border); border-radius: 8px; padding: 6px 14px; cursor: pointer; font-family: var(--font-handwrite); font-size: 1rem; }
   </style>
 </head>
 <body>
   <a href="index.html" class="back">← 返回首页</a>
   <h1>Layout</h1>
-  <p>已接入 3 个组件示例（点击或回车可触发切换状态）。</p>
-  <div class="grid">
-    <p-card label="card"></p-card>
-    <p-container label="container"></p-container>
-    <p-skeleton label="skeleton"></p-skeleton>
+  <button class="theme-btn" onclick="const h=document.documentElement;const d=h.getAttribute('data-theme')==='dark';h.setAttribute('data-theme',d?'light':'dark');localStorage.setItem('theme',d?'light':'dark')">🌓 Theme</button>
+
+  <h2>p-card — Paper card with header/body/footer</h2>
+  <div class="demo">
+    <p-card style="width:220px">
+      <span slot="header">Card Title</span>
+      This is the card body content. Paper texture background.
+      <span slot="footer">Footer info</span>
+    </p-card>
+
+    <p-card variant="elevated" folded style="width:200px">
+      <span slot="header">Elevated + Folded</span>
+      Card with dog-ear corner fold.
+    </p-card>
+
+    <p-card variant="outlined" clickable style="width:180px">
+      <span slot="header">Outlined + Clickable</span>
+      Click me to emit card-click.
+    </p-card>
   </div>
+
+  <h2>p-container — Responsive layout container</h2>
+  <div class="demo" style="flex-direction:column">
+    <p-container max-width="sm" centered padded style="border:1px dashed var(--paper-border)">
+      <p style="margin:0">max-width=sm, centered, padded — content inside</p>
+    </p-container>
+    <p-container max-width="md" centered style="border:1px dashed var(--paper-border)">
+      <p style="margin:0">max-width=md, centered — no padding decoration</p>
+    </p-container>
+  </div>
+
+  <h2>p-skeleton — Loading placeholders</h2>
+  <div class="demo" style="flex-direction:column;max-width:300px">
+    <p-skeleton variant="rect" width="300px" height="120px" animation="wave"></p-skeleton>
+    <p-skeleton variant="text" lines="3" animation="pulse"></p-skeleton>
+    <div style="display:flex;gap:12px;align-items:center">
+      <p-skeleton variant="circle" width="48px" animation="pulse"></p-skeleton>
+      <p-skeleton variant="text" lines="2" style="flex:1" animation="wave"></p-skeleton>
+    </div>
+    <p-skeleton variant="rect" width="100%" height="40px" animation="none"></p-skeleton>
+  </div>
+
   <script type="module" src="../src/index.js"></script>
 </body>
 </html>
