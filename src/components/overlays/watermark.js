@@ -1,79 +1,109 @@
+// Watermark - 水印
+// Features: 重复对角线文字, 可配置透明度/旋转/间距, canvas渲染性能
+
 import { PapyraiElement, html, css } from '../../core/base.js';
 
 export class PWatermark extends PapyraiElement {
   static properties = {
-    label: { type: String },
-    value: { type: String },
-    active: { type: Boolean, reflect: true },
-    disabled: { type: Boolean, reflect: true }
+    text: { type: String },
+    rotate: { type: Number },
+    opacity: { type: Number },
+    gap: { type: Number },
+    fontSize: { type: Number },
+    color: { type: String }
   };
 
   static styles = css`
     :host {
-      display: inline-flex;
-      align-items: center;
-      gap: var(--spacing-sm, 8px);
-      padding: var(--spacing-sm, 8px) var(--spacing-md, 12px);
-      border-radius: var(--radius-md, 10px);
-      border: 1px solid var(--paper-border, #d9ccb8);
-      background: var(--paper-cream, #f8f1e5);
-      color: var(--ink-black, #1f1a15);
-      box-shadow: var(--elevation-1, 0 2px 8px rgba(0,0,0,.08));
-      font-family: var(--font-serif, serif);
-      cursor: pointer;
-      user-select: none;
+      display: block;
+      position: relative;
+      overflow: hidden;
     }
 
-    :host([active]) {
-      border-color: var(--accent-red, #c4453c);
-      box-shadow: var(--elevation-2, 0 6px 14px rgba(0,0,0,.14));
-    }
-
-    :host([disabled]) {
-      opacity: .55;
+    .watermark-canvas {
+      position: absolute;
+      inset: 0;
       pointer-events: none;
+      z-index: 1;
     }
-
-    .label { font-size: 0.92rem; }
   `;
 
   constructor() {
     super();
-    this.label = 'p-watermark';
-    this.value = '';
-    this.active = false;
-    this.disabled = false;
-    this.setAttribute('tabindex', '0');
-    this.setAttribute('role', 'button');
+    this.text = 'PAPYRAI';
+    this.rotate = -30;
+    this.opacity = 0.08;
+    this.gap = 100;
+    this.fontSize = 24;
+    this.color = '#000000';
+    this._resizeObserver = null;
   }
 
   connectedCallback() {
     super.connectedCallback();
-    this.addEventListener('click', this._toggleActive);
-    this.addEventListener('keydown', this._handleKeydown);
+    this._renderWatermark();
+    this._resizeObserver = new ResizeObserver(() => {
+      this._renderWatermark();
+    });
+    this._resizeObserver.observe(this);
   }
 
   disconnectedCallback() {
-    this.removeEventListener('click', this._toggleActive);
-    this.removeEventListener('keydown', this._handleKeydown);
     super.disconnectedCallback();
+    if (this._resizeObserver) {
+      this._resizeObserver.disconnect();
+    }
   }
 
-  _toggleActive = () => {
-    if (this.disabled) return;
-    this.active = !this.active;
-    this.emit('change', { active: this.active, value: this.value || this.label });
-  };
-
-  _handleKeydown = (event) => {
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      this._toggleActive();
+  updated(changedProperties) {
+    if (['text', 'rotate', 'opacity', 'gap', 'fontSize', 'color'].some(p => changedProperties.has(p))) {
+      this._renderWatermark();
     }
-  };
+  }
+
+  _renderWatermark() {
+    const canvas = this.shadowRoot?.querySelector('.watermark-canvas');
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    const rect = this.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
+    canvas.style.width = `${rect.width}px`;
+    canvas.style.height = `${rect.height}px`;
+
+    ctx.scale(dpr, dpr);
+    ctx.clearRect(0, 0, rect.width, rect.height);
+
+    ctx.globalAlpha = this.opacity;
+    ctx.fillStyle = this.color;
+    ctx.font = `${this.fontSize}px var(--font-handwrite, cursive)`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    const diagonal = Math.sqrt(rect.width ** 2 + rect.height ** 2);
+    const cols = Math.ceil(diagonal / this.gap) + 2;
+    const rows = Math.ceil(diagonal / this.gap) + 2;
+
+    ctx.save();
+    ctx.translate(rect.width / 2, rect.height / 2);
+    ctx.rotate(this.rotate * Math.PI / 180);
+
+    for (let row = -rows; row <= rows; row++) {
+      for (let col = -cols; col <= cols; col++) {
+        const x = col * this.gap;
+        const y = row * this.gap;
+        ctx.fillText(this.text, x, y);
+      }
+    }
+
+    ctx.restore();
+  }
 
   render() {
-    return html`<span class="label">${this.label}</span><slot></slot>`;
+    return html`<canvas class="watermark-canvas"></canvas><slot></slot>`;
   }
 }
 

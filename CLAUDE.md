@@ -301,20 +301,20 @@ npm run preview   # live-server preview/
 - Timeline: vertical/horizontal, alternating sides, icon per item, connector line
 - Stack: z-stack of overlapping elements, configurable offset, hover-to-fan
 
-**S-21** Rewrite `otp-input`, `input-chips`, `input-mask`, `knob`, `password-indicator`
+**S-21** ✅ Rewrite `otp-input`, `input-chips`, `input-mask`, `knob`, `password-indicator`
 - OTP input: N digit boxes, auto-focus next, paste support, backspace to previous
 - Input chips: tag/chip list with add/remove, input for new chips, max count
 - Input mask: phone/date/credit-card format masks, custom mask patterns
 - Knob: rotary dial input, min/max/step, visual arc indicator, drag + scroll input
 - Password indicator: strength meter (weak/fair/strong/very-strong), color bar, rules checklist
 
-**S-22** Rewrite `swap`, `signature-pad`, `file-input`, `rich-text-editor`
+**S-22** ✅ Rewrite `swap`, `signature-pad`, `file-input`, `rich-text-editor`
 - Swap: animate between two states (icon swap, text swap), transition effects (rotate/flip/fade)
 - Signature pad: canvas-based drawing, pen pressure simulation, clear button, export as PNG/SVG
 - File input: drag-and-drop zone, file type filter, preview thumbnails, multiple files, size limit
 - Rich text editor: basic toolbar (bold/italic/underline/list/link), contenteditable-based, output HTML
 
-**S-23** Rewrite `bottom-tabs`, `command-palette`, `dock`, `scroll-spy`, `scroll-top`, `vertical-navigation`
+**S-23** ✅ Rewrite `bottom-tabs`, `command-palette`, `dock`, `scroll-spy`, `scroll-top`, `vertical-navigation`
 - Bottom tabs: mobile-style fixed bottom bar, icon + label, badge support, active indicator
 - Command palette: Cmd+K overlay, fuzzy search, keyboard navigation, grouped results, recent items
 - Dock: macOS-style magnifying dock, icon slots, tooltip on hover
@@ -322,7 +322,7 @@ npm run preview   # live-server preview/
 - Scroll top: floating button appears after scroll threshold, smooth scroll to top, customizable icon
 - Vertical navigation: sidebar nav with sections, collapsible groups, active item indicator, icon support
 
-**S-24** Rewrite `popover`, `tooltip`, `context-menu`, `slideover`, `tour`, `watermark`
+**S-24** ✅ Rewrite `popover`, `tooltip`, `context-menu`, `slideover`, `tour`, `watermark`
 - Popover: trigger click/hover, placement auto-flip, arrow, close on outside click, focus trap
 - Tooltip: trigger hover/focus, placement, delay, rich content support
 - Context menu: right-click trigger, nested submenus, keyboard navigation, dividers
@@ -330,7 +330,7 @@ npm run preview   # live-server preview/
 - Tour: step-by-step product tour, highlight target element, popover with prev/next/skip, overlay mask
 - Watermark: repeating diagonal text overlay, configurable opacity/rotation/gap, canvas-rendered for performance
 
-**S-25** Rewrite `order-list`, `pick-list`, `virtual-scroller`
+**S-25** ✅ Rewrite `order-list`, `pick-list`, `virtual-scroller`
 - Order list: drag-and-drop reorder, handle grip icon, keyboard reorder (alt+arrow), numbered
 - Pick list: dual-list transfer (available → selected), search filter, move all/selected buttons
 - Virtual scroller: render only visible items, dynamic item height support, scroll-to-index API

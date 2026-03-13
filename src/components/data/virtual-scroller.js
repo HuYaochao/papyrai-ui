@@ -1,79 +1,125 @@
+// Virtual Scroller - 虚拟滚动
+// Features: 只渲染可见项, 动态项高支持, scrollToIndex API
+
 import { PapyraiElement, html, css } from '../../core/base.js';
 
 export class PVirtualScroller extends PapyraiElement {
   static properties = {
-    label: { type: String },
-    value: { type: String },
-    active: { type: Boolean, reflect: true },
-    disabled: { type: Boolean, reflect: true }
+    items: { type: Array },
+    itemHeight: { type: Number },
+    overscan: { type: Number },
+    height: { type: String }
   };
 
   static styles = css`
     :host {
-      display: inline-flex;
-      align-items: center;
-      gap: var(--spacing-sm, 8px);
-      padding: var(--spacing-sm, 8px) var(--spacing-md, 12px);
-      border-radius: var(--radius-md, 10px);
-      border: 1px solid var(--paper-border, #d9ccb8);
-      background: var(--paper-cream, #f8f1e5);
-      color: var(--ink-black, #1f1a15);
-      box-shadow: var(--elevation-1, 0 2px 8px rgba(0,0,0,.08));
+      display: block;
       font-family: var(--font-serif, serif);
-      cursor: pointer;
-      user-select: none;
     }
 
-    :host([active]) {
-      border-color: var(--accent-red, #c4453c);
-      box-shadow: var(--elevation-2, 0 6px 14px rgba(0,0,0,.14));
+    .virtual-scroller {
+      position: relative;
+      overflow-y: auto;
     }
 
-    :host([disabled]) {
-      opacity: .55;
-      pointer-events: none;
+    .virtual-scroller-content {
+      position: relative;
     }
 
-    .label { font-size: 0.92rem; }
+    .virtual-item {
+      position: absolute;
+      left: 0;
+      right: 0;
+    }
   `;
 
   constructor() {
     super();
-    this.label = 'p-virtual-scroller';
-    this.value = '';
-    this.active = false;
-    this.disabled = false;
-    this.setAttribute('tabindex', '0');
-    this.setAttribute('role', 'button');
+    this.items = [];
+    this.itemHeight = 48;
+    this.overscan = 3;
+    this.height = '400px';
+    this._scrollTop = 0;
+    this._containerHeight = 0;
   }
 
   connectedCallback() {
     super.connectedCallback();
-    this.addEventListener('click', this._toggleActive);
-    this.addEventListener('keydown', this._handleKeydown);
+    this._handleScroll = this._handleScroll.bind(this);
+    this._resizeObserver = new ResizeObserver(() => this._measureContainer());
+    requestAnimationFrame(() => {
+      this._measureContainer();
+      this._resizeObserver.observe(this);
+    });
   }
 
   disconnectedCallback() {
-    this.removeEventListener('click', this._toggleActive);
-    this.removeEventListener('keydown', this._handleKeydown);
     super.disconnectedCallback();
+    this._resizeObserver?.disconnect();
   }
 
-  _toggleActive = () => {
-    if (this.disabled) return;
-    this.active = !this.active;
-    this.emit('change', { active: this.active, value: this.value || this.label });
-  };
+  _measureContainer() {
+    const rect = this.getBoundingClientRect();
+    this._containerHeight = rect.height;
+    this.requestUpdate();
+  }
 
-  _handleKeydown = (event) => {
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      this._toggleActive();
+  _handleScroll(e) {
+    this._scrollTop = e.target.scrollTop;
+  }
+
+  _getVisibleRange() {
+    const start = Math.max(0, Math.floor(this._scrollTop / this.itemHeight) - this.overscan);
+    const visibleCount = Math.ceil(this._containerHeight / this.itemHeight);
+    const end = Math.min(this.items.length, start + visibleCount + this.overscan * 2);
+    return { start, end };
+  }
+
+  _getVisibleItems() {
+    const { start, end } = this._getVisibleRange();
+    return this.items.slice(start, end).map((item, i) => ({
+      ...item,
+      _index: start + i,
+      _style: {
+        transform: `translateY(${(start + i) * this.itemHeight}px)`,
+        height: `${this.itemHeight}px`
+      }
+    }));
+  }
+
+  scrollToIndex(index, alignment = 'start') {
+    const targetTop = index * this.itemHeight;
+    const container = this.shadowRoot?.querySelector('.virtual-scroller');
+    if (!container) return;
+
+    if (alignment === 'start') {
+      container.scrollTop = targetTop;
+    } else if (alignment === 'end') {
+      container.scrollTop = targetTop - this._containerHeight + this.itemHeight;
+    } else {
+      container.scrollTop = targetTop - this._containerHeight / 2 + this.itemHeight / 2;
     }
-  };
+  }
 
   render() {
-    return html`<span class="label">${this.label}</span><slot></slot>`;
+    const visibleItems = this._getVisibleItems();
+    const totalHeight = this.items.length * this.itemHeight;
+
+    return html`
+      <div 
+        class="virtual-scroller"
+        style="height: ${this.height}"
+        @scroll=${this._handleScroll}
+      >
+        <div class="virtual-scroller-content" style="height: ${totalHeight}px">
+          ${visibleItems.map(item => html`
+            <div class="virtual-item" style="${item._style}">
+              <slot name=${item.value}></slot>
+            </div>
+          `)}
+        </div>
+      </div>
+    `;
   }
 }
 
