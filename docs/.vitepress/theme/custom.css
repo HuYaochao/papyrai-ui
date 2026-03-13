@@ -1,0 +1,49 @@
+/**
+ * papyrai-ui VitePress Theme Customization
+ * Apply paper-style theming to the docs
+ */
+
+:root {
+  /* Override VitePress theme colors with paper-style */
+  --vp-c-brand: #8b5cf6;
+  --vp-c-brand-light: #a78bfa;
+  --vp-c-brand-dark: #7c3aed;
+  --vp-c-brand-soft: rgba(139, 92, 246, 0.14);
+
+  /* Paper-style background */
+  --vp-sidebar-bg-color: var(--vp-c-bg);
+  --vp-nav-bg-color: var(--vp-c-bg);
+}
+
+/* Dark mode adjustments */
+.dark {
+  --vp-c-brand: #a78bfa;
+  --vp-c-brand-light: #c4b5fd;
+  --vp-c-brand-dark: #8b5cf6;
+}
+
+/* Smooth transitions */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Custom component demo container styling */
+.demo-container {
+  padding: 20px;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 8px;
+  margin: 16px 0;
+  background: var(--vp-c-bg-soft);
+}
+
+/* Paper-style code blocks */
+.vp-doc pre {
+  border-radius: 8px;
+  background: var(--vp-c-bg-soft) !important;
+}
+
+/* Navigation active state */
+.VPSidebarItem.is-active .text {
+  color: var(--vp-c-brand);
+  font-weight: 600;
+}

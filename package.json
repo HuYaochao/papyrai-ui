@@ -24,7 +24,10 @@
   "scripts": {
     "dev": "rollup -c -w",
     "build": "rollup -c",
-    "preview": "live-server preview/"
+    "preview": "live-server preview/",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
   },
   "keywords": [
     "web-components",
@@ -40,6 +43,8 @@
     "@rollup/plugin-terser": "^0.4.0",
     "lit": "^3.0.0",
     "live-server": "^1.2.2",
-    "rollup": "^4.0.0"
+    "rollup": "^4.0.0",
+    "vitepress": "^1.6.4",
+    "vue": "^3.5.30"
   }
 }

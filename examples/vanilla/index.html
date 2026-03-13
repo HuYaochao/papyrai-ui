@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>papyrai-ui Vanilla Example</title>
+  <link rel="stylesheet" href="https://unpkg.com/papyrai-ui/dist/papyrai-ui.css">
+</head>
+<body>
+  <div id="app">
+    <h1>papyrai-ui Demo</h1>
+    
+    <h2>AI Components</h2>
+    <ai-thinking></ai-thinking>
+    <ai-stream text="Hello, this is streaming text!"></ai-stream>
+    <ai-message role="user">Hello AI</ai-message>
+    <ai-message role="assistant" model="GPT-4">Hello! How can I help?</ai-message>
+    <ai-prompt placeholder="Ask something..."></ai-prompt>
+    <ai-model-badge model="gpt-4"></ai-model-badge>
+    <ai-confidence value="0.85" showLabel></ai-confidence>
+    <ai-cost inputTokens="500" outputTokens="1000"></ai-cost>
+    <ai-feedback showCopy showRetry></ai-feedback>
+    
+    <h2>Base Components</h2>
+    <p-button>Click Me</p-button>
+    <p-input label="Name" placeholder="Enter your name"></p-input>
+    <p-checkbox label="I agree"></p-checkbox>
+    <p-toggle>Enable</p-toggle>
+    <p-card>
+      <div slot="header">Card Title</div>
+      Card content here
+    </p-card>
+  </div>
+  
+  <script src="https://unpkg.com/papyrai-ui"></script>
+</body>
+</html>

@@ -337,22 +337,22 @@ npm run preview   # live-server preview/
 
 ### S-P3: Documentation & Examples
 
-**S-26** Set up VitePress docs site
+**S-26** ✅ Set up VitePress docs site
 - Install vitepress, create `docs/.vitepress/config.js` with sidebar/nav for all component categories
 - Chinese + English i18n configuration
 - Custom theme with papyrai CSS variables
 - Component demo embedding (live code blocks)
 - Deploy config for GitHub Pages
 
-**S-27** Write AI component documentation pages
+**S-27** ✅ Write AI component documentation pages
 - One page per AI component with: description, props table, events table, live demo code, usage examples
 - Both Chinese and English versions
 
-**S-28** Write base component documentation pages
+**S-28** ✅ Write base component documentation pages
 - Same format as AI docs, one page per component
 - Group by category (elements, inputs, navigation, overlays, layout, data)
 
-**S-29** Create usage examples
+**S-29** ✅ Create usage examples
 - `examples/vanilla/` — plain HTML usage
 - `examples/react/` — React wrapper usage with @lit/react
 - `examples/vue/` — Vue usage (Web Components work natively)

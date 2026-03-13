@@ -1,0 +1,17 @@
+{
+  "name": "papyrai-ui-vanilla-example",
+  "version": "1.0.0",
+  "description": "Vanilla HTML example for papyrai-ui",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "papyrai-ui": "^0.0.1"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0"
+  }
+}
