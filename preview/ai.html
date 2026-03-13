@@ -19,216 +19,429 @@
       font-family: var(--font-serif);
       background: var(--paper-white);
       color: var(--ink-black);
-      margin: 0;
-      padding: 20px;
-      max-width: 900px;
       margin: 0 auto;
+      padding: 20px 28px 80px;
+      max-width: 900px;
     }
-    [data-theme="dark"] body {
-      background: var(--paper-black);
-      color: var(--ink-light);
-    }
-    h1 { font-family: var(--font-handwrite); margin-bottom: 8px; }
-    h2 { 
-      font-family: var(--font-mono); 
-      font-size: 0.9rem; 
-      color: var(--ink-mid);
-      margin-top: 32px;
-      margin-bottom: 12px;
-      padding-bottom: 8px;
-      border-bottom: 1px solid var(--ink-faint);
+    h1 { font-family: var(--font-handwrite); margin: 8px 0 4px; font-size: 2rem; color: var(--accent-red); }
+    h2 {
+      font-family: var(--font-handwrite);
+      font-size: 1.3rem;
+      color: var(--ink-dark);
+      border-bottom: 1px solid var(--paper-border);
+      padding-bottom: 4px;
+      margin: 28px 0 8px;
     }
     .back { color: var(--accent-red); text-decoration: none; font-size: 0.9rem; }
-    .demo {
-      margin-bottom: 24px;
+    .demo { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; margin-bottom: 8px; }
+    .demo-box {
       padding: 16px;
       background: var(--paper-cream);
       border-radius: var(--radius-md);
-    }
-    [data-theme="dark"] .demo {
-      background: var(--paper-aged);
+      border: 1px solid var(--paper-border);
     }
     .label {
       font-family: var(--font-mono);
-      font-size: 0.7rem;
+      font-size: 0.72rem;
       color: var(--ink-mid);
-      margin-bottom: 8px;
+      margin-bottom: 10px;
       text-transform: uppercase;
       letter-spacing: 0.05em;
     }
-    .theme-toggle {
+    .theme-btn {
       position: fixed;
-      top: 20px;
-      right: 20px;
-      padding: 8px 16px;
+      top: 12px;
+      right: 16px;
       background: var(--paper-cream);
-      border: 1px solid var(--ink-faint);
-      border-radius: var(--radius-md);
+      border: 1px solid var(--paper-border);
+      border-radius: 8px;
+      padding: 6px 14px;
       cursor: pointer;
-      font-family: var(--font-mono);
-      font-size: 0.8rem;
+      font-family: var(--font-handwrite);
+      font-size: 1rem;
     }
-    .row {
-      display: flex;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-    .row ai-stream {
-      max-width: 400px;
-    }
+    .row { display: flex; gap: 16px; flex-wrap: wrap; align-items: flex-start; }
   </style>
 </head>
 <body>
   <a href="index.html" class="back">← 返回首页</a>
-  <button class="theme-toggle" onclick="document.body.toggleAttribute('data-theme')">切换主题</button>
-
   <h1>AI 专属组件</h1>
-  <p style="color: var(--ink-mid); margin-bottom: 32px;">共 9 个组件，带使用示例</p>
+  <p style="color:var(--ink-mid);margin-bottom:32px">共 18 个组件，含完整使用示例</p>
+  <button class="theme-btn" onclick="
+    const h=document.documentElement;
+    const dark=h.getAttribute('data-theme')==='dark';
+    h.setAttribute('data-theme',dark?'light':'dark');
+    localStorage.setItem('theme',dark?'light':'dark');
+  ">🌓 Theme</button>
 
-  <!-- 2.1 ai-thinking -->
-  <h2>2.1 ai-thinking - AI 思考指示器</h2>
+  <!-- ===== 原始 9 个组件 ===== -->
+
+  <h2>ai-thinking — AI 思考指示器</h2>
   <div class="demo">
-    <div class="label">&lt;ai-thinking model="GPT-4" speed="normal"&gt;</div>
-    <ai-thinking model="GPT-4"></ai-thinking>
-  </div>
-  <div class="demo">
-    <div class="label">速度变体: slow / fast</div>
-    <div class="row">
+    <div class="demo-box">
+      <div class="label">speed="normal" (default)</div>
+      <ai-thinking model="GPT-4"></ai-thinking>
+    </div>
+    <div class="demo-box">
+      <div class="label">speed="slow"</div>
       <ai-thinking model="Claude" speed="slow"></ai-thinking>
+    </div>
+    <div class="demo-box">
+      <div class="label">speed="fast"</div>
       <ai-thinking model="Gemini" speed="fast"></ai-thinking>
     </div>
   </div>
 
-  <!-- 2.2 ai-stream -->
-  <h2>2.2 ai-stream - 钢笔书写效果</h2>
-  <div class="demo">
-    <div class="label">&lt;ai-stream text="你好，我是 AI 助手..." speed="60"&gt;</div>
-    <ai-stream text="你好，我是 AI 助手。这是一个流式输出的示例，文字会逐字显示，模拟人类书写的效果。" speed="60"></ai-stream>
-  </div>
-  <div class="demo">
-    <div class="label">不显示光标: cursor="false"</div>
-    <ai-stream text="没有光标的版本" cursor="false"></ai-stream>
-  </div>
-
-  <!-- 2.3 ai-hallucination -->
-  <h2>2.3 ai-hallucination - 幻觉内容标记</h2>
-  <div class="demo">
-    <div class="label">&lt;ai-hallucination&gt;slot 内容&lt;/ai-hallucination&gt;</div>
-    <ai-hallucination>
-      根据我们的研究，2024年苹果公司发布了 iPhone 16 Pro Max Ultra...
-    </ai-hallucination>
-  </div>
-  <div class="demo">
-    <div class="label">自定义标签: label="未经核实"</div>
-    <ai-hallucination label="未经核实">
-      这篇论文声称解决了 P=NP 问题...
-    </ai-hallucination>
-  </div>
-
-  <!-- 2.4 ai-not-found -->
-  <h2>2.4 ai-not-found - AI 虚构内容</h2>
-  <div class="demo">
-    <div class="label">&lt;ai-not-found what="论文标题"&gt;</div>
-    <ai-not-found what="https://arxiv.org/abs/2301.00000">
-      <span>AI 引用了</span>
-    </ai-not-found>
-  </div>
-
-  <!-- 2.5 ai-fake-error -->
-  <h2>2.5 ai-fake-error - 假装错误效果</h2>
-  <div class="demo">
-    <div class="label">&lt;ai-fake-error message="Error..." delay="1500"&gt;揭示文案&lt;/ai-fake-error&gt;</div>
-    <ai-fake-error message="TypeError: Cannot read properties of undefined" delay="1500">
-      开玩笑的，这是 AI 生成的假错误
-    </ai-fake-error>
-  </div>
-
-  <!-- 2.6 ai-confidence -->
-  <h2>2.6 ai-confidence - 置信度可视化</h2>
-  <div class="demo">
-    <div class="label">&lt;ai-confidence value="0.85" label="准确率"&gt;</div>
-    <ai-confidence value="0.85" label="准确率"></ai-confidence>
-  </div>
-  <div class="demo">
-    <div class="label">不同置信度: 0.9 (高) / 0.5 (中) / 0.2 (低)</div>
-    <div class="row" style="align-items: center;">
-      <ai-confidence value="0.9"></ai-confidence>
-      <ai-confidence value="0.5"></ai-confidence>
-      <ai-confidence value="0.2"></ai-confidence>
+  <h2>ai-stream — 钢笔书写流式输出</h2>
+  <div class="demo" style="flex-direction:column;max-width:520px">
+    <div class="demo-box" style="width:100%">
+      <div class="label">speed="60" (ms/char)</div>
+      <ai-stream text="你好，我是 AI 助手。这是一个流式输出的示例，文字会逐字显示，模拟人类书写的效果。" speed="60"></ai-stream>
+    </div>
+    <div class="demo-box" style="width:100%">
+      <div class="label">cursor="false"</div>
+      <ai-stream text="没有光标的版本，文字仍然逐字显示。" cursor="false" speed="80"></ai-stream>
     </div>
   </div>
 
-  <!-- 2.7 ai-diff -->
-  <h2>2.7 ai-diff - AI 红笔批改 (Myers Diff)</h2>
-  <div class="demo">
-    <div class="label">单行文本差异 (character-level diff)</div>
-    <ai-diff
-      before="The cat is sleeping on the bed."
-      after="The cat is sleeping on the sofa.">
-    </ai-diff>
+  <h2>ai-hallucination — 幻觉内容标记</h2>
+  <div class="demo" style="flex-direction:column;max-width:520px">
+    <div class="demo-box" style="width:100%">
+      <ai-hallucination>
+        根据我们的研究，2024 年苹果公司发布了 iPhone 16 Pro Max Ultra…
+      </ai-hallucination>
+    </div>
+    <div class="demo-box" style="width:100%">
+      <div class="label">label="未经核实"</div>
+      <ai-hallucination label="未经核实">
+        这篇论文声称解决了 P=NP 问题，已在 Nature 主刊发表。
+      </ai-hallucination>
+    </div>
   </div>
+
+  <h2>ai-not-found — AI 虚构引用</h2>
   <div class="demo">
-    <div class="label">多行差异: 插入 / 删除 / 修改</div>
-    <ai-diff id="diff-multiline"></ai-diff>
-    <script type="module">
-      const d = document.getElementById('diff-multiline');
-      d.before = `function greet(name) {
+    <div class="demo-box">
+      <ai-not-found what="https://arxiv.org/abs/2301.00000">
+        <span>AI 引用了不存在的论文</span>
+      </ai-not-found>
+    </div>
+  </div>
+
+  <h2>ai-fake-error — 假装报错效果</h2>
+  <div class="demo">
+    <div class="demo-box">
+      <div class="label">delay="1500" (ms)</div>
+      <ai-fake-error message="TypeError: Cannot read properties of undefined" delay="1500">
+        开玩笑的，这是 AI 生成的假错误
+      </ai-fake-error>
+    </div>
+  </div>
+
+  <h2>ai-confidence — 置信度可视化</h2>
+  <div class="demo" style="align-items:center;gap:32px">
+    <div class="demo-box" style="text-align:center">
+      <div class="label">high (0.9)</div>
+      <ai-confidence value="0.9" label="准确率"></ai-confidence>
+    </div>
+    <div class="demo-box" style="text-align:center">
+      <div class="label">medium (0.5)</div>
+      <ai-confidence value="0.5" label="相关性"></ai-confidence>
+    </div>
+    <div class="demo-box" style="text-align:center">
+      <div class="label">low (0.2)</div>
+      <ai-confidence value="0.2" label="可信度"></ai-confidence>
+    </div>
+  </div>
+
+  <h2>ai-diff — AI 红笔批改 (Myers Diff)</h2>
+  <div class="demo" style="flex-direction:column;max-width:700px">
+    <div class="demo-box" style="width:100%">
+      <div class="label">character-level diff (inline)</div>
+      <ai-diff before="The cat is sleeping on the bed." after="The cat is sleeping on the sofa."></ai-diff>
+    </div>
+    <div class="demo-box" style="width:100%">
+      <div class="label">multi-line diff</div>
+      <ai-diff id="diff-ml"></ai-diff>
+    </div>
+    <div class="demo-box" style="width:100%">
+      <div class="label">mode="side-by-side"</div>
+      <ai-diff id="diff-sb" mode="side-by-side"></ai-diff>
+    </div>
+  </div>
+
+  <h2>ai-cost — Token 消耗显示</h2>
+  <div class="demo" style="align-items:center;gap:24px">
+    <div class="demo-box">
+      <div class="label">tokens="1234" rate="0.003"</div>
+      <ai-cost tokens="1234" rate="0.003"></ai-cost>
+    </div>
+    <div class="demo-box">
+      <div class="label">animate (实时增长)</div>
+      <ai-cost tokens="2500" rate="0.003" animate></ai-cost>
+    </div>
+  </div>
+
+  <h2>ai-model-badge — 模型徽章</h2>
+  <div class="demo" style="align-items:center;flex-wrap:wrap;gap:12px">
+    <ai-model-badge model="claude-3-opus"></ai-model-badge>
+    <ai-model-badge model="claude-sonnet-4-6"></ai-model-badge>
+    <ai-model-badge model="gpt-4-turbo"></ai-model-badge>
+    <ai-model-badge model="gpt-4o"></ai-model-badge>
+    <ai-model-badge model="qwen-turbo"></ai-model-badge>
+    <ai-model-badge model="gemini-pro"></ai-model-badge>
+    <ai-model-badge model="llama-3-70b"></ai-model-badge>
+  </div>
+
+  <!-- ===== S-04~S-12 新增 9 个组件 ===== -->
+
+  <h2>ai-citation — 知识库引用 / 来源注释</h2>
+  <div class="demo" style="flex-direction:column;max-width:560px;gap:12px">
+    <div class="demo-box" style="width:100%">
+      <ai-citation
+        title="Attention Is All You Need"
+        source="arxiv.org"
+        page="4"
+        confidence="0.95"
+        url="https://arxiv.org/abs/1706.03762"
+      >
+        Transformer 架构彻底改变了自然语言处理领域，成为几乎所有大语言模型的基础。
+      </ai-citation>
+    </div>
+    <div class="demo-box" style="width:100%">
+      <div class="label">confidence="0.4" (low)</div>
+      <ai-citation
+        title="Speculative claim document"
+        source="internal-wiki"
+        confidence="0.4"
+      >
+        某些未经充分验证的研究结论需要谨慎引用。
+      </ai-citation>
+    </div>
+  </div>
+
+  <h2>ai-message — 聊天消息气泡</h2>
+  <div class="demo" style="flex-direction:column;max-width:600px;gap:12px">
+    <div class="demo-box" style="width:100%">
+      <div class="label">role="user"</div>
+      <ai-message role="user" timestamp="10:32 AM">
+        请帮我解释一下 Transformer 架构的自注意力机制。
+      </ai-message>
+    </div>
+    <div class="demo-box" style="width:100%">
+      <div class="label">role="assistant" + model</div>
+      <ai-message role="assistant" model="claude-sonnet-4-6" timestamp="10:32 AM">
+        自注意力（Self-Attention）机制允许序列中的每个位置关注到同一序列中的其他位置，通过计算 Query、Key、Value 矩阵来获得上下文表示。
+      </ai-message>
+    </div>
+    <div class="demo-box" style="width:100%">
+      <div class="label">role="assistant" loading=true</div>
+      <ai-message role="assistant" model="claude-sonnet-4-6" loading></ai-message>
+    </div>
+    <div class="demo-box" style="width:100%">
+      <div class="label">role="system"</div>
+      <ai-message role="system">
+        System: You are a helpful assistant specialized in machine learning.
+      </ai-message>
+    </div>
+  </div>
+
+  <h2>ai-prompt — AI 提示词输入框</h2>
+  <div class="demo" style="flex-direction:column;max-width:560px;gap:12px">
+    <div class="demo-box" style="width:100%">
+      <div class="label">show-token-count max-tokens="4096"</div>
+      <ai-prompt
+        placeholder="向 AI 提问…"
+        show-token-count
+        max-tokens="4096"
+      ></ai-prompt>
+    </div>
+    <div class="demo-box" style="width:100%">
+      <div class="label">disabled</div>
+      <ai-prompt placeholder="输入已禁用" disabled></ai-prompt>
+    </div>
+  </div>
+
+  <h2>ai-tool-call — 工具调用展示</h2>
+  <div class="demo" style="flex-direction:column;max-width:560px;gap:12px">
+    <div class="demo-box" style="width:100%">
+      <div class="label">status="success" (click to expand)</div>
+      <ai-tool-call
+        name="search_web"
+        status="success"
+        input='{"query": "papyrai-ui web components", "limit": 5}'
+        output='{"results": [{"title": "papyrai-ui", "url": "https://github.com/..."}]}'
+      ></ai-tool-call>
+    </div>
+    <div class="demo-box" style="width:100%">
+      <div class="label">status="running"</div>
+      <ai-tool-call name="execute_code" status="running" input='{"code": "print(\"hello\")"}'></ai-tool-call>
+    </div>
+    <div class="demo-box" style="width:100%">
+      <div class="label">status="error"</div>
+      <ai-tool-call
+        name="read_file"
+        status="error"
+        input='{"path": "/etc/passwd"}'
+        output='{"error": "Permission denied"}'
+      ></ai-tool-call>
+    </div>
+  </div>
+
+  <h2>ai-reasoning — 思维链 / 推理过程</h2>
+  <div class="demo" style="flex-direction:column;max-width:560px;gap:12px">
+    <div class="demo-box" style="width:100%">
+      <div class="label">collapsed=true (default, click to expand)</div>
+      <ai-reasoning id="reasoning1" label="Thinking..." collapsed></ai-reasoning>
+    </div>
+    <div class="demo-box" style="width:100%">
+      <div class="label">collapsed=false (expanded)</div>
+      <ai-reasoning id="reasoning2" label="Reasoning steps"></ai-reasoning>
+    </div>
+  </div>
+
+  <h2>ai-feedback — 响应反馈按钮组</h2>
+  <div class="demo" style="gap:24px;align-items:flex-start">
+    <div class="demo-box">
+      <div class="label">default (no value)</div>
+      <ai-feedback show-copy show-retry></ai-feedback>
+    </div>
+    <div class="demo-box">
+      <div class="label">value="up" (thumbs up selected)</div>
+      <ai-feedback value="up" show-copy show-retry></ai-feedback>
+    </div>
+    <div class="demo-box">
+      <div class="label">value="down"</div>
+      <ai-feedback value="down" show-copy></ai-feedback>
+    </div>
+    <div class="demo-box">
+      <div class="label">minimal (no copy/retry)</div>
+      <ai-feedback></ai-feedback>
+    </div>
+  </div>
+
+  <h2>ai-guardrail — 内容安全 / 过滤提示</h2>
+  <div class="demo" style="flex-direction:column;max-width:560px;gap:12px">
+    <div class="demo-box" style="width:100%">
+      <div class="label">level="info"</div>
+      <ai-guardrail level="info" reason="该内容包含敏感词汇，已做脱敏处理" policy="Content Policy v2">
+        <p style="margin:0">这是正常的回复内容，其中一些词汇已做替换处理。</p>
+      </ai-guardrail>
+    </div>
+    <div class="demo-box" style="width:100%">
+      <div class="label">level="warning"</div>
+      <ai-guardrail level="warning" reason="检测到潜在的不当内容" policy="Safety Policy">
+        <p style="margin:0">内容已被标记，请谨慎阅读。</p>
+      </ai-guardrail>
+    </div>
+    <div class="demo-box" style="width:100%">
+      <div class="label">level="blocked"</div>
+      <ai-guardrail level="blocked" reason="此内容违反了使用条款，已被屏蔽" policy="Usage Policy">
+        <p style="margin:0">此内容不可见。</p>
+      </ai-guardrail>
+    </div>
+  </div>
+
+  <h2>ai-source-card — RAG 检索结果卡片</h2>
+  <div class="demo" style="flex-wrap:wrap;gap:16px;align-items:flex-start">
+    <ai-source-card
+      title="Attention Is All You Need"
+      source="arxiv.org"
+      score="0.96"
+      snippet="We propose a new simple network architecture, the Transformer, based solely on attention mechanisms, dispensing with recurrence and convolutions entirely."
+      url="https://arxiv.org/abs/1706.03762"
+      type="document"
+      style="max-width:280px"
+    ></ai-source-card>
+    <ai-source-card
+      title="papyrai-ui Documentation"
+      source="github.com/papyrai-ui"
+      score="0.78"
+      snippet="Framework-agnostic paper-style Web Components library designed for AI application scenarios."
+      type="webpage"
+      style="max-width:280px"
+    ></ai-source-card>
+    <ai-source-card
+      title="svg-icon component"
+      source="src/svg/svg-icon.js"
+      score="0.61"
+      snippet="export class SVGIcon extends PapyraiElement { static properties = { name, size, color } }"
+      type="code"
+      style="max-width:280px"
+    ></ai-source-card>
+  </div>
+
+  <h2>ai-token-usage — Token 用量详情面板</h2>
+  <div class="demo" style="gap:24px;align-items:flex-start">
+    <div class="demo-box">
+      <div class="label">expanded mode</div>
+      <ai-token-usage
+        input-tokens="1024"
+        output-tokens="512"
+        input-rate="0.003"
+        output-rate="0.006"
+        model="claude-sonnet-4-6"
+      ></ai-token-usage>
+    </div>
+    <div class="demo-box">
+      <div class="label">compact=true</div>
+      <ai-token-usage
+        input-tokens="8192"
+        output-tokens="2048"
+        input-rate="0.015"
+        output-rate="0.075"
+        model="gpt-4-turbo"
+        compact
+      ></ai-token-usage>
+    </div>
+  </div>
+
+  <script type="module" src="../src/index.js"></script>
+  <script>
+    // 恢复主题
+    if (localStorage.getItem('theme') === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // ai-diff multi-line
+      const diffMl = document.getElementById('diff-ml');
+      if (diffMl) {
+        diffMl.before = `function greet(name) {
   console.log("Hello, " + name);
   return true;
 }`;
-      d.after = `function greet(name, greeting) {
+        diffMl.after = `function greet(name, greeting) {
   const msg = greeting + ", " + name + "!";
   console.log(msg);
   return msg;
 }`;
-    </script>
-  </div>
-  <div class="demo">
-    <div class="label">Side-by-side 模式: mode="side-by-side"</div>
-    <ai-diff id="diff-side" mode="side-by-side"></ai-diff>
-    <script type="module">
-      const s = document.getElementById('diff-side');
-      s.before = `第一行保持不变
+      }
+
+      const diffSb = document.getElementById('diff-sb');
+      if (diffSb) {
+        diffSb.before = `第一行保持不变
 这行将被删除
 第三行有少量修改
 最后一行也不变`;
-      s.after = `第一行保持不变
-第三行有大量修改
+        diffSb.after = `第一行保持不变
+第三行有大量修改内容
 新增加的一行
 最后一行也不变`;
-    </script>
-  </div>
+      }
 
-  <!-- 2.8 ai-cost -->
-  <h2>2.8 ai-cost - Token 消耗显示</h2>
-  <div class="demo">
-    <div class="label">&lt;ai-cost tokens="1234" rate="0.003"&gt;</div>
-    <ai-cost tokens="1234" rate="0.003"></ai-cost>
-  </div>
-  <div class="demo">
-    <div class="label">实时增长: animate="true"</div>
-    <ai-cost tokens="2500" rate="0.003" animate></ai-cost>
-  </div>
-
-  <!-- 2.9 ai-model-badge -->
-  <h2>2.9 ai-model-badge - 模型徽章</h2>
-  <div class="demo">
-    <div class="label">不同模型: claude / gpt / qwen / gemini / llama</div>
-    <div class="row" style="align-items: center;">
-      <ai-model-badge model="claude-3-opus"></ai-model-badge>
-      <ai-model-badge model="gpt-4-turbo"></ai-model-badge>
-      <ai-model-badge model="qwen-turbo"></ai-model-badge>
-      <ai-model-badge model="gemini-pro"></ai-model-badge>
-      <ai-model-badge model="llama-3-70b"></ai-model-badge>
-    </div>
-  </div>
-
-  <div style="margin-top: 48px; padding: 24px; background: var(--paper-cream); border-radius: var(--radius-md); text-align: center;">
-    <p style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink-mid);">
-      试试切换主题: <button onclick="document.body.toggleAttribute('data-theme')" style="cursor: pointer; padding: 4px 12px; background: var(--paper-white); border: 1px solid var(--ink-faint); border-radius: var(--radius-sm);">切换</button>
-    </p>
-  </div>
-
-  <script type="module" src="../src/index.js"></script>
+      // ai-reasoning steps
+      const steps = [
+        { title: '理解问题', content: '首先分析用户的提问，确定需要回答的核心内容。' },
+        { title: '检索相关知识', content: '从知识库中检索与 Transformer 和自注意力机制相关的信息。' },
+        { title: '组织回答结构', content: '按照"定义 → 原理 → 公式 → 示例"的结构来组织答案。' },
+        { title: '生成最终回答', content: '综合以上步骤，生成清晰、准确、易于理解的回答。' },
+      ];
+      const r1 = document.getElementById('reasoning1');
+      if (r1) r1.steps = steps;
+      const r2 = document.getElementById('reasoning2');
+      if (r2) { r2.steps = steps; r2.collapsed = false; }
+    });
+  </script>
 </body>
 </html>
