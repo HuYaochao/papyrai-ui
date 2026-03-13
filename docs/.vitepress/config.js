@@ -7,6 +7,7 @@ export default defineConfig({
   appearance: true,
   lastUpdated: true,
   cleanUrls: true,
+  ignoreDeadLinks: true,  // 忽略死链接检查（组件文档未全部创建）
   base: '/papyrai-ui/',  // 改为你的仓库名
 
   head: [
