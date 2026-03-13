@@ -4,30 +4,273 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Navigation - papyrai-ui</title>
+  <script type="importmap">
+  {
+    "imports": {
+      "lit": "https://cdn.jsdelivr.net/npm/lit@3.1.0/+esm",
+      "lit-html": "https://cdn.jsdelivr.net/npm/lit-html@3.1.0/+esm",
+      "@lit/reactive-element": "https://cdn.jsdelivr.net/npm/@lit/reactive-element@2.1.2/+esm"
+    }
+  }
+  </script>
   <link rel="stylesheet" href="../src/core/styles.css">
   <style>
-    body { font-family: var(--font-serif); background: var(--paper-white); color: var(--ink-black); margin: 0; padding: 20px; }
-    h1 { font-family: var(--font-handwrite); margin: 8px 0 16px; }
-    .back { color: var(--accent-red); text-decoration: none; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(220px,1fr)); gap: 12px; margin-top: 16px; }
+    body { font-family: var(--font-serif); background: var(--paper-white); color: var(--ink-black); margin: 0; padding: 20px 28px 100px; }
+    h1 { font-family: var(--font-handwrite); margin: 8px 0 4px; font-size: 2rem; }
+    h2 { font-family: var(--font-handwrite); margin: 28px 0 8px; font-size: 1.3rem; color: var(--ink-dark); border-bottom: 1px solid var(--paper-border); padding-bottom: 4px; }
+    .back { color: var(--accent-red); text-decoration: none; font-size: 0.9rem; }
+    .demo { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; margin-bottom: 8px; }
+    .theme-btn { position: fixed; top: 12px; right: 16px; background: var(--paper-cream); border: 1px solid var(--paper-border); border-radius: 8px; padding: 6px 14px; cursor: pointer; font-family: var(--font-handwrite); font-size: 1rem; }
+    [data-theme="dark"] body { background: #1a1814; color: #e8e0d0; }
+    .demo-box { border: 1px dashed var(--paper-border); border-radius: 8px; padding: 16px; background: var(--paper-cream); }
   </style>
 </head>
 <body>
   <a href="index.html" class="back">← 返回首页</a>
   <h1>Navigation</h1>
-  <p>已接入 10 个组件示例（点击或回车可触发切换状态）。</p>
-  <div class="grid">
-    <p-bottom-tabs label="bottom-tabs"></p-bottom-tabs>
-    <p-command-palette label="command-palette"></p-command-palette>
-    <p-dock label="dock"></p-dock>
-    <p-pagination label="pagination"></p-pagination>
-    <p-progress label="progress"></p-progress>
-    <p-scroll-spy label="scroll-spy"></p-scroll-spy>
-    <p-scroll-top label="scroll-top"></p-scroll-top>
-    <p-steps label="steps"></p-steps>
-    <p-tabs label="tabs"></p-tabs>
-    <p-vertical-nav label="vertical-nav"></p-vertical-nav>
+  <button class="theme-btn" onclick="const h=document.documentElement;const d=h.getAttribute('data-theme')==='dark';h.setAttribute('data-theme',d?'light':'dark');localStorage.setItem('theme',d?'light':'dark')">🌓 Theme</button>
+
+  <!-- ======================== p-tabs ======================== -->
+  <h2>p-tabs — Tab navigation</h2>
+  <div class="demo" style="flex-direction:column;max-width:560px">
+    <p-tabs id="tabs1" active="tab1">
+      <span slot="tab-tab1">Overview</span>
+      <div slot="panel-tab1" style="padding:16px">
+        <strong>Overview Panel</strong> — This is the overview content. papyrai-ui is a framework-agnostic Web Components library.
+      </div>
+      <span slot="tab-tab2">Components</span>
+      <div slot="panel-tab2" style="padding:16px">
+        <strong>Components Panel</strong> — 136 components across AI, SVG, Elements, Inputs, Navigation, Overlays, Layout and Data.
+      </div>
+      <span slot="tab-tab3">Docs</span>
+      <div slot="panel-tab3" style="padding:16px">
+        <strong>Docs Panel</strong> — Full documentation powered by VitePress, available in Chinese and English.
+      </div>
+    </p-tabs>
+
+    <p-tabs id="tabs2" active="a" variant="pills">
+      <span slot="tab-a">Light</span>
+      <div slot="panel-a" style="padding:12px">Light theme content.</div>
+      <span slot="tab-b">Dark</span>
+      <div slot="panel-b" style="padding:12px">Dark theme content.</div>
+      <span slot="tab-c">Auto</span>
+      <div slot="panel-c" style="padding:12px">Auto theme content.</div>
+    </p-tabs>
   </div>
+
+  <!-- ======================== p-pagination ======================== -->
+  <h2>p-pagination — Page navigation</h2>
+  <div class="demo" style="flex-direction:column;gap:20px">
+    <p-pagination id="pag1" current="3" total="120" page-size="10"></p-pagination>
+    <p-pagination id="pag2" current="1" total="500" page-size="20" show-size-changer show-quick-jumper></p-pagination>
+  </div>
+
+  <!-- ======================== p-steps ======================== -->
+  <h2>p-steps — Step indicator</h2>
+  <div class="demo" style="flex-direction:column;max-width:600px;gap:24px">
+    <p-steps id="steps1" current="1" clickable></p-steps>
+    <p-steps id="steps2" current="2" status="error"></p-steps>
+    <p-steps id="steps3" current="1" direction="vertical"></p-steps>
+  </div>
+
+  <!-- ======================== p-progress ======================== -->
+  <h2>p-progress — Progress indicator</h2>
+  <div class="demo" style="flex-direction:column;max-width:400px;gap:16px">
+    <p-progress value="65" max="100" label="Uploading..."></p-progress>
+    <p-progress value="35" variant="success" label="Processed"></p-progress>
+    <p-progress value="80" variant="warning" label="Storage usage"></p-progress>
+    <p-progress value="20" variant="danger" label="Battery low"></p-progress>
+    <p-progress indeterminate label="Loading..."></p-progress>
+    <div style="display:flex;gap:24px;align-items:center">
+      <p-progress type="circular" value="72" max="100" label="72%"></p-progress>
+      <p-progress type="circular" value="45" max="100" variant="success" label="45%"></p-progress>
+      <p-progress type="circular" indeterminate label="..."></p-progress>
+    </div>
+  </div>
+
+  <!-- ======================== p-bottom-tabs ======================== -->
+  <h2>p-bottom-tabs — Mobile bottom tab bar</h2>
+  <div class="demo">
+    <div class="demo-box" style="width:380px;position:relative;height:140px;overflow:hidden">
+      <div style="padding:16px;font-size:.85rem;color:var(--ink-mid)">Mobile content area</div>
+      <p-bottom-tabs id="btabs1" value="home" style="position:absolute;bottom:0;left:0;right:0"></p-bottom-tabs>
+    </div>
+  </div>
+
+  <!-- ======================== p-command-palette ======================== -->
+  <h2>p-command-palette — Command palette (⌘K)</h2>
+  <div class="demo">
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <p style="font-size:.85rem;color:var(--ink-mid);margin:0">Click the button or press Cmd+K / Ctrl+K</p>
+      <button id="open-cmd" style="padding:8px 18px;border:1px solid var(--paper-border);background:var(--paper-cream);border-radius:8px;cursor:pointer;font-family:var(--font-mono);font-size:.85rem">⌘K Open Command Palette</button>
+      <p-command-palette id="cmdpal" placeholder="Type a command..."></p-command-palette>
+    </div>
+  </div>
+
+  <!-- ======================== p-dock ======================== -->
+  <h2>p-dock — macOS-style magnifying dock</h2>
+  <div class="demo">
+    <div class="demo-box" style="width:480px;height:120px;display:flex;align-items:flex-end;justify-content:center">
+      <p-dock id="dock1" icon-size="48" magnification="1.8"></p-dock>
+    </div>
+  </div>
+
+  <!-- ======================== p-scroll-spy ======================== -->
+  <h2>p-scroll-spy — Scroll position tracker</h2>
+  <div class="demo">
+    <div style="display:flex;gap:24px">
+      <p-scroll-spy id="spy1" style="width:160px"></p-scroll-spy>
+      <div id="spy-content" style="width:320px;height:200px;overflow-y:auto;border:1px solid var(--paper-border);border-radius:8px;padding:0 16px">
+        <h3 id="section-intro" style="font-family:var(--font-handwrite)">Introduction</h3>
+        <p style="font-size:.9rem">papyrai-ui is a paper-style Web Components library. Scroll down to see more sections.</p>
+        <h3 id="section-install" style="font-family:var(--font-handwrite)">Installation</h3>
+        <p style="font-size:.9rem">Install via npm: <code>npm install papyrai-ui</code></p>
+        <h3 id="section-usage" style="font-family:var(--font-handwrite)">Usage</h3>
+        <p style="font-size:.9rem">Import any component and use it as a Web Component in your HTML.</p>
+        <h3 id="section-theme" style="font-family:var(--font-handwrite)">Theming</h3>
+        <p style="font-size:.9rem">All components use CSS variables for theming. Set <code>data-theme="dark"</code> for dark mode.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================== p-scroll-top ======================== -->
+  <h2>p-scroll-top — Back to top button</h2>
+  <div class="demo">
+    <p style="font-size:.85rem;color:var(--ink-mid);margin:0">The floating button appears after scrolling down 300px (shown below for demo):</p>
+    <p-scroll-top id="sctop" threshold="0" position="bottom-right" style="position:relative"></p-scroll-top>
+  </div>
+
+  <!-- ======================== p-vertical-navigation ======================== -->
+  <h2>p-vertical-navigation — Sidebar navigation</h2>
+  <div class="demo">
+    <p-vertical-nav id="vnav1" value="components" style="width:220px"></p-vertical-nav>
+    <p-vertical-nav id="vnav2" collapsible value="ai" style="width:220px"></p-vertical-nav>
+  </div>
+
   <script type="module" src="../src/index.js"></script>
+  <script>
+    // Restore theme
+    if (localStorage.getItem('theme') === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // p-steps
+      const steps1 = document.getElementById('steps1');
+      if (steps1) steps1.items = [
+        { title: 'Account', description: 'Create your account' },
+        { title: 'Profile', description: 'Set up your profile' },
+        { title: 'Confirm', description: 'Verify your email' },
+      ];
+
+      const steps2 = document.getElementById('steps2');
+      if (steps2) steps2.items = [
+        { title: 'Order placed', description: 'Jan 10' },
+        { title: 'Processing', description: 'Jan 11' },
+        { title: 'Payment failed', description: 'Jan 12' },
+        { title: 'Delivered' },
+      ];
+
+      const steps3 = document.getElementById('steps3');
+      if (steps3) steps3.items = [
+        { title: 'Design', description: 'Wireframes & mockups' },
+        { title: 'Build', description: 'Implementation' },
+        { title: 'Deploy' },
+      ];
+
+      // p-bottom-tabs
+      const btabs1 = document.getElementById('btabs1');
+      if (btabs1) btabs1.items = [
+        { value: 'home', label: 'Home', icon: 'home' },
+        { value: 'search', label: 'Search', icon: 'search' },
+        { value: 'bookmark', label: 'Saved', icon: 'bookmark' },
+        { value: 'profile', label: 'Profile', icon: 'user' },
+      ];
+
+      // p-command-palette
+      const cmdpal = document.getElementById('cmdpal');
+      if (cmdpal) {
+        cmdpal.groups = [
+          {
+            label: 'Navigation',
+            items: [
+              { id: 'home', label: 'Go to Home', shortcut: '⌘H' },
+              { id: 'docs', label: 'Open Docs', shortcut: '⌘D' },
+              { id: 'components', label: 'Browse Components' },
+            ]
+          },
+          {
+            label: 'Actions',
+            items: [
+              { id: 'theme', label: 'Toggle Theme', shortcut: '⌘T' },
+              { id: 'copy', label: 'Copy current URL' },
+              { id: 'feedback', label: 'Send Feedback' },
+            ]
+          }
+        ];
+        cmdpal.recent = [
+          { id: 'ai', label: 'AI Components' },
+          { id: 'inputs', label: 'Inputs' },
+        ];
+      }
+
+      // Open command palette button
+      document.getElementById('open-cmd')?.addEventListener('click', () => {
+        if (cmdpal) cmdpal.open = true;
+      });
+
+      // Keyboard shortcut
+      window.addEventListener('keydown', (e) => {
+        if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+          e.preventDefault();
+          if (cmdpal) cmdpal.open = !cmdpal.open;
+        }
+      });
+
+      // p-dock
+      const dock1 = document.getElementById('dock1');
+      if (dock1) dock1.items = [
+        { icon: 'home', label: 'Home' },
+        { icon: 'search', label: 'Search' },
+        { icon: 'star', label: 'Favorites' },
+        { icon: 'bookmark', label: 'Bookmarks' },
+        { icon: 'settings', label: 'Settings' },
+      ];
+
+      // p-scroll-spy
+      const spy1 = document.getElementById('spy1');
+      if (spy1) {
+        spy1.sections = [
+          { id: 'section-intro', label: 'Introduction' },
+          { id: 'section-install', label: 'Installation' },
+          { id: 'section-usage', label: 'Usage' },
+          { id: 'section-theme', label: 'Theming' },
+        ];
+        spy1.scrollContainer = '#spy-content';
+      }
+
+      // p-vertical-navigation
+      const vnav1 = document.getElementById('vnav1');
+      if (vnav1) vnav1.items = [
+        { value: 'overview', label: 'Overview', icon: 'home' },
+        {
+          value: 'components', label: 'Components', icon: 'stack', children: [
+            { value: 'ai', label: 'AI Components' },
+            { value: 'inputs', label: 'Inputs' },
+            { value: 'nav', label: 'Navigation' },
+          ]
+        },
+        { value: 'docs', label: 'Documentation', icon: 'file' },
+        { value: 'settings', label: 'Settings', icon: 'settings' },
+      ];
+
+      const vnav2 = document.getElementById('vnav2');
+      if (vnav2) vnav2.items = [
+        { value: 'ai', label: 'AI Components', icon: 'ai' },
+        { value: 'svg', label: 'SVG & Icons', icon: 'star' },
+        { value: 'base', label: 'Base Components', icon: 'stack' },
+      ];
+    });
+  </script>
 </body>
 </html>

@@ -4,26 +4,260 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Data - papyrai-ui</title>
+  <script type="importmap">
+  {
+    "imports": {
+      "lit": "https://cdn.jsdelivr.net/npm/lit@3.1.0/+esm",
+      "lit-html": "https://cdn.jsdelivr.net/npm/lit-html@3.1.0/+esm",
+      "@lit/reactive-element": "https://cdn.jsdelivr.net/npm/@lit/reactive-element@2.1.2/+esm"
+    }
+  }
+  </script>
   <link rel="stylesheet" href="../src/core/styles.css">
   <style>
-    body { font-family: var(--font-serif); background: var(--paper-white); color: var(--ink-black); margin: 0; padding: 20px; }
-    h1 { font-family: var(--font-handwrite); margin: 8px 0 16px; }
-    .back { color: var(--accent-red); text-decoration: none; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(220px,1fr)); gap: 12px; margin-top: 16px; }
+    body { font-family: var(--font-serif); background: var(--paper-white); color: var(--ink-black); margin: 0; padding: 20px 28px 80px; }
+    h1 { font-family: var(--font-handwrite); margin: 8px 0 4px; font-size: 2rem; }
+    h2 { font-family: var(--font-handwrite); margin: 28px 0 8px; font-size: 1.3rem; color: var(--ink-dark); border-bottom: 1px solid var(--paper-border); padding-bottom: 4px; }
+    .back { color: var(--accent-red); text-decoration: none; font-size: 0.9rem; }
+    .demo { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; margin-bottom: 8px; }
+    .theme-btn { position: fixed; top: 12px; right: 16px; background: var(--paper-cream); border: 1px solid var(--paper-border); border-radius: 8px; padding: 6px 14px; cursor: pointer; font-family: var(--font-handwrite); font-size: 1rem; }
+    [data-theme="dark"] body { background: #1a1814; color: #e8e0d0; }
   </style>
 </head>
 <body>
   <a href="index.html" class="back">← 返回首页</a>
   <h1>Data</h1>
-  <p>已接入 6 个组件示例（点击或回车可触发切换状态）。</p>
-  <div class="grid">
-    <p-table label="table"></p-table>
-    <p-calendar label="calendar"></p-calendar>
-    <p-order-list label="order-list"></p-order-list>
-    <p-tree label="tree"></p-tree>
-    <p-pick-list label="pick-list"></p-pick-list>
-    <p-virtual-scroller label="virtual-scroller"></p-virtual-scroller>
+  <button class="theme-btn" onclick="const h=document.documentElement;const d=h.getAttribute('data-theme')==='dark';h.setAttribute('data-theme',d?'light':'dark');localStorage.setItem('theme',d?'light':'dark')">🌓 Theme</button>
+
+  <!-- ======================== p-table ======================== -->
+  <h2>p-table — Data table with sort / filter / selection</h2>
+  <div class="demo" style="flex-direction:column;max-width:720px">
+    <p-table id="tbl1" striped hoverable sortable selectable selection-mode="multi" page-size="5" pagination></p-table>
   </div>
+
+  <!-- ======================== p-calendar ======================== -->
+  <h2>p-calendar — Calendar with events</h2>
+  <div class="demo" style="gap:32px;align-items:flex-start">
+    <div>
+      <div style="font-size:.85rem;color:var(--ink-mid);margin-bottom:8px">Month view</div>
+      <p-calendar id="cal1"></p-calendar>
+    </div>
+    <div>
+      <div style="font-size:.85rem;color:var(--ink-mid);margin-bottom:8px">Week view</div>
+      <p-calendar id="cal2" view="week"></p-calendar>
+    </div>
+  </div>
+
+  <!-- ======================== p-order-list ======================== -->
+  <h2>p-order-list — Drag-and-drop sortable list</h2>
+  <div class="demo" style="gap:32px;align-items:flex-start">
+    <div>
+      <div style="font-size:.85rem;color:var(--ink-mid);margin-bottom:8px">Simple list (drag to reorder)</div>
+      <p-order-list id="olist1" numbered style="width:280px"></p-order-list>
+    </div>
+    <div>
+      <div style="font-size:.85rem;color:var(--ink-mid);margin-bottom:8px">With priority labels</div>
+      <p-order-list id="olist2" numbered handle style="width:300px"></p-order-list>
+    </div>
+  </div>
+
+  <!-- ======================== p-tree ======================== -->
+  <h2>p-tree — Hierarchical tree</h2>
+  <div class="demo" style="gap:32px;align-items:flex-start">
+    <div>
+      <div style="font-size:.85rem;color:var(--ink-mid);margin-bottom:8px">Selectable tree</div>
+      <p-tree id="tree1" selectable show-line style="width:240px"></p-tree>
+    </div>
+    <div>
+      <div style="font-size:.85rem;color:var(--ink-mid);margin-bottom:8px">Checkable tree</div>
+      <p-tree id="tree2" checkable multiple style="width:240px"></p-tree>
+    </div>
+  </div>
+
+  <!-- ======================== p-pick-list ======================== -->
+  <h2>p-pick-list — Dual-list transfer</h2>
+  <div class="demo" style="flex-direction:column">
+    <p-pick-list id="pick1" searchable label="Components"></p-pick-list>
+  </div>
+
+  <!-- ======================== p-virtual-scroller ======================== -->
+  <h2>p-virtual-scroller — Virtualized list</h2>
+  <div class="demo" style="gap:32px;align-items:flex-start">
+    <div>
+      <div style="font-size:.85rem;color:var(--ink-mid);margin-bottom:8px">10 000 items — only visible rows rendered</div>
+      <p-virtual-scroller id="vs1" item-height="40" height="300px" style="width:320px;border:1px solid var(--paper-border);border-radius:8px"></p-virtual-scroller>
+    </div>
+    <div>
+      <div style="font-size:.85rem;color:var(--ink-mid);margin-bottom:8px">Custom item height (56px)</div>
+      <p-virtual-scroller id="vs2" item-height="56" height="300px" style="width:320px;border:1px solid var(--paper-border);border-radius:8px"></p-virtual-scroller>
+    </div>
+  </div>
+
   <script type="module" src="../src/index.js"></script>
+  <script>
+    // Restore theme
+    if (localStorage.getItem('theme') === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // p-table
+      const tbl1 = document.getElementById('tbl1');
+      if (tbl1) {
+        tbl1.columns = [
+          { key: 'name',    label: 'Name',       sortable: true },
+          { key: 'role',    label: 'Role',        sortable: true, filterable: true },
+          { key: 'status',  label: 'Status',      filterable: true },
+          { key: 'joined',  label: 'Joined',      sortable: true },
+          { key: 'score',   label: 'Score',       sortable: true },
+        ];
+        tbl1.data = [
+          { name: 'Alice Wang',   role: 'Designer',   status: 'Active',    joined: '2022-03-10', score: 98 },
+          { name: 'Bob Smith',    role: 'Engineer',   status: 'Active',    joined: '2021-07-22', score: 87 },
+          { name: 'Carol Lee',    role: 'Manager',    status: 'On leave',  joined: '2020-11-05', score: 92 },
+          { name: 'Dave Kim',     role: 'Engineer',   status: 'Active',    joined: '2023-01-18', score: 76 },
+          { name: 'Eve Johnson',  role: 'Designer',   status: 'Inactive',  joined: '2019-09-30', score: 84 },
+          { name: 'Frank Tan',    role: 'Engineer',   status: 'Active',    joined: '2022-06-14', score: 91 },
+          { name: 'Grace Liu',    role: 'Manager',    status: 'Active',    joined: '2021-02-28', score: 95 },
+          { name: 'Henry Park',   role: 'Designer',   status: 'Active',    joined: '2023-05-07', score: 79 },
+          { name: 'Iris Chen',    role: 'Engineer',   status: 'On leave',  joined: '2020-08-19', score: 88 },
+          { name: 'Jack Wu',      role: 'Engineer',   status: 'Active',    joined: '2022-12-01', score: 82 },
+          { name: 'Karen Zhao',   role: 'Designer',   status: 'Active',    joined: '2021-04-15', score: 90 },
+          { name: 'Leo Ng',       role: 'Manager',    status: 'Inactive',  joined: '2019-01-11', score: 73 },
+        ];
+      }
+
+      // p-calendar
+      const today = new Date().toISOString().split('T')[0];
+      const [y, m] = today.split('-');
+      const cal1 = document.getElementById('cal1');
+      if (cal1) {
+        cal1.events = [
+          { id: 1, title: 'Team standup', date: `${y}-${m}-05`, color: '#4a7c9b' },
+          { id: 2, title: 'Design review', date: `${y}-${m}-12`, color: '#c4453c' },
+          { id: 3, title: 'Sprint planning', date: `${y}-${m}-15`, color: '#5a8a5a' },
+          { id: 4, title: 'Release day', date: `${y}-${m}-20`, color: '#c49a3c' },
+          { id: 5, title: 'Holiday', date: `${y}-${m}-25`, color: '#7c4a7c' },
+        ];
+      }
+
+      const cal2 = document.getElementById('cal2');
+      if (cal2) {
+        cal2.events = [
+          { id: 1, title: 'Standup 9am', date: today, time: '09:00', color: '#4a7c9b' },
+          { id: 2, title: 'Design sync', date: today, time: '14:00', color: '#c4453c' },
+        ];
+      }
+
+      // p-order-list
+      const olist1 = document.getElementById('olist1');
+      if (olist1) olist1.items = [
+        { id: 1, label: 'AI Components' },
+        { id: 2, label: 'SVG & Icons' },
+        { id: 3, label: 'Elements' },
+        { id: 4, label: 'Inputs' },
+        { id: 5, label: 'Navigation' },
+      ];
+
+      const olist2 = document.getElementById('olist2');
+      if (olist2) olist2.items = [
+        { id: 1, label: 'Fix critical bug', description: 'P0 — Blocking release' },
+        { id: 2, label: 'Write unit tests', description: 'P1 — Needed for CI' },
+        { id: 3, label: 'Update docs', description: 'P2 — Nice to have' },
+        { id: 4, label: 'Refactor token system', description: 'P3 — Future sprint' },
+      ];
+
+      // p-tree
+      const tree1 = document.getElementById('tree1');
+      if (tree1) {
+        tree1.data = [
+          {
+            key: 'components', label: 'Components', children: [
+              { key: 'ai', label: 'AI (9)', children: [
+                { key: 'ai-thinking', label: 'ai-thinking' },
+                { key: 'ai-stream', label: 'ai-stream' },
+                { key: 'ai-message', label: 'ai-message' },
+              ]},
+              { key: 'inputs', label: 'Inputs (20)' },
+              { key: 'overlays', label: 'Overlays (8)' },
+            ]
+          },
+          {
+            key: 'core', label: 'Core', children: [
+              { key: 'tokens', label: 'tokens.js' },
+              { key: 'base', label: 'base.js' },
+              { key: 'styles', label: 'styles.css' },
+            ]
+          },
+        ];
+        tree1.expandedKeys = ['components', 'ai'];
+      }
+
+      const tree2 = document.getElementById('tree2');
+      if (tree2) {
+        tree2.data = [
+          {
+            key: 'frontend', label: 'Frontend', children: [
+              { key: 'react', label: 'React' },
+              { key: 'vue', label: 'Vue' },
+              { key: 'lit', label: 'Lit' },
+            ]
+          },
+          {
+            key: 'backend', label: 'Backend', children: [
+              { key: 'node', label: 'Node.js' },
+              { key: 'python', label: 'Python' },
+            ]
+          },
+          { key: 'tools', label: 'Tools', children: [
+            { key: 'rollup', label: 'Rollup' },
+            { key: 'vite', label: 'Vite' },
+          ]},
+        ];
+        tree2.expandedKeys = ['frontend', 'backend'];
+      }
+
+      // p-pick-list
+      const pick1 = document.getElementById('pick1');
+      if (pick1) {
+        pick1.available = [
+          { id: 'btn',    label: 'p-button' },
+          { id: 'input',  label: 'p-input' },
+          { id: 'select', label: 'p-select' },
+          { id: 'modal',  label: 'p-modal' },
+          { id: 'tabs',   label: 'p-tabs' },
+          { id: 'table',  label: 'p-table' },
+          { id: 'card',   label: 'p-card' },
+          { id: 'badge',  label: 'p-badge' },
+        ];
+        pick1.selected = [
+          { id: 'ai-thinking', label: 'ai-thinking' },
+          { id: 'ai-message',  label: 'ai-message' },
+        ];
+      }
+
+      // p-virtual-scroller
+      const vs1 = document.getElementById('vs1');
+      if (vs1) {
+        vs1.items = Array.from({ length: 10000 }, (_, i) => ({
+          id: i + 1,
+          label: `Item #${i + 1}`,
+          sub: `Row ${i + 1} of 10 000`,
+        }));
+        vs1.renderItem = (item) => `<div style="padding:8px 16px;border-bottom:1px solid var(--paper-border,#d9d0be);font-size:.85rem"><strong>${item.label}</strong><span style="margin-left:8px;color:#aaa5a0">${item.sub}</span></div>`;
+      }
+
+      const vs2 = document.getElementById('vs2');
+      if (vs2) {
+        vs2.items = Array.from({ length: 500 }, (_, i) => ({
+          id: i + 1,
+          name: `User ${i + 1}`,
+          email: `user${i + 1}@example.com`,
+          role: ['Admin', 'Editor', 'Viewer'][i % 3],
+        }));
+        vs2.renderItem = (item) => `<div style="padding:10px 16px;border-bottom:1px solid var(--paper-border,#d9d0be);display:flex;align-items:center;gap:12px"><div style="width:32px;height:32px;border-radius:50%;background:var(--accent-red,#c4453c);color:white;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;flex-shrink:0">${item.name[0]}</div><div style="flex:1;min-width:0"><div style="font-size:.85rem;font-weight:600">${item.name}</div><div style="font-size:.75rem;color:#aaa5a0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${item.email}</div></div><span style="font-size:.75rem;padding:2px 8px;border-radius:4px;background:var(--paper-cream,#f7f3e8);border:1px solid var(--paper-border,#d9d0be)">${item.role}</span></div>`;
+      }
+    });
+  </script>
 </body>
 </html>
